@@ -1,0 +1,19 @@
+[env]
+TALOSCONFIG="./talosconfig"
+KUBECONFIG="./kubeconfig"
+
+[tasks.talosconfig]
+run = "op read 'op://Home Cluster/Talosconfig/notesPlain' > $TALOSCONFIG"
+description = "Reads the talosconfig from 1password"
+
+[tasks.kubeconfig]
+run = "talosctl kubeconfig --nodes 192.168.0.11 $KUBECONFIG"
+description = "Read the kubeconfig via talosctl"
+
+[tools]
+"aqua:fluxcd/flux2" = "2.6.4"
+"aqua:helm/helm" = "3.18.4"
+"aqua:helmfile/helmfile" = "1.1.3"
+"aqua:kubernetes-sigs/kustomize" = "5.6.0"
+"aqua:kubernetes/kubectl" = "1.33.1"
+"aqua:siderolabs/talos" = "1.10.5"
