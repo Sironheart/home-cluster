@@ -13,6 +13,7 @@ import {
   ClusterRequiresControlPlanes,
   InvalidNodeAmountException,
 } from "./errors";
+import { Bootstrap } from "@pulumiverse/talos/machine/bootstrap";
 
 const resourcePrefix = "talos-cluster";
 
@@ -78,64 +79,16 @@ export class TalosCluster
     const workplaneApplies = this.configureWorkplanes(secrets);
     const workersApplies = this.configureWorkers(secrets);
 
-    const bootstrap = new talos.machine.Bootstrap(
-      `${resourcePrefix}:bootstrap`,
-      {
-        node: this.controlPlanes.at(0)!.ip,
-        clientConfiguration: secrets.clientConfiguration,
-        // endpoint: this.endpoint,
-        timeouts: { create: "5m" },
-      },
-      {
-        dependsOn: [...workplaneApplies, ...workersApplies],
-        // customTimeouts: { create: "3m", delete: "1m" },
-      },
-    );
+    const bootstrap = this.bootstrapNodes(secrets, [
+      ...workplaneApplies,
+      ...workersApplies,
+    ]);
 
-    const clientConfig = talos.client.getConfigurationOutput({
-      clusterName: this.clusterName,
-      clientConfiguration: secrets.clientConfiguration,
-      nodes: [...this.inputs.nodes.flatMap((n) => n.ip)],
-      endpoints: [this.endpoint],
-    });
-
-    new onepassword.Item(
-      `${resourcePrefix}:talosConfig`,
-      {
-        vault: this.inputs.secretStoreVaultUuid,
-        title: "Talosconfig",
-        category: "secure_note",
-        noteValue: clientConfig.talosConfig,
-        tags: ["talos"],
-        sections: [],
-      },
-      { dependsOn: [bootstrap] },
-    );
-
-    const kubeconfig = new talos.cluster.Kubeconfig(
-      `${resourcePrefix}:kubeconfig`,
-      {
-        clientConfiguration: secrets.clientConfiguration,
-        node: this.controlPlanes.at(0)!.ip,
-        // endpoint: this.endpoint,
-      },
-      { dependsOn: [bootstrap] },
-    );
-
-    new onepassword.Item(
-      `${resourcePrefix}:kubeconfig`,
-      {
-        vault: this.inputs.secretStoreVaultUuid,
-        title: "Kubeconfig",
-        category: "secure_note",
-        noteValue: kubeconfig.kubeconfigRaw,
-        tags: ["talos"],
-      },
-      { dependsOn: [bootstrap] },
-    );
+    this.storeTalosConfig(secrets, [bootstrap]);
+    this.storeKubeConfig(secrets, [bootstrap]);
   }
 
-  configureWorkplanes(secrets: Secrets): ConfigurationApply[] {
+  private configureWorkplanes(secrets: Secrets): ConfigurationApply[] {
     const config = talos.machine.getConfigurationOutput({
       clusterName: this.clusterName,
       machineType: "controlplane",
@@ -191,7 +144,7 @@ export class TalosCluster
     );
   }
 
-  configureWorkers(secrets: Secrets): ConfigurationApply[] {
+  private configureWorkers(secrets: Secrets): ConfigurationApply[] {
     const config = talos.machine.getConfigurationOutput({
       clusterName: this.clusterName,
       machineType: "worker",
@@ -225,6 +178,82 @@ export class TalosCluster
           },
           this.options,
         ),
+    );
+  }
+
+  private bootstrapNodes(
+    secrets: talos.machine.Secrets,
+    dependsOn:
+      | pulumi.Input<pulumi.Resource>
+      | pulumi.Input<pulumi.Input<pulumi.Resource>[]>,
+  ): talos.machine.Bootstrap {
+    return new talos.machine.Bootstrap(
+      `${resourcePrefix}:bootstrap`,
+      {
+        node: this.controlPlanes.at(0)!.ip,
+        clientConfiguration: secrets.clientConfiguration,
+        endpoint: this.endpoint,
+        timeouts: { create: "5m" },
+      },
+      {
+        dependsOn,
+      },
+    );
+  }
+
+  private storeKubeConfig(
+    secrets: talos.machine.Secrets,
+    dependsOn:
+      | pulumi.Input<pulumi.Resource>
+      | pulumi.Input<pulumi.Input<pulumi.Resource>[]>,
+  ) {
+    const kubeconfig = new talos.cluster.Kubeconfig(
+      `${resourcePrefix}:kubeconfig`,
+      {
+        clientConfiguration: secrets.clientConfiguration,
+        node: this.controlPlanes.at(0)!.ip,
+        endpoint: this.endpoint,
+      },
+      { dependsOn },
+    );
+
+    new onepassword.Item(
+      `${resourcePrefix}:kubeconfig`,
+      {
+        vault: this.inputs.secretStoreVaultUuid,
+        title: "Kubeconfig",
+        category: "secure_note",
+        noteValue: kubeconfig.kubeconfigRaw,
+        tags: ["talos"],
+      },
+      { dependsOn },
+    );
+  }
+
+  private storeTalosConfig(
+    secrets: talos.machine.Secrets,
+    dependsOn:
+      | pulumi.Input<pulumi.Resource>
+      | pulumi.Input<pulumi.Input<pulumi.Resource>[]>,
+  ) {
+    const clientConfig = talos.client.getConfigurationOutput({
+      clusterName: this.clusterName,
+      clientConfiguration: secrets.clientConfiguration,
+      nodes: [...this.inputs.nodes.flatMap((n) => n.ip)],
+      endpoints: [this.endpoint],
+    });
+
+    new onepassword.Item(
+      `${resourcePrefix}:talosConfig`,
+      {
+        vault: this.inputs.secretStoreVaultUuid,
+        title: "Talosconfig",
+        category: "secure_note",
+        noteValue: clientConfig.talosConfig,
+        tags: ["talos"],
+        sections: [],
+      },
+      { dependsOn },
     );
   }
 
