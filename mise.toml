@@ -7,7 +7,7 @@ run = "op read 'op://Home Cluster/Talosconfig/notesPlain' > $TALOSCONFIG"
 description = "Reads the talosconfig from 1password"
 
 [tasks.kubeconfig]
-run = "talosctl kubeconfig --nodes 192.168.0.11 $KUBECONFIG"
+run = "op read 'op://Home Cluster/Kubeconfig/notesPlain' > $KUBECONFIG"
 description = "Read the kubeconfig via talosctl"
 
 [tools]
