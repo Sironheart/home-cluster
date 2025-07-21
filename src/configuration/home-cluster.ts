@@ -33,5 +33,5 @@ export default function homeCluster(): ClusterConfig {
         },
       },
     ],
-  } as ClusterConfig;
+  };
 }

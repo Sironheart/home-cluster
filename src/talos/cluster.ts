@@ -1,8 +1,8 @@
-import { NodeConfiguration, TalosCluster } from "./TalosCluster";
-import { ClusterConfig } from "../configuration/types";
+import { TalosCluster } from "./componentResource/TalosCluster";
+import { ClusterConfig, NodeConfiguration } from "../configuration/types";
 
 export function setupCluster(clusterConfig: ClusterConfig) {
-  const nodes: NodeConfiguration[] = clusterConfig.nodes
+  const talosNodes: NodeConfiguration[] = clusterConfig.nodes
     .filter((n) => !!n.talos)
     .map((n) => {
       return {
@@ -16,7 +16,7 @@ export function setupCluster(clusterConfig: ClusterConfig) {
     clusterName: clusterConfig.k8sCluster.clusterName,
     endpoint: clusterConfig.k8sCluster.endpoint,
     talosVersion: clusterConfig.k8sCluster.talosVersion,
-    nodes: nodes,
+    nodes: talosNodes,
     secretStoreVaultUuid: clusterConfig.secretStoreVault,
   });
 }
