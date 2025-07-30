@@ -1,7 +1,7 @@
 [env]
 TALOSCONFIG="{{config_root}}/talos/clusterconfig/talosconfig"
 TALHELPER_SECRETS="{{config_root}}/talos/talsecret.yaml"
-# KUBECONFIG="./kubeconfig"
+KUBECONFIG="{{config_root}}/kubeconfig"
 
 [tasks.talos-secrets]
 run = "op inject -f -i {{config_root}}/op-templates/talsecret.yaml.tpl -o {{config_root}}/talos/talsecret.yaml"
@@ -13,7 +13,7 @@ description = "Generate machine configs"
 depends = ['talos-secrets']
 
 [tasks.kubeconfig]
-run = "op read 'op://Home Cluster/Kubeconfig/notesPlain' > $KUBECONFIG"
+run = "talosctl kubeconfig -n talos.home $KUBECONFIG"
 description = "Read the kubeconfig via talosctl"
 
 [tasks.init]

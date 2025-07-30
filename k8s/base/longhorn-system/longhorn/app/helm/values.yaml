@@ -1,0 +1,14 @@
+---
+defaultSettings:
+  defaultReplicaCount: 2
+  defaultDataPath: /var/lib/longhorn
+persistence:
+  reclaimPolicy: Delete
+  defaultClassReplicaCount: 2
+longhornUI:
+  replicas: 1
+csi:
+  attacherReplicaCount: 1
+  provisionerReplicaCount: 1
+  resizerReplicaCount: 1
+  snapshotterReplicaCount: 1

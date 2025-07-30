@@ -5,7 +5,7 @@ talosVersion: 1.10.5
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
 kubernetesVersion: v1.33.3
 
-endpoint: https://192.168.0.11:6443
+endpoint: https://talos.home:6443
 allowSchedulingOnMasters: true
 cniConfig:
   name: none
@@ -15,8 +15,7 @@ additionalMachineCertSans: &san
   - 192.168.0.11 #Talos01
   - 192.168.0.12 #Talos02
   - 192.168.0.13 #Talos03
-  - 192.168.0.10 #VIP interface
-  - talos.home #DNS route to VIP interface
+  - talos.home #DNS route to cluster
 additionalApiServerCertSans: *san
 
 nodes:
@@ -33,15 +32,45 @@ nodes:
       secureboot: false
       useUKI: false
 
+    networkInterfaces: &network
+      - deviceSelector:
+          physical: true
+        dhcp: true
+
+
+  - hostname: talos02
+    ipAddress: 192.168.0.12
+    controlPlane: true
+    disableSearchDomain: true
+
+    installDisk: "/dev/nvme0n1"
+
+    machineSpec:
+      mode: metal
+      arch: amd64
+      secureboot: false
+      useUKI: false
+
+    networkInterfaces: *network
+
+  - hostname: talos03
+    ipAddress: 192.168.0.13
+    controlPlane: true
+    disableSearchDomain: true
+
+    installDisk: "/dev/nvme0n1"
+
+    machineSpec:
+      mode: metal
+      arch: amd64
+      secureboot: false
+      useUKI: false
+
+    networkInterfaces: *network
+
 controlPlane:
   schematic:
     customization:
-      extraKernelArgs:
-        - net.ifnames=1 # Enable predictable NIC naming
-        - init_on_alloc=0 # Less security, more speed
-        - init_on_free=0 # Less security, more speed
-        - iommu=pt # PCI Passthrough
-        - talos.auditd.disabled=1
       systemExtensions:
         officialExtensions:
         - siderolabs/iscsi-tools
@@ -69,7 +98,7 @@ patches:
       nodeLabels:
         node.longhorn.io/create-default-disk: config
       nodeAnnotations:
-        node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
+        node.longhorn.io/default-disks-config: '[{"path":"/var/lib/longhorn","allowScheduling":true}]'
       kubelet:
         extraMounts:
           - destination: /var/lib/longhorn
@@ -122,6 +151,37 @@ patches:
                       - maxSkew: 1
                         topologyKey: kubernetes.io/hostname
                         whenUnsatisfiable: ScheduleAnyway
+
+  # Longhorn settings
+  - |-
+    cluster:
+      apiServer:
+        admissionControl:
+        - name: PodSecurity
+          configuration:
+            apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+            kind: PodSecurityConfiguration
+            defaults:
+              audit: restricted
+              audit-version: latest
+              enforce: baseline
+              enforce-version: latest
+              warn: restricted
+              warn-version: latest
+            exemptions:
+              namespaces:
+                # - kube-system
+                - longhorn-system
+                - metallb-system
+                - observability
+                - network
+              runtimeClasses: []
+              usernames: []
+        auditPolicy:
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          rules:
+            - level: Metadata
 
   # Etcd metrics
   - |-

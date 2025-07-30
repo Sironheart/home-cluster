@@ -1,0 +1,80 @@
+---
+localRedirectPolicy: true
+rollOutCiliumPods: true
+
+operator:
+  replicas: 1
+  rollOutPods: true
+  dashboards:
+    enabled: true
+  # prometheus:
+  #   enabled: true
+  #   serviceMonitor: true
+
+bandwidthManager:
+  enabled: true
+  bbr: true
+
+bpf:
+  datapathMode: netkit
+  masquerade: true
+  preallocateMaps: true
+
+cni:
+  exclusive: false
+
+l2announcements:
+  enabled: true
+
+# prometheus:
+#   enabled: true
+#   serviceMonitor:
+#     enabled: true
+#     trustCRDsExist: true
+
+envoy:
+  rollOutPods: true
+  # prometheus:
+  #   serviceMonitor:
+  #     enabled: true
+
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  enableAppProtocol: true
+
+# -- from talos docs --
+ipam:
+  mode: kubernetes
+
+kubeProxyReplacement: true
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
+policyAuditMode: true
+
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUI
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+# -- end of talos settings --
