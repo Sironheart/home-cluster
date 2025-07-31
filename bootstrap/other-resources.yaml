@@ -1,0 +1,20 @@
+---
+# https://kubernetes.io/docs/concepts/configuration/secret/
+apiVersion: v1
+kind: Secret
+metadata:
+  name: op-credentials
+  namespace: external-secrets
+type: Opaque
+stringData:
+  1password-credentials.json: |
+    op://Home Cluster/1password-connect/credentials
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: onepassword-secret
+  namespace: external-secrets
+stringData:
+  token: op://Home Cluster/external-secrets/1password-credentials
+---
