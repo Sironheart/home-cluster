@@ -14,7 +14,7 @@ instance:
     kind: GitRepository
     url: https://github.com/sironheart/home-cluster
     ref: refs/heads/main
-    path: k8s/flux/cluster/ks.yaml
+    path: k8s/flux/cluster
     interval: 1h
   commonMetadata:
     labels:
