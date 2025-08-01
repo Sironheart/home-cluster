@@ -14,7 +14,7 @@ spec:
       name: *app
       namespace: *namespace
   interval: 1h
-  path: ./k8s/base/londhorn-system/longhorn/app
+  path: ./k8s/base/longhorn-system/longhorn/app
   prune: true
   retryInterval: 2m
   sourceRef:
