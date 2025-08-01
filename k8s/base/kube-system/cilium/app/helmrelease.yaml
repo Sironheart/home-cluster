@@ -45,16 +45,16 @@ spec:
           - port-distribution
           - icmp
           - http
-        serviceMonitor:
-          enabled: true
+        # serviceMonitor:
+        #   enabled: true
         dashboards:
           enabled: true
       relay:
         enabled: true
         rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
+        # prometheus:
+        #   serviceMonitor:
+        #     enabled: true
       ui:
         enabled: true
         rollOutPods: true
