@@ -5,4 +5,3 @@ kind: Kustomization
 namespace: onepassword
 resources:
   - ./1password-connect/ks.yaml
-  - ./1password-operator/ks.yaml
