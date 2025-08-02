@@ -1,0 +1,5 @@
+---
+operatorConfig:
+  hostname: foo
+  apiServerProxyConfig:
+    mode: true
