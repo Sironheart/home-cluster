@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: op-credentials
-  namespace: external-secrets
+  namespace: onepassword
 type: Opaque
 stringData:
   1password-credentials.json: |-
@@ -13,8 +13,8 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: onepassword-secret
-  namespace: external-secrets
+  name: onepassword-token
+  namespace: onepassword
 stringData:
   token: op://Home Cluster/external-secrets/1password-credentials
 ---
