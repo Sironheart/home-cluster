@@ -1,3 +1,5 @@
 ---
 operator:
   create: true
+  autoRestart: true
+  pollingInterval: 60
