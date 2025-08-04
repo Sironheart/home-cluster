@@ -25,11 +25,11 @@ description = "Setup project for local use"
 "flux2" = "2.6.4"
 
 # Kubernetes
-"kubectl" = "1.33.1"
+"kubectl" = "1.33.3"
 "kustomize" = "5.7.1"
 "helm" = "3.18.4"
 "helmfile" = "1.1.3"
 
 # Talos
 "talos" = "1.10.5"
-"talhelper" = "3.0.31"
+"talhelper" = "3.0.32"
