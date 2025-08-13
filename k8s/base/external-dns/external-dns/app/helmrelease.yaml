@@ -62,7 +62,7 @@ spec:
     txtOwnerId: main
     txtPrefix: k8s.home.
     domainFilters: ["home"]
-    # serviceMonitor:
-    #   enabled: true
+    serviceMonitor:
+      enabled: true
     podAnnotations:
       secret.reloader.stakater.com/reload: *secret

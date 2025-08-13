@@ -7,9 +7,10 @@ operator:
   rollOutPods: true
   dashboards:
     enabled: true
-  # prometheus:
-  #   enabled: true
-  #   serviceMonitor: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
 
 bandwidthManager:
   enabled: true
@@ -26,17 +27,17 @@ cni:
 l2announcements:
   enabled: true
 
-# prometheus:
-#   enabled: true
-#   serviceMonitor:
-#     enabled: true
-#     trustCRDsExist: true
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
 
 envoy:
   rollOutPods: true
-  # prometheus:
-  #   serviceMonitor:
-  #     enabled: true
+  prometheus:
+    serviceMonitor:
+      enabled: true
 
 gatewayAPI:
   enabled: true
