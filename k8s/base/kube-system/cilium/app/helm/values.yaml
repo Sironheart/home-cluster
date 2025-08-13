@@ -43,6 +43,13 @@ gatewayAPI:
   enableAlpn: true
   enableAppProtocol: true
 
+hubble:
+  enabled: true
+  ui:
+    enabled: true
+  relay:
+    enabled: true
+
 # -- from talos docs --
 ipam:
   mode: kubernetes
