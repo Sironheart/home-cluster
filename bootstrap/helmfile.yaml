@@ -18,6 +18,13 @@ releases:
     values: ['../k8s/base/kube-system/coredns/app/helm/values.yaml']
     needs: ['kube-system/cilium']
 
+  - name: cert-manager
+    namespace: cert-manager
+    chart: oci://quay.io/jetstack/charts/cert-manager
+    version: v1.18.2
+    values: ['../k8s/base/cert-manager/cert-manager/app/helm/values.yaml']
+    needs: ['kube-system/cilium']
+
   - name: longhorn
     namespace: longhorn-system
     chart: oci://ghcr.io/home-operations/charts-mirror/longhorn
