@@ -4,7 +4,7 @@ kind: Gateway
 metadata:
   name: internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname home
+    external-dns.alpha.kubernetes.io/target: &hostname talos.home
 spec:
   gatewayClassName: cilium
   addresses:

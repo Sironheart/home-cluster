@@ -9,7 +9,7 @@ spec:
     namespace: kube-system
     sectionName: https
   hostnames:
-    - longhorn.talos.home
+    - longhorn.home
   rules:
     - backendRefs:
         - kind: Service

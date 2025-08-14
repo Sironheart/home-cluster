@@ -42,7 +42,7 @@ spec:
           - name: UNIFI_API_KEY
             valueFrom:
               secretKeyRef:
-                name: &secret unifi-dns-secret
+                name: unifi-dns-secret
                 key: token
         livenessProbe:
           httpGet:
@@ -60,9 +60,7 @@ spec:
     policy: sync
     sources: ["gateway-httproute", "service"]
     txtOwnerId: default
-    txtPrefix: talos.home.
-    domainFilters: ["talos.home"]
+    txtPrefix: home.
+    domainFilters: ["home"]
     serviceMonitor:
       enabled: true
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
