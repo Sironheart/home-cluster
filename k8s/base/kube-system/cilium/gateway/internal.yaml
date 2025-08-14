@@ -7,9 +7,6 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname talos.home
 spec:
   gatewayClassName: cilium
-  addresses:
-    - type: IPAddress
-      value: 192.168.2.21
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
