@@ -91,10 +91,10 @@ spec:
               - identifier: app
                 port: *port
     persistence:
-      config:
-        existingClaim: jellyfin
-        globalMounts:
-          - path: /config
+      # config:
+      #   existingClaim: jellyfin
+      #   globalMounts:
+      #     - path: /config
       config-cache:
         existingClaim: jellyfin-cache
         globalMounts:
