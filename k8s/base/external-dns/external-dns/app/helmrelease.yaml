@@ -59,9 +59,9 @@ spec:
     triggerLoopOnEvent: true
     policy: sync
     sources: ["gateway-httproute", "service"]
-    txtOwnerId: main
-    txtPrefix: k8s.home.
-    domainFilters: ["home"]
+    txtOwnerId: default
+    txtPrefix: talos.home.
+    domainFilters: ["talos.home"]
     serviceMonitor:
       enabled: true
     podAnnotations:
