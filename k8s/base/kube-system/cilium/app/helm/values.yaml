@@ -1,6 +1,7 @@
 ---
 localRedirectPolicy: true
 rollOutCiliumPods: true
+upgradeCompatibility: "1.8"
 
 operator:
   replicas: 1
