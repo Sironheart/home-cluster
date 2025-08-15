@@ -1,11 +1,11 @@
 ---
 localRedirectPolicy: true
 rollOutCiliumPods: true
-upgradeCompatibility: "1.8"
+upgradeCompatibility: "1.18"
 
 operator:
   replicas: 1
-  rollOutPods: true
+  # rollOutPods: true
   dashboards:
     enabled: true
   prometheus:
@@ -57,10 +57,28 @@ gatewayAPI:
 
 hubble:
   enabled: true
-  ui:
-    enabled: true
+  metrics:
+    enabled:
+      - dns:query
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+    serviceMonitor:
+      enabled: true
+    dashboards:
+      enabled: true
   relay:
     enabled: true
+    rollOutPods: true
+    prometheus:
+      serviceMonitor:
+        enabled: true
+  ui:
+    enabled: true
+    rollOutPods: true
 
 # -- from talos docs --
 ipam:

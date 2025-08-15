@@ -25,7 +25,7 @@ description = "Setup project for local use"
 "flux2" = "2.6.4"
 
 # Kubernetes
-"cilium-cli" = "0.18.0"
+"cilium-cli" = "0.18.1"
 "helm" = "3.18.4"
 "helmfile" = "1.1.5"
 "kubectl" = "1.33.4"
