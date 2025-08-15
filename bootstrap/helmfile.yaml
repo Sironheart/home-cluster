@@ -8,13 +8,13 @@ releases:
   - name: cilium
     namespace: kube-system
     chart: oci://ghcr.io/home-operations/charts-mirror/cilium
-    version: 1.18.0
+    version: 1.17.6
     values: ['../k8s/base/kube-system/cilium/app/helm/values.yaml']
 
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.43.1
+    version: 1.43.2
     values: ['../k8s/base/kube-system/coredns/app/helm/values.yaml']
     needs: ['kube-system/cilium']
 
@@ -42,13 +42,13 @@ releases:
   - name: flux-operator
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
-    version: 0.26.0
+    version: 0.27.0
     values: ['../k8s/base/flux-system/flux-operator/app/helm/values.yaml']
     needs: ['onepassword/1password-connect']
 
   - name: flux-instance
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
-    version: 0.26.0
+    version: 0.27.0
     values: ['../k8s/base/flux-system/flux-instance/app/helm/values.yaml']
     needs: ['flux-system/flux-operator']

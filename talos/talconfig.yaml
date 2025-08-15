@@ -1,9 +1,9 @@
 ---
 clusterName: home
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: 1.10.5
+talosVersion: 1.10.6
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.33.3
+kubernetesVersion: v1.33.4
 
 endpoint: https://talos.home:6443
 allowSchedulingOnMasters: true
@@ -73,10 +73,16 @@ controlPlane:
     customization:
       systemExtensions:
         officialExtensions:
+        - siderolabs/amdgpu
         - siderolabs/iscsi-tools
         - siderolabs/util-linux-tools
 
 patches:
+  - |-
+    machine:
+      install:
+        extraKernelArgs:
+          - amd_pstate=active
   # Disable search domain everywhere
   - |-
     machine:
