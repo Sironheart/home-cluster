@@ -4,3 +4,4 @@ kind: Kustomization
 namespace: onepassword
 resources:
   - ./1password-connect/ks.yaml
+  - ./namespace.yaml
