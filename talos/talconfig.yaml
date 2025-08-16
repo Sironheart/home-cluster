@@ -18,6 +18,16 @@ additionalMachineCertSans: &san
   - talos.home #DNS route to cluster
 additionalApiServerCertSans: *san
 
+controlPlane:
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions:
+        - siderolabs/amdgpu
+        - siderolabs/iscsi-tools
+        - siderolabs/util-linux-tools
+
+
 nodes:
   - hostname: talos01
     ipAddress: 192.168.0.11
@@ -26,11 +36,11 @@ nodes:
 
     installDisk: "/dev/nvme0n1"
 
-    machineSpec:
+    machineSpec: &machinespec
       mode: metal
       arch: amd64
-      secureboot: false
-      useUKI: false
+      secureboot: true
+      useUKI: true
 
     networkInterfaces: &network
       - deviceSelector:
@@ -45,11 +55,7 @@ nodes:
 
     installDisk: "/dev/nvme0n1"
 
-    machineSpec:
-      mode: metal
-      arch: amd64
-      secureboot: false
-      useUKI: false
+    machineSpec: *machinespec
 
     networkInterfaces: *network
 
@@ -60,22 +66,9 @@ nodes:
 
     installDisk: "/dev/nvme0n1"
 
-    machineSpec:
-      mode: metal
-      arch: amd64
-      secureboot: false
-      useUKI: false
+    machineSpec: *machinespec
 
     networkInterfaces: *network
-
-controlPlane:
-  schematic:
-    customization:
-      systemExtensions:
-        officialExtensions:
-        - siderolabs/amdgpu
-        - siderolabs/iscsi-tools
-        - siderolabs/util-linux-tools
 
 patches:
   - |-
