@@ -57,7 +57,7 @@ jobs:
     strategy:
       matrix:
         resource:
-          # - "helmrelease"
+          - "helmrelease"
           - "kustomization"
       fail-fast: false
     steps:
