@@ -1,0 +1,10 @@
+---
+originRequest:
+  originServerName: "home.beisenherz.dev"
+
+ingress:
+- hostname: "beisenherz.dev"
+  service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+- hostname: "*.beisenherz.dev"
+  service: *svc
+- service: http_status:404
