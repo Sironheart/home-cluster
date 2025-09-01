@@ -1,9 +1,9 @@
 ---
 clusterName: home
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: 1.10.6
+talosVersion: v1.11.0
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.33.4
+kubernetesVersion: v1.34.0
 
 endpoint: https://talos.home:6443
 allowSchedulingOnMasters: true
@@ -21,12 +21,27 @@ additionalApiServerCertSans: *san
 controlPlane:
   schematic:
     customization:
+      extraKernelArgs:
+        - -init_on_alloc
+        - -init_on_free
+        - -selinux
+        - apparmor=0
+        - init_on_alloc=0
+        - init_on_free=0
+        - mitigations=off
+        - security=none
+        - sysctl.kernel.kexec_load_disabled=1
+        - talos.auditd.disabled=1
+        - sysctl.vm.swappiness=1
+        - sysctl.vm.dirty_ratio=5
+        - sysctl.vm.dirty_background_ratio=2
+        - sysctl.vm.vfs_cache_pressure=50
+        - amd_pstate=active
       systemExtensions:
         officialExtensions:
-        - siderolabs/amdgpu
-        - siderolabs/iscsi-tools
-        - siderolabs/util-linux-tools
-
+          - siderolabs/amdgpu
+          - siderolabs/iscsi-tools
+          - siderolabs/util-linux-tools
 
 nodes:
   - hostname: talos01
@@ -47,6 +62,12 @@ nodes:
           physical: true
         dhcp: true
 
+    nodeLabels: &labels
+      node.longhorn.io/create-default-disk: config
+      feature.node.kubernetes.io/amd-gpu: "true"
+
+    nodeAnnotations: &annotations
+      node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
 
   - hostname: talos02
     ipAddress: 192.168.0.12
@@ -59,6 +80,9 @@ nodes:
 
     networkInterfaces: *network
 
+    nodeLabels: *labels
+    nodeAnnotations: *annotations
+
   - hostname: talos03
     ipAddress: 192.168.0.13
     controlPlane: true
@@ -70,12 +94,10 @@ nodes:
 
     networkInterfaces: *network
 
+    nodeLabels: *labels
+    nodeAnnotations: *annotations
+
 patches:
-  - |-
-    machine:
-      install:
-        extraKernelArgs:
-          - amd_pstate=active
   # Disable search domain everywhere
   - |-
     machine:
@@ -86,6 +108,8 @@ patches:
   - |-
     machine:
       features:
+        apidCheckExtKeyUsage: true
+        diskQuotaSupport: true
         hostDNS:
           enabled: true
           resolveMemberNames: true
@@ -94,10 +118,6 @@ patches:
   # Kubelet mount and machine labels for longhorn
   - |-
     machine:
-      nodeLabels:
-        node.longhorn.io/create-default-disk: config
-      nodeAnnotations:
-        node.longhorn.io/default-disks-config: '[{"path":"/var/lib/longhorn","allowScheduling":true}]'
       kubelet:
         extraMounts:
           - destination: /var/lib/longhorn
@@ -110,6 +130,21 @@ patches:
     machine:
       install:
         wipe: true
+
+  - |-
+    apiVersion: v1alpha1
+    kind: UserVolumeConfig
+    name: longhorn
+    provisioning:
+      diskSelector:
+        match: disk.transport == "nvme"
+      minSize: 200G
+      grow: true
+    encryption:
+      provider: luks2
+      keys:
+        - slot: 0
+          tpm: {}
 
   # Replace kubeproxy with cilium
   - |-
@@ -155,6 +190,7 @@ patches:
   - |-
     cluster:
       apiServer:
+        disablePodSecurityPolicy: true
         admissionControl:
         - name: PodSecurity
           configuration:
