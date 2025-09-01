@@ -1,7 +1,7 @@
 ---
 defaultSettings:
   defaultReplicaCount: 2
-  defaultDataPath: /var/lib/longhorn
+  defaultDataPath: /var/mnt/longhorn
 persistence:
   reclaimPolicy: Delete
   defaultClassReplicaCount: 2
