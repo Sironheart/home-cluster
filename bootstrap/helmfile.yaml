@@ -9,46 +9,67 @@ releases:
     namespace: kube-system
     chart: oci://ghcr.io/home-operations/charts-mirror/cilium
     version: 1.18.1
-    values: ['../k8s/base/kube-system/cilium/app/helm/values.yaml']
+    values: ["../k8s/base/kube-system/cilium/app/helm/values.yaml"]
 
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
     version: 1.43.3
-    values: ['../k8s/base/kube-system/coredns/app/helm/values.yaml']
-    needs: ['kube-system/cilium']
+    values: ["../k8s/base/kube-system/coredns/app/helm/values.yaml"]
+    needs: ["kube-system/cilium"]
 
   - name: cert-manager
     namespace: cert-manager
     chart: oci://quay.io/jetstack/charts/cert-manager
     version: v1.18.2
-    values: ['../k8s/base/cert-manager/cert-manager/app/helm/values.yaml']
-    needs: ['kube-system/cilium']
+    values: ["../k8s/base/cert-manager/cert-manager/app/helm/values.yaml"]
+    needs: ["kube-system/cilium"]
 
   - name: longhorn
     namespace: longhorn-system
     chart: oci://ghcr.io/home-operations/charts-mirror/longhorn
     version: 1.9.1
-    values: ['../k8s/base/longhorn-system/longhorn/app/helm/values.yaml']
-    needs: ['kube-system/cilium']
+    values: ["../k8s/base/longhorn-system/longhorn/app/helm/values.yaml"]
+    needs: ["kube-system/cilium"]
 
   - name: 1password-connect
     namespace: onepassword
     chart: oci://ghcr.io/home-operations/charts-mirror/connect
     version: 2.0.3
-    values: ['../k8s/base/onepassword/1password-connect/app/helm/values.yaml']
-    needs: ['kube-system/cilium']
+    values: ["../k8s/base/onepassword/1password-connect/app/helm/values.yaml"]
+    needs: ["kube-system/cilium"]
+
+  - name: external-secrets
+    namespace: external-secrets
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    version: 0.18.2
+    values:
+      ["../k8s/base/external-secrets/external-secrets/app/helm/values.yaml"]
+    hooks:
+      - # Apply cluster secret store
+        events: ["postsync"]
+        command: kubectl
+        args:
+          - apply
+          - --namespace=external-secrets
+          - --server-side
+          - --field-manager=kustomize-controller
+          - --filename
+          - ../k8s/base/external-secrets/external-secrets/app/clustersecretstore.yaml
+          - --wait=true
+        showlogs: true
+    needs: ["onepassword/1password-connect"]
 
   - name: flux-operator
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
     version: 0.28.0
-    values: ['../k8s/base/flux-system/flux-operator/app/helm/values.yaml']
-    needs: ['onepassword/1password-connect']
+    values: ["../k8s/base/flux-system/flux-operator/app/helm/values.yaml"]
+    needs: ["onepassword/1password-connect"]
 
   - name: flux-instance
     namespace: flux-system
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
     version: 0.28.0
-    values: ['../k8s/base/flux-system/flux-instance/app/helm/values.yaml']
-    needs: ['flux-system/flux-operator']
+    values: ["../k8s/base/flux-system/flux-instance/app/helm/values.yaml"]
+    needs: ["flux-system/flux-operator"]
