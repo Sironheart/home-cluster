@@ -1,10 +1,10 @@
 ---
 defaultSettings:
-  defaultReplicaCount: 2
+  defaultReplicaCount: 1
   defaultDataPath: /var/mnt/longhorn
 persistence:
   reclaimPolicy: Delete
-  defaultClassReplicaCount: 2
+  defaultClassReplicaCount: 1
 longhornUI:
   replicas: 1
 csi:
