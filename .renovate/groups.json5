@@ -46,5 +46,12 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
     },
+    {
+      matchManagers: ["mise"],
+      groupName: "mise: all upgrades",
+      groupSlug: "mise-all",
+      seperateMajorMinor: false,
+      seperateMinorPatch: false,
+    },
   ],
 }
