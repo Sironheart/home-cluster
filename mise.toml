@@ -26,11 +26,11 @@ flux2 = "2.6.4"
 
 # Kubernetes
 cilium-cli = "0.18.6"
-helm = "3.18.6"
-helmfile = "1.1.6"
-kubectl = "1.34.0"
+helm = "3.19.0"
+helmfile = "1.1.7"
+kubectl = "1.34.1"
 kustomize = "5.7.1"
 
 # Talos
-talhelper = "3.0.34"
+talhelper = "3.0.35"
 talos = "1.10.7"
