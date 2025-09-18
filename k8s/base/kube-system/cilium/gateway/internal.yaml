@@ -28,4 +28,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: siron-casatg sgtls
+            name: siron-casa-tls
