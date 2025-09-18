@@ -29,4 +29,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: siron-casa-tls
+            name: internal-siron-casa-tls
