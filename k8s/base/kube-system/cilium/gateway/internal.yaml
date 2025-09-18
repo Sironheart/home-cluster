@@ -4,8 +4,7 @@ kind: Gateway
 metadata:
   name: internal
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/target: &hostname talos.home
+    external-dns.alpha.kubernetes.io/target: &hostname internal.siron.casa
 spec:
   gatewayClassName: cilium
   infrastructure:
@@ -29,4 +28,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: internal-siron-casa-tls
+            name: siron-casa-tls
