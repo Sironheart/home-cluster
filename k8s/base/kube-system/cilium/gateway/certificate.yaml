@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: siron-casa-tls
   issuerRef:
-    name: le-prod
+    name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: siron.casa
   dnsNames: ["siron.casa", "*.siron.casa"]
