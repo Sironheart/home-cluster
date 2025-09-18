@@ -16,7 +16,7 @@ spec:
       namespace: *namespace
     - apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
-      name: le-self-signed
+      name: letsencrypt-prod
   healthCheckExprs:
     - apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
