@@ -82,7 +82,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.home"]
+        hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: internal
             namespace: kube-system

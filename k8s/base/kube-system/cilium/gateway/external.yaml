@@ -1,10 +1,11 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: internal
+  name: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname talos.home
+    external-dns.alpha.kubernetes.io/target: &hostname external.siron.casa
 spec:
   gatewayClassName: cilium
   infrastructure:
@@ -28,4 +29,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: siron-casatg sgtls
+            name: siron-casa-tls

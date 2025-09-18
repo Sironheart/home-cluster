@@ -107,7 +107,7 @@ spec:
     policy: sync
     sources: ["gateway-httproute", "service"]
     txtOwnerId: default
-    txtPrefix: home.
-    domainFilters: ["home"]
+    txtPrefix: k8s.
+    domainFilters: ["siron.casa"]
     serviceMonitor:
       enabled: true

@@ -5,11 +5,11 @@ metadata:
   name: longhorn-frontend
 spec:
   parentRefs:
-  - name: internal
-    namespace: kube-system
-    sectionName: https
+    - name: internal
+      namespace: kube-system
+      sectionName: https
   hostnames:
-    - longhorn.home
+    - longhorn.siron.casa
   rules:
     - backendRefs:
         - kind: Service

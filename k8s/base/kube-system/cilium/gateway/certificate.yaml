@@ -2,11 +2,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: home
+  name: siron-casa
 spec:
-  secretName: home-tls
+  secretName: siron-casa-tls
   issuerRef:
-    name: le-self-signed
+    name: le-prod
     kind: ClusterIssuer
-  commonName: home
-  dnsNames: ["home", "*.home"]
+  commonName: siron.casa
+  dnsNames: ["siron.casa", "*.siron.casa"]
