@@ -1,9 +1,9 @@
 ---
 clusterName: home
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.11.0
+talosVersion: v1.11.1
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.34.0
+kubernetesVersion: v1.34.1
 
 endpoint: https://talos.home:6443
 allowSchedulingOnMasters: true
