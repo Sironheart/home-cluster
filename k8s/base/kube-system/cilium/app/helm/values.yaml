@@ -12,7 +12,6 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 cni:
   exclusive: false
-devices: enp+
 enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
