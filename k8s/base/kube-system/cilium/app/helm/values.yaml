@@ -2,7 +2,7 @@
 localRedirectPolicy: true
 rollOutCiliumPods: true
 upgradeCompatibility: "1.18"
-routingMode: native
+# routingMode: native
 
 autoDirectNodeRoutes: true
 bpfClockProbe: true
