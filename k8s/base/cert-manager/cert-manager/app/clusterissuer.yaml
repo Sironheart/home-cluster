@@ -11,7 +11,7 @@ spec:
       - dns01:
           cloudflare:
             apiTokenSecretRef:
-              name: le-prod
+              name: letsencrypt-prod
               key: CLOUDFLARE_DNS_TOKEN
         selector:
           dnsZones: ["siron.casa"]

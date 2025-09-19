@@ -7,6 +7,11 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname internal.siron.casa
 spec:
   gatewayClassName: cilium
+  addresses:
+    - type: IPAddress
+      value: 192.168.0.10
+    - type: Hostname
+      value: internal.siron.casa
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname

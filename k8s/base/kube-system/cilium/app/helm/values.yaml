@@ -53,7 +53,7 @@ gatewayAPI:
   enableAlpn: true
   enableAppProtocol: true
   hostNetwork:
-    enabled: true
+    enabled: false
 
 hubble:
   enabled: true
