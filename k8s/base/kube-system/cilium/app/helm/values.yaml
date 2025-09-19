@@ -40,13 +40,24 @@ gatewayAPI:
 
 hubble:
   enabled: true
-  tls:
-    auto:
-      method: certmanager
-      certManagerIssuerRef:
-        group: cert-manager.io
-        kind: ClusterIssuer
-        name: cluster-ca
+  # tls:
+  #   auto:
+  #     method: certmanager
+  #     certManagerIssuerRef:
+  #       group: cert-manager.io
+  #       kind: ClusterIssuer
+  #       name: cluster-ca
+  metrics:
+    enabled:
+      - dns:query
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+    serviceMonitor:
+      enabled: true
   ui:
     enabled: true
   relay:
