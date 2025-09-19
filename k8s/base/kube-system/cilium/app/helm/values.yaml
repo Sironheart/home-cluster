@@ -4,9 +4,6 @@ rollOutCiliumPods: true
 upgradeCompatibility: "1.18"
 # routingMode: native
 
-autoDirectNodeRoutes: true
-bpfClockProbe: true
-
 bandwidthManager:
   enabled: true
   bbr: true
