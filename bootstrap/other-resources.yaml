@@ -1,5 +1,14 @@
 ---
-# https://kubernetes.io/docs/concepts/configuration/secret/
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: onepassword
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -17,8 +26,3 @@ metadata:
   namespace: onepassword
 stringData:
   token: op://Home Cluster/external-secrets/1password-credentials
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: flux-system

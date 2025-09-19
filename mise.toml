@@ -13,7 +13,7 @@ description = "Generate machine configs"
 depends = ['talos-secrets']
 
 [tasks.kubeconfig]
-run = "talosctl kubeconfig -n talos.home $KUBECONFIG"
+run = "talosctl kubeconfig -n internal.siron.casa $KUBECONFIG"
 description = "Read the kubeconfig via talosctl"
 
 [tasks.init]
@@ -33,4 +33,4 @@ kustomize = "5.7.1"
 
 # Talos
 talhelper = "3.0.35"
-talos = "1.11.1"
+talos = "1.10.7"

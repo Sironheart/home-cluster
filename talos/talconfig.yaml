@@ -1,11 +1,11 @@
 ---
 clusterName: home
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.11.1
+talosVersion: v1.10.7
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.34.1
+kubernetesVersion: v1.33.5
 
-endpoint: https://talos.home:6443
+endpoint: https://internal.siron.casa:6443
 allowSchedulingOnMasters: true
 cniConfig:
   name: none
@@ -15,7 +15,7 @@ additionalMachineCertSans: &san
   - 192.168.0.11 #Talos01
   - 192.168.0.12 #Talos02
   - 192.168.0.13 #Talos03
-  - talos.home #DNS route to cluster
+  - internal.siron.casa #DNS route to cluster
 additionalApiServerCertSans: *san
 
 controlPlane:
@@ -54,8 +54,8 @@ nodes:
     machineSpec: &machinespec
       mode: metal
       arch: amd64
-      secureboot: true
-      useUKI: true
+      secureboot: false
+      useUKI: false
 
     networkInterfaces: &network
       - deviceSelector:
@@ -103,12 +103,12 @@ patches:
     machine:
       network:
         disableSearchDomain: true
-        interfaces:
-          - deviceSelector:
-              physical: true
-            dhcp: true
-            vip:
-              ip: 192.168.0.10
+        # interfaces:
+        #   - deviceSelector:
+        #       physical: true
+        #     dhcp: true
+        #     vip:
+        #       ip: 192.168.0.10
 
   # Enable host dns
   - |-
@@ -135,6 +135,7 @@ patches:
       diskSelector:
         match: disk.transport == "nvme"
       minSize: 200G
+      maxSize: 800G
       grow: true
     encryption:
       provider: luks2
