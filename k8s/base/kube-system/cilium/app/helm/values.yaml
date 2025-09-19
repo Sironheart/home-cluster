@@ -2,7 +2,6 @@
 localRedirectPolicy: true
 rollOutCiliumPods: true
 upgradeCompatibility: "1.18"
-# routingMode: native
 
 bandwidthManager:
   enabled: true
@@ -34,6 +33,8 @@ gatewayAPI:
   enabled: true
   enableAlpn: true
   enableAppProtocol: true
+  hostNetwork:
+    enabled: true
 
 hubble:
   enabled: true
