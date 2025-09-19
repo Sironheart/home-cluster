@@ -2,16 +2,10 @@
 localRedirectPolicy: true
 rollOutCiliumPods: true
 upgradeCompatibility: "1.18"
+routingMode: native
 
-operator:
-  replicas: 1
-  # rollOutPods: true
-  dashboards:
-    enabled: true
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
+autoDirectNodeRoutes: true
+bpfClockProbe: true
 
 bandwidthManager:
   enabled: true
@@ -24,15 +18,6 @@ bpf:
 
 cni:
   exclusive: false
-
-l2announcements:
-  enabled: true
-
-prometheus:
-  enabled: true
-  serviceMonitor:
-    enabled: true
-    trustCRDsExist: true
 
 envoy:
   rollOutPods: true
@@ -52,33 +37,39 @@ gatewayAPI:
   enabled: true
   enableAlpn: true
   enableAppProtocol: true
-  hostNetwork:
-    enabled: false
 
 hubble:
   enabled: true
-  metrics:
-    enabled:
-      - dns:query
-      - drop
-      - tcp
-      - flow
-      - port-distribution
-      - icmp
-      - http
-    serviceMonitor:
-      enabled: true
-    dashboards:
-      enabled: true
-  relay:
-    enabled: true
-    rollOutPods: true
-    prometheus:
-      serviceMonitor:
-        enabled: true
+  tls:
+    auto:
+      method: certmanager
+      certManagerIssuerRef:
+        group: cert-manager.io
+        kind: ClusterIssuer
+        name: cluster-ca
   ui:
     enabled: true
-    rollOutPods: true
+  relay:
+    enabled: true
+
+l2announcements:
+  enabled: true
+
+operator:
+  replicas: 1
+  rollOutPods: true
+  dashboards:
+    enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
 
 # -- from talos docs --
 ipam:
@@ -101,10 +92,12 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+      - PERFMON
+      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
-      - SETUI
+      - SETUID
     cleanCiliumState:
       - NET_ADMIN
       - SYS_ADMIN
