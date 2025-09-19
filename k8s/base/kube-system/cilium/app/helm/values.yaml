@@ -2,6 +2,14 @@
 localRedirectPolicy: true
 rollOutCiliumPods: true
 upgradeCompatibility: "1.18"
+enableIPv4BIGTCP: true
+devices: enp+
+
+routingMode: native
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+
+endpointRoutes:
+  enabled: true
 
 operator:
   replicas: 1
@@ -36,14 +44,6 @@ prometheus:
 
 envoy:
   rollOutPods: true
-  securityContext:
-    capabilities:
-      keepCapNetBindService: true
-      envoy:
-        - NET_ADMIN
-        - SYS_ADMIN
-        - NET_BIND_SERVICE
-
   prometheus:
     serviceMonitor:
       enabled: true
