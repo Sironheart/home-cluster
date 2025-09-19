@@ -1,94 +1,59 @@
 ---
-localRedirectPolicy: true
-rollOutCiliumPods: true
-upgradeCompatibility: "1.18"
+bandwidthManager:
+  enabled: true
+  bbr: true
+bpf:
+  datapathMode: netkit
+  masquerade: true
+  preallocateMaps: true
+cgroup:
+  automount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+cni:
+  exclusive: false
+devices: eno+
 enableIPv4BIGTCP: true
-devices: enp+
-
-routingMode: native
-ipv4NativeRoutingCIDR: 10.244.0.0/16
-
 endpointRoutes:
   enabled: true
-
-operator:
-  replicas: 1
+envoy:
   rollOutPods: true
+  prometheus:
+    serviceMonitor:
+      enabled: true
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  enableAppProtocol: true
+ipam:
+  mode: kubernetes
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+l2announcements:
+  enabled: true
+loadBalancer:
+  algorithm: maglev
+  mode: dsr
+localRedirectPolicy: true
+operator:
   dashboards:
     enabled: true
   prometheus:
     enabled: true
     serviceMonitor:
       enabled: true
-
-bandwidthManager:
-  enabled: true
-  bbr: true
-
-bpf:
-  datapathMode: netkit
-  masquerade: true
-  preallocateMaps: true
-
-cni:
-  exclusive: false
-
-l2announcements:
-  enabled: true
-
+  replicas: 1
+  rollOutPods: true
 prometheus:
   enabled: true
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
-
-envoy:
-  rollOutPods: true
-  prometheus:
-    serviceMonitor:
-      enabled: true
-
-gatewayAPI:
-  enabled: true
-  enableAlpn: true
-  enableAppProtocol: true
-
-hubble:
-  enabled: true
-  metrics:
-    enabled:
-      - dns:query
-      - drop
-      - tcp
-      - flow
-      - port-distribution
-      - icmp
-      - http
-    serviceMonitor:
-      enabled: true
-    dashboards:
-      enabled: true
-  relay:
-    enabled: true
-    rollOutPods: true
-    prometheus:
-      serviceMonitor:
-        enabled: true
-  ui:
-    enabled: true
-    rollOutPods: true
-
-# -- from talos docs --
-ipam:
-  mode: kubernetes
-
-kubeProxyReplacement: true
-k8sServiceHost: 127.0.0.1
-k8sServicePort: 7445
-kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-
-policyAuditMode: true
-
+rollOutCiliumPods: true
+routingMode: native
 securityContext:
   capabilities:
     ciliumAgent:
@@ -99,20 +64,16 @@ securityContext:
       - IPC_LOCK
       - SYS_ADMIN
       - SYS_RESOURCE
+      - PERFMON
+      - BPF
       - DAC_OVERRIDE
       - FOWNER
       - SETGID
-      - SETUI
+      - SETUID
     cleanCiliumState:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-
-cgroup:
-  autoMount:
-    enabled: false
-  hostRoot: /sys/fs/cgroup
-# -- end of talos settings --
 
 # -- required for tailscale --
 socketLB:
