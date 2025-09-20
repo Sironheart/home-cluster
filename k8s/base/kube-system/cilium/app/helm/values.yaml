@@ -1,6 +1,12 @@
 ---
 localRedirectPolicy: true
 rollOutCiliumPods: true
+policyAuditMode: true
+
+defaultLBServiceIPAM: nodeipam
+
+nodeIPAM:
+  enabled: true
 
 operator:
   replicas: 1
@@ -44,8 +50,6 @@ kubeProxyReplacement: true
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-
-policyAuditMode: true
 
 securityContext:
   capabilities:

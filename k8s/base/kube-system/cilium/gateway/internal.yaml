@@ -7,9 +7,6 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname internal.siron.casa
 spec:
   gatewayClassName: cilium
-  addresses:
-    - type: Hostname
-      value: *hostname
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
