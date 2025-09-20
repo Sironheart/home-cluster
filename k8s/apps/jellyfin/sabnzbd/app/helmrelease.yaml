@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: sabnzbd
 spec:
   interval: 1h
   chartRef:
@@ -17,33 +18,39 @@ spec:
       retries: 3
   values:
     controllers:
-      jellyfin:
+      sabnzbd:
         containers:
           app:
             image:
-              repository: ghcr.io/jellyfin/jellyfin
-              # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
-              tag: "2025090805"
+              repository: ghcr.io/home-operations/sabnzbd
+              tag: 4.5.2@sha256:e3f27e50ee51f950d89ce888cb3c3c4e74b46b42751333ee008f906906cbf05b
             env:
+              SABNZBD__PORT: &port 80
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd,
+                sabnzbd.default,
+                sabnzbd.default.svc,
+                sabnzbd.default.svc.cluster,
+                sabnzbd.default.svc.cluster.local,
+                sab.siron.casa,
+                sabnzbd.siron.casa
               TZ: Europe/Berlin
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
-                    port: &port 8096
+                    path: /api?mode=version
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -51,6 +58,8 @@ spec:
             resources:
               requests:
                 cpu: 100m
+                memory: 512Mi
+              limits:
                 memory: 2Gi
     defaultPodOptions:
       securityContext:
@@ -59,16 +68,17 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44]
     service:
       app:
-        controller: jellyfin
+        controller: sabnzbd
         ports:
           http:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.siron.casa"]
+        hostnames:
+          - "{{ .Release.Name }}.siron.casa"
+          - sab.siron.casa
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -79,27 +89,13 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: jellyfin
-        globalMounts:
-          - path: /config
-      config-cache:
-        existingClaim: jellyfin-cache
-        globalMounts:
-          - path: /config/metadata
+        existingClaim: sabnzbd
       media:
         type: nfs
         server: 192.168.0.2
         path: /volume2/shows
         globalMounts:
-          - path: /media
-      tmpfs:
+          - path: /media/downloads/sabnzbd
+            subPath: downloads/sabnzbd
+      tmp:
         type: emptyDir
-        advancedMounts:
-          jellyfin:
-            app:
-              - path: /cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp

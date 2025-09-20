@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: sonarr
 spec:
   interval: 1h
   chartRef:
@@ -17,33 +18,38 @@ spec:
       retries: 3
   values:
     controllers:
-      jellyfin:
+      sonarr:
         containers:
           app:
             image:
-              repository: ghcr.io/jellyfin/jellyfin
-              # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
-              tag: "2025090805"
+              repository: ghcr.io/home-operations/sonarr
+              tag: 4.0.15.2940@sha256:ca6c735014bdfb04ce043bf1323a068ab1d1228eea5bab8305ca0722df7baf78
             env:
+              SONARR__APP__INSTANCENAME: Sonarr
+              SONARR__APP__THEME: dark
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__DBENABLED: "False"
+              SONARR__LOG__LEVEL: info
+              SONARR__SERVER__PORT: &port 80
+              SONARR__UPDATE__BRANCH: develop
               TZ: Europe/Berlin
+            envFrom:
+              - secretRef:
+                  name: sonarr-secret
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
-                    port: &port 8096
+                    path: /ping
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -51,7 +57,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 2Gi
+                memory: 128Mi
+              limits:
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -59,10 +67,9 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44]
     service:
       app:
-        controller: jellyfin
+        controller: sonarr
         ports:
           http:
             port: *port
@@ -79,27 +86,16 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: jellyfin
-        globalMounts:
-          - path: /config
+        existingClaim: sonarr
       config-cache:
-        existingClaim: jellyfin-cache
+        existingClaim: sonarr-cache
         globalMounts:
-          - path: /config/metadata
+          - path: /config/MediaCover
       media:
         type: nfs
         server: 192.168.0.2
         path: /volume2/shows
         globalMounts:
           - path: /media
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          jellyfin:
-            app:
-              - path: /cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: jellyfin
+  name: prowlarr
 spec:
   interval: 1h
   chartRef:
@@ -17,33 +17,38 @@ spec:
       retries: 3
   values:
     controllers:
-      jellyfin:
+      prowlarr:
         containers:
           app:
             image:
-              repository: ghcr.io/jellyfin/jellyfin
-              # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
-              tag: "2025090805"
+              repository: ghcr.io/home-operations/prowlarr
+              tag: 2.0.2.5116@sha256:30062fde00bf3901770d02e4e255b3fa1afa320ae2ff5359473ff7599be7ebc8
             env:
+              PROWLARR__APP__INSTANCENAME: Prowlarr
+              PROWLARR__APP__THEME: dark
+              PROWLARR__AUTH__METHOD: External
+              PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              PROWLARR__LOG__DBENABLED: "False"
+              PROWLARR__LOG__LEVEL: info
+              PROWLARR__SERVER__PORT: &port 80
+              PROWLARR__UPDATE__BRANCH: develop
               TZ: Europe/Berlin
+            envFrom:
+              - secretRef:
+                  name: prowlarr-secret
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
-                    port: &port 8096
+                    path: /ping
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -51,7 +56,9 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 2Gi
+                memory: 128Mi
+              limits:
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -59,10 +66,9 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44]
     service:
       app:
-        controller: jellyfin
+        controller: prowlarr
         ports:
           http:
             port: *port
@@ -79,27 +85,6 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: jellyfin
-        globalMounts:
-          - path: /config
-      config-cache:
-        existingClaim: jellyfin-cache
-        globalMounts:
-          - path: /config/metadata
-      media:
-        type: nfs
-        server: 192.168.0.2
-        path: /volume2/shows
-        globalMounts:
-          - path: /media
-      tmpfs:
+        existingClaim: prowlarr
+      tmp:
         type: emptyDir
-        advancedMounts:
-          jellyfin:
-            app:
-              - path: /cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp

@@ -1,17 +1,4 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: app-template
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 4.3.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -32,8 +19,6 @@ spec:
     controllers:
       cloudflare-tunnel:
         strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -46,8 +31,8 @@ spec:
               TUNNEL_POST_QUANTUM: true
               TUNNEL_TRANSPORT_PROTOCOL: quic
             envFrom:
-            - secretRef:
-                name: cloudflared-token
+              - secretRef:
+                  name: cloudflared-token
             args: ["tunnel", "run"]
             probes:
               liveness: &probes
@@ -65,7 +50,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -84,12 +69,12 @@ spec:
     serviceMonitor:
       app:
         endpoints:
-        - port: http
+          - port: http
     persistence:
       config-file:
         type: configMap
         name: cloudflare-config
         globalMounts:
-        - path: /etc/cloudflared/config.yaml
-          subPath: config.yaml
-          readOnly: true
+          - path: /etc/cloudflared/config.yaml
+            subPath: config.yaml
+            readOnly: true
