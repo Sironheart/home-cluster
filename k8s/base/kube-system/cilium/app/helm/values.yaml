@@ -9,7 +9,8 @@ operator:
     enabled: true
   prometheus:
     enabled: true
-    serviceMonitor: true
+    serviceMonitor:
+      enabled: true
 
 bandwidthManager:
   enabled: true
