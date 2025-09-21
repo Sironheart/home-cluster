@@ -1,9 +1,17 @@
 ---
-localRedirectPolicy: true
 rollOutCiliumPods: true
 policyAuditMode: true
-
 defaultLBServiceIPAM: nodeipam
+# enableIPv4BIGTCP: true
+
+l2announcements:
+  enabled: true
+
+localRedirectPolicies:
+  enabled: true
+
+endpointRoutes:
+  enabled: true
 
 nodeIPAM:
   enabled: true
@@ -41,6 +49,15 @@ gatewayAPI:
   enabled: true
   enableAlpn: true
   enableAppProtocol: true
+
+hubble:
+  enabled: true
+  ui:
+    enabled: true
+  relay:
+    enabled: true
+  # metrics:
+  #   enabled: true
 
 # -- from talos docs --
 ipam:
