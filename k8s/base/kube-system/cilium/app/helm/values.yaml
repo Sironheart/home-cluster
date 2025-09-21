@@ -1,7 +1,6 @@
 ---
 rollOutCiliumPods: true
 policyAuditMode: true
-defaultLBServiceIPAM: nodeipam
 # enableIPv4BIGTCP: true
 
 l2announcements:
@@ -92,8 +91,3 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 # -- end of talos settings --
-
-# -- required for tailscale --
-socketLB:
-  hostNamespaceOnly: true
-# -- end of tailscale settings --
