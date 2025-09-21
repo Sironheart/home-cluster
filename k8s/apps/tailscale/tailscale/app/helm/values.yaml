@@ -1,5 +1,0 @@
----
-operatorConfig:
-  hostname: home-k8s-cluster
-  apiServerProxyConfig:
-    mode: true
