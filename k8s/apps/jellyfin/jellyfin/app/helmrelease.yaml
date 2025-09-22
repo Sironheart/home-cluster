@@ -23,7 +23,7 @@ spec:
             image:
               repository: ghcr.io/jellyfin/jellyfin
               # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
-              tag: "2025090805"
+              tag: "2025092205"
             env:
               TZ: Europe/Berlin
             probes:
