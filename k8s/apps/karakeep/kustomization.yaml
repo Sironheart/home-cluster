@@ -6,3 +6,4 @@ components:
   - ../../../k8s-components/common
 resources:
   - ./karakeep/ks.yaml
+  - ./ollama/ks.yaml
