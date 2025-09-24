@@ -25,7 +25,14 @@ spec:
     remediation:
       retries: 3
   values:
+    resources:
+      requests:
+        amd.com/gpu: 1
     ollama:
+      gpu:
+        enabled: true
+        type: amd
+        number: 1
       models:
         pull:
           - gemma3:4b

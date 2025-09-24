@@ -52,6 +52,7 @@ spec:
               requests:
                 cpu: 100m
                 memory: 2Gi
+                amd.com/gpu: 1
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
