@@ -7,5 +7,6 @@ resources:
   - ./coredns/ks.yaml
   - ./metrics-server/ks.yaml
   - ./snapshot-controller/ks.yaml
+  - ./amd-gpu/ks.yaml
 components:
   - ../../../k8s-components/common
