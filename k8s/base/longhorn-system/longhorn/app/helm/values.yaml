@@ -1,6 +1,6 @@
 ---
 defaultSettings:
-  defaultReplicaCount: 1
+  defaultReplicaCount: "1"
   defaultDataPath: /var/mnt/longhorn
 persistence:
   reclaimPolicy: Delete
