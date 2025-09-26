@@ -5,7 +5,6 @@ resources:
   - ./default-resource-configmap.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./ingress.yaml
   - ./gateway.yaml
 configMapGenerator:
   - name: longhorn-values
