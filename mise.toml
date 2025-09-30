@@ -22,7 +22,7 @@ description = "Setup project for local use"
 
 [tools]
 # Flux
-flux2 = "2.6.4"
+flux2 = "2.7.0"
 
 # Kubernetes
 cilium-cli = "0.18.7"
@@ -32,5 +32,5 @@ kubectl = "1.34.1"
 kustomize = "5.7.1"
 
 # Talos
-talhelper = "3.0.35"
+talhelper = "3.0.36"
 talos = "1.10.7"
