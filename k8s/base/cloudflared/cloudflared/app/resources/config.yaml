@@ -1,10 +1,10 @@
 ---
 originRequest:
-  originServerName: "home.beisenherz.dev"
+  originServerName: "cftunnel.siron.casa"
 
 ingress:
-- hostname: "beisenherz.dev"
-  service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
-- hostname: "*.beisenherz.dev"
-  service: *svc
-- service: http_status:404
+  - hostname: "siron.casa"
+    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+  - hostname: "*.siron.casa"
+    service: *svc
+  - service: http_status:404
