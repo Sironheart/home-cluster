@@ -33,4 +33,4 @@ kustomize = "5.7.1"
 
 # Talos
 talhelper = "3.0.36"
-talos = "1.10.7"
+talos = "1.11.2"
