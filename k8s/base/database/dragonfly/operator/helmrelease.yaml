@@ -1,0 +1,43 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: dragonfly
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: v1.34.1
+  url: oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dragonfly
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: dragonfly
+  values:
+    extraArgs:
+      - "--bind=::"
+      - --maxmemory=$(MAX_MEMORY)Mi
+      - --proactor_threads=2
+      - --cluster_mode=emulated
+      - --lock_on_hashtags
+      - --default_lua_flags=allow-undeclared-keys
+    resources:
+      requests:
+        cpu: 100m
+      limits:
+        memory: 512Mi
+
+    env:
+      - name: MAX_MEMORY
+        valueFrom:
+          resourceFieldRef:
+            resource: limits.memory
+            divisor: 1Mi
