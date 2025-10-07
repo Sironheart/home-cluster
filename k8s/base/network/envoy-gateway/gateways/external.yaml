@@ -2,9 +2,14 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: internal
+  name: external
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "cftunnel.siron.casa"
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: "cftunnel.siron.casa"
   listeners:
     - name: http
       protocol: HTTP

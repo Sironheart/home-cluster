@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app tailscale-operator
-  namespace: &namespace tailscale
+  namespace: &namespace network
 spec:
   commonMetadata:
     labels:
@@ -14,7 +14,7 @@ spec:
       name: *app
       namespace: *namespace
   interval: 1h
-  path: k8s/base/tailscale/tailscale/operator
+  path: k8s/base/network/tailscale/operator
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -28,7 +28,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app tailscale-connector
-  namespace: &namespace tailscale
+  namespace: &namespace network
 spec:
   commonMetadata:
     labels:
@@ -37,7 +37,7 @@ spec:
     - name: tailscale-operator
       namespace: *namespace
   interval: 1h
-  path: k8s/base/tailscale/tailscale/connectors
+  path: k8s/base/network/tailscale/connectors
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -119,14 +119,14 @@ spec:
 
     route:
       app:
-        #        kind: TLSRoute
+        # kind: TLSRoute
         hostnames: ["idm.siron.casa"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

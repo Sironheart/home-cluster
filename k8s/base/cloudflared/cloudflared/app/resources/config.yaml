@@ -4,7 +4,7 @@ originRequest:
 
 ingress:
   - hostname: "siron.casa"
-    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+    service: &svc https://external.network.svc.cluster.local
   - hostname: "*.siron.casa"
     service: *svc
   - service: http_status:404

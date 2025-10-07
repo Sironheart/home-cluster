@@ -190,7 +190,7 @@ patches:
                 # - kube-system
                 - longhorn-system
                 - observability
-                - tailscale
+                - network
               runtimeClasses: []
               usernames: []
         auditPolicy:

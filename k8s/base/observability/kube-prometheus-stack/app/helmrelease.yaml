@@ -42,7 +42,7 @@ spec:
           hostnames: ["alertmanager.siron.casa"]
           parentRefs:
             - name: internal
-              namespace: kube-system
+              namespace: network
               sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
@@ -69,7 +69,7 @@ spec:
           hostnames: ["prometheus.siron.casa"]
           parentRefs:
             - name: internal
-              namespace: kube-system
+              namespace: network
               sectionName: https
       prometheusSpec:
         image:

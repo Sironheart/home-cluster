@@ -185,7 +185,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
     persistence:
       enabled: false

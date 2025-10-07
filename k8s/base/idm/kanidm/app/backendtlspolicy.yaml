@@ -10,4 +10,4 @@ spec:
       group: ""
   validation:
     wellKnownCACertificates: System
-    hostname: identity.siron.casa
+    hostname: idm.siron.casa

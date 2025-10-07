@@ -13,7 +13,7 @@ tls_chain = "/certs/tls.crt"
 tls_key = "/certs/tls.key"
 
 [http_client_address_info]
-x-forward-for = ["192.168.0.0/24", "192.168.1.0/24"]
+x-forward-for = ["192.168.0.0/24", "192.168.1.0/24", "10.96.0.0/12"]
 
 # [ldap_client_address_info]
 # proxy-v2 = ["2001:cafe:42::/64"]
