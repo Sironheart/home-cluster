@@ -39,6 +39,7 @@ prometheus:
     trustCRDsExist: true
 
 envoy:
+  xffNumTrustedHopsL7PolicyIngress: 2
   rollOutPods: true
   prometheus:
     serviceMonitor:
@@ -48,6 +49,7 @@ gatewayAPI:
   enabled: true
   enableAlpn: true
   enableAppProtocol: true
+  xffNumTrustedHops: 2
 
 hubble:
   enabled: true
