@@ -22,7 +22,7 @@ description = "Setup project for local use"
 
 [tools]
 # Flux
-flux2 = "2.7.1"
+flux2 = "2.7.2"
 
 # Kanidm
 "cargo:kanidm_tools" = "1.7.3"
