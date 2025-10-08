@@ -28,25 +28,25 @@ spec:
             fsGroup: 999
             fsGroupChangePolicy: "OnRootMismatch"
 
-        #        initContainers:
-        #          kanidm-db-vacuum:
-        #            image:
-        #              repository: docker.io/kanidm/server
-        #              tag: 1.6.3@sha256:8141f14aa62a271204bf3a0e2207d9a7c565e63a1bcd295aff4444e35967f1b8
+        # initContainers:
+        #   kanidm-db-vacuum:
+        #     image:
+        #       repository: docker.io/kanidm/server
+        #       tag: 1.7.3@sha256:e3a59010c34d08a9564e94d48daf5c74cdef66a0a7cf55a1b92a98d4f686a2e8
         #
-        #            args:
-        #              - kanidmd
-        #              - database
-        #              - vacuum
-        #              - -c
-        #              - /data/server.toml
+        #     args:
+        #       - kanidmd
+        #       - database
+        #       - vacuum
+        #       - -c
+        #       - /data/server.toml
         #
-        #            securityContext:
-        #              runAsUser: 999
-        #              runAsGroup: 999
-        #              runAsNonRoot: true
-        #              capabilities:
-        #                drop: [ "ALL" ]
+        #     securityContext:
+        #       runAsUser: 999
+        #       runAsGroup: 999
+        #       runAsNonRoot: true
+        #       capabilities:
+        #         drop: ["ALL"]
 
         containers:
           app:
@@ -76,10 +76,10 @@ spec:
               requests:
                 cpu: 10m
                 memory: 50Mi
-            securityContext:
-              capabilities:
-                drop:
-                  - ALL
+            # securityContext:
+            #   capabilities:
+            #     drop:
+            #       - ALL
 
       provision:
         pod:
@@ -101,10 +101,10 @@ spec:
                   secretKeyRef:
                     name: kanidm-token
                     key: KANIDM_TOKEN
-            securityContext:
-              capabilities:
-                drop:
-                  - ALL
+            # securityContext:
+            #   capabilities:
+            #     drop:
+            #       - ALL
 
     service:
       app:
@@ -123,9 +123,6 @@ spec:
         hostnames: ["idm.siron.casa"]
         parentRefs:
           - name: external
-            namespace: network
-            sectionName: https
-          - name: internal
             namespace: network
             sectionName: https
         rules:
