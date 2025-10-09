@@ -5,6 +5,7 @@ namespace: kube-system
 resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
+  - ./descheduler/ks.yaml
   - ./metrics-server/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./amd-gpu/ks.yaml
