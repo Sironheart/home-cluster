@@ -1,0 +1,33 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app authentik
+  namespace: &namespace authentik
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../../k8s-components/volsync
+    - ../../../../../k8s-components/dragonfly
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
+    - name: dragonfly
+      namespace: database
+    - name: cloudnative-pg
+      namespace: database
+  interval: 1h
+  path: ./k8s/base/authentik/authentik/app
+  postBuild:
+    substitute:
+      APP: *app
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m

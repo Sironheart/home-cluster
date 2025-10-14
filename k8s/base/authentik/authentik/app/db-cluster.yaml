@@ -1,0 +1,20 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-db
+spec:
+  instances: 1
+  description: "Authentik database"
+
+  bootstrap:
+    initdb:
+      database: authentik
+      owner: authentik
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+
+  storage:
+    size: 3Gi

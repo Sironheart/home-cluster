@@ -9,8 +9,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: v1.34.1
-  url: oci://ghcr.io/dragonflydb/dragonfly/helm/dragonfly
+    tag: v1.3.0
+  url: oci://ghcr.io/dragonflydb/dragonfly-operator/helm/dragonfly-operator
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -21,7 +21,19 @@ spec:
   chartRef:
     kind: OCIRepository
     name: dragonfly
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
   values:
+    crds:
+      install: true
+      keep: true
     extraArgs:
       - "--bind=::"
       - --maxmemory=$(MAX_MEMORY)Mi
