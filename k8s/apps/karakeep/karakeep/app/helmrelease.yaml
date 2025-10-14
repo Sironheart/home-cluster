@@ -27,7 +27,7 @@ spec:
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
-              DISABLE_PASSWORD_AUTH: false
+              DISABLE_PASSWORD_AUTH: true
               DISABLE_SIGNUPS: true
               DATA_DIR: /data
               MEILI_ADDR: http://karakeep-meilisearch.karakeep.svc.cluster.local:7700
@@ -42,6 +42,8 @@ spec:
             envFrom:
               - secretRef:
                   name: karakeep-secret
+              - secretRef:
+                  name: karakeep-oauth-secret
             probes:
               liveness:
                 enabled: true
@@ -53,8 +55,6 @@ spec:
               limits:
                 memory: 1Gi
       chrome:
-        annotations:
-          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -81,8 +81,6 @@ spec:
                 memory: 1Gi
 
       meilisearch:
-        annotations:
-          reloader.stakater.com/auto: "true"
         pod:
           affinity:
             podAffinity:
@@ -123,7 +121,7 @@ spec:
       app:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: network
             sectionName: https
         rules:
