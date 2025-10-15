@@ -12,10 +12,6 @@ spec:
   components: []
   interval: 1h
   path: ./k8s/base/kube-system/spegel/app
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   retryInterval: 2m
   sourceRef:
