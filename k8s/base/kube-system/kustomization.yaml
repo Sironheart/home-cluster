@@ -9,5 +9,6 @@ resources:
   - ./metrics-server/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./amd-gpu/ks.yaml
+  - ./spegel/ks.yaml
 components:
   - ../../../k8s-components/common
