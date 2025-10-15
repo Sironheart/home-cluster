@@ -11,6 +11,7 @@ spec:
   components:
     - ../../../../../k8s-components/volsync
     - ../../../../../k8s-components/dragonfly
+    - ../../../../../k8s-components/cnpg/backup
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -23,6 +24,10 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+      CNPG_VERSION: "18.0"
+      CNPG_SIZE: 10Gi
+      CNPG_LIMITS_MEMORY: 1Gi
   prune: true
   retryInterval: 2m
   sourceRef:

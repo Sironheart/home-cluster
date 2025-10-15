@@ -1,6 +1,6 @@
 ---
 defaultSettings:
-  defaultReplicaCount: "1"
+  defaultReplicaCount: "2"
   defaultDataPath: /var/mnt/longhorn
   concurrentAutomaticEngineUpgradePerNodeLimit: "5"
 persistence:

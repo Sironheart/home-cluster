@@ -21,22 +21,6 @@ additionalApiServerCertSans: *san
 controlPlane:
   schematic:
     customization:
-      extraKernelArgs:
-        - -init_on_alloc
-        - -init_on_free
-        - -selinux
-        - apparmor=0
-        - init_on_alloc=0
-        - init_on_free=0
-        - mitigations=off
-        - security=none
-        - sysctl.kernel.kexec_load_disabled=1
-        - talos.auditd.disabled=1
-        - sysctl.vm.swappiness=1
-        - sysctl.vm.dirty_ratio=5
-        - sysctl.vm.dirty_background_ratio=2
-        - sysctl.vm.vfs_cache_pressure=50
-        - amd_pstate=active
       systemExtensions:
         officialExtensions:
           - siderolabs/amdgpu
@@ -49,7 +33,8 @@ nodes:
     controlPlane: true
     disableSearchDomain: true
 
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector: &diskSelector
+      model: CT1000P3PSSD8
 
     machineSpec: &machinespec
       mode: metal
@@ -69,12 +54,38 @@ nodes:
     nodeAnnotations: &annotations
       node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
 
+    userVolumes: &userVolumes
+      - name: longhorn
+        provisioning:
+          diskSelector: &defaultDiskSelector
+            match: system_disk
+          minSize: 128GiB
+          maxSize: 200GiB
+        filesystem:
+          type: xfs
+      - name: local-hostpath
+        provisioning:
+          diskSelector: *defaultDiskSelector
+          minSize: 128GiB
+          maxSize: 384GiB
+        filesystem:
+          type: xfs
+
+    volumes: &volumes
+      - name: EPHEMERAL
+        provisioning:
+          diskSelector:
+            match: system_disk
+          minSize: 200GiB
+          maxSize: 400GiB
+          grow: false
+
   - hostname: talos02
     ipAddress: 192.168.0.12
     controlPlane: true
     disableSearchDomain: true
 
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector: *diskSelector
 
     machineSpec: *machinespec
 
@@ -82,13 +93,16 @@ nodes:
 
     nodeLabels: *labels
     nodeAnnotations: *annotations
+
+    userVolumes: *userVolumes
+    volumes: *volumes
 
   - hostname: talos03
     ipAddress: 192.168.0.13
     controlPlane: true
     disableSearchDomain: true
 
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector: *diskSelector
 
     machineSpec: *machinespec
 
@@ -97,13 +111,10 @@ nodes:
     nodeLabels: *labels
     nodeAnnotations: *annotations
 
-patches:
-  # Disable search domain everywhere
-  - |-
-    machine:
-      network:
-        disableSearchDomain: true
+    userVolumes: *userVolumes
+    volumes: *volumes
 
+patches:
   # Enable host dns
   - |-
     machine:
@@ -120,22 +131,6 @@ patches:
     machine:
       install:
         wipe: true
-
-  - |-
-    apiVersion: v1alpha1
-    kind: UserVolumeConfig
-    name: longhorn
-    provisioning:
-      diskSelector:
-        match: disk.transport == "nvme"
-      minSize: 200G
-      maxSize: 800G
-      grow: true
-    encryption:
-      provider: luks2
-      keys:
-        - slot: 0
-          tpm: {}
 
   # Replace kubeproxy with cilium
   - |-
@@ -166,11 +161,6 @@ patches:
   # Longhorn settings
   - |-
     cluster:
-      network:
-        podSubnets:
-          - 10.244.0.0/16
-        serviceSubnets:
-          - 10.96.0.0/12
       apiServer:
         disablePodSecurityPolicy: true
         admissionControl:
@@ -187,10 +177,11 @@ patches:
               warn-version: latest
             exemptions:
               namespaces:
-                # - kube-system
                 - longhorn-system
-                - observability
                 - network
+                - observability
+                - openebs
+                - volsync-system
               runtimeClasses: []
               usernames: []
         auditPolicy:
