@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: volsync
   interval: 1h
-  path: ./k8s/base/volsync-system/kopia/app
+  path: ./k8s/base/system/kopia/app
   postBuild:
     substitute:
       APP: kopia
@@ -17,5 +17,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: volsync-system
+  targetNamespace: system
   wait: false

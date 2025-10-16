@@ -13,8 +13,8 @@ spec:
     - ../../../../../k8s-components/dragonfly
     - ../../../../../k8s-components/cnpg/backup
   dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
     - name: dragonfly
       namespace: database
     - name: cloudnative-pg

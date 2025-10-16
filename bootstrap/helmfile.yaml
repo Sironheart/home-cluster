@@ -25,13 +25,6 @@ releases:
     values: ["../k8s/base/cert-manager/cert-manager/app/helm/values.yaml"]
     needs: ["kube-system/cilium"]
 
-  - name: longhorn
-    namespace: longhorn-system
-    chart: oci://ghcr.io/home-operations/charts-mirror/longhorn
-    version: 1.10.0
-    values: ["../k8s/base/longhorn-system/longhorn/app/helm/values.yaml"]
-    needs: ["kube-system/cilium"]
-
   - name: 1password-connect
     namespace: onepassword
     chart: oci://ghcr.io/home-operations/charts-mirror/connect

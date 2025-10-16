@@ -11,8 +11,8 @@ spec:
   components:
     - ../../../../../k8s-components/volsync
   dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./k8s/apps/jellyfin/sonarr/app
   postBuild:

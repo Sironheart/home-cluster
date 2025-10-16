@@ -56,7 +56,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        deviceFilter: nvme0n1
+        devicePathFilter: "^/dev/disk/by-id/nvme-WD_Red_SN700.+$"
         config:
           osdsPerDevice: "1"
     cephBlockPools:

@@ -2,19 +2,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app amd-gpu
-  namespace: &namespace kube-system
+  name: &app descheduler
+  namespace: &namespace system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/base/kube-system/amd-gpu/app
+  path: ./k8s/base/system/descheduler/app
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
+  wait: false

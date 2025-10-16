@@ -24,8 +24,6 @@ controlPlane:
       systemExtensions:
         officialExtensions:
           - siderolabs/amdgpu
-          - siderolabs/iscsi-tools
-          - siderolabs/util-linux-tools
 
 nodes:
   - hostname: talos01
@@ -48,26 +46,14 @@ nodes:
         dhcp: true
 
     nodeLabels: &labels
-      node.longhorn.io/create-default-disk: config
       feature.node.kubernetes.io/amd-gpu: "true"
 
-    nodeAnnotations: &annotations
-      node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
-
     userVolumes: &userVolumes
-      - name: longhorn
-        provisioning:
-          diskSelector: &defaultDiskSelector
-            match: system_disk
-          minSize: 128GiB
-          maxSize: 200GiB
-        filesystem:
-          type: xfs
       - name: local-hostpath
         provisioning:
-          diskSelector: *defaultDiskSelector
+          diskSelector:
+            match: system_disk
           minSize: 128GiB
-          maxSize: 384GiB
         filesystem:
           type: xfs
 
@@ -92,7 +78,6 @@ nodes:
     networkInterfaces: *network
 
     nodeLabels: *labels
-    nodeAnnotations: *annotations
 
     userVolumes: *userVolumes
     volumes: *volumes
@@ -109,7 +94,6 @@ nodes:
     networkInterfaces: *network
 
     nodeLabels: *labels
-    nodeAnnotations: *annotations
 
     userVolumes: *userVolumes
     volumes: *volumes
@@ -158,38 +142,6 @@ patches:
       proxy:
         disabled: true
 
-  # Longhorn settings
-  - |-
-    cluster:
-      apiServer:
-        disablePodSecurityPolicy: true
-        admissionControl:
-        - name: PodSecurity
-          configuration:
-            apiVersion: pod-security.admission.config.k8s.io/v1alpha1
-            kind: PodSecurityConfiguration
-            defaults:
-              audit: restricted
-              audit-version: latest
-              enforce: baseline
-              enforce-version: latest
-              warn: restricted
-              warn-version: latest
-            exemptions:
-              namespaces:
-                - longhorn-system
-                - network
-                - observability
-                - openebs
-                - volsync-system
-              runtimeClasses: []
-              usernames: []
-        auditPolicy:
-          apiVersion: audit.k8s.io/v1
-          kind: Policy
-          rules:
-            - level: Metadata
-
   # Etcd metrics
   - |-
     cluster:
@@ -208,3 +160,34 @@ patches:
           allowedKubernetesNamespaces:
             - actions-runner-system
             - system-upgrade
+
+  - |-
+    cluster:
+      apiServer:
+        disablePodSecurityPolicy: true
+        admissionControl:
+        - name: PodSecurity
+          configuration:
+            apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+            kind: PodSecurityConfiguration
+            defaults:
+              audit: restricted
+              audit-version: latest
+              enforce: baseline
+              enforce-version: latest
+              warn: restricted
+              warn-version: latest
+            exemptions:
+              namespaces:
+                - network
+                - observability
+                - openebs
+                - rook-ceph
+                - system
+              runtimeClasses: []
+              usernames: []
+        auditPolicy:
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          rules:
+            - level: Metadata
