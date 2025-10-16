@@ -4,6 +4,7 @@ defaultSettings:
   defaultDataPath: /var/mnt/longhorn
   concurrentAutomaticEngineUpgradePerNodeLimit: "5"
 persistence:
+  defaultClass: false
   reclaimPolicy: Delete
   defaultClassReplicaCount: 1
 longhornUI:
