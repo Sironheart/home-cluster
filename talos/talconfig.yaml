@@ -128,12 +128,46 @@ patches:
       kubelet:
         disableManifestsDirectory: true
         extraConfig:
+          featureGates:
+            ResourceHealthStatus: true
           maxPods: 250
+          serializeImagePulls: false
+
+  # NFS settings
+  - |-
+    machine:
+      files:
+      - op: create
+        path: /etc/cri/conf.d/20-customization.part
+        content: |-
+          [plugins]
+          [plugins."io.containerd.grpc.v1.cri"]
+            enable_unprivileged_ports = true
+            enable_unprivileged_icmp = true
+          [plugins."io.containerd.cri.v1.images"]
+            discard_unpacked_layers = false
+          [plugins."io.containerd.cri.v1.runtime"]
+            cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+            device_ownership_from_security_context = true
+      - op: overwrite
+        path: /etc/nfsmount.conf
+        permissions: 0o644
+        content: |
+          [ NFSMount_Global_Options ]
+          nfsvers=4.1
+          hard=True
+          noatime=True
+          nconnect=16
 
   # Configure cluster
   - |-
     cluster:
-      allowSchedulingOnControlPlanes: true
+      apiServer:
+        extraArgs:
+          enable-aggregator-routing: "true"
+          feature-gates: MutatingAdmissionPolicy=true,ResourceHealthStatus=true
+          runtime-config: admissionregistration.k8s.io/v1beta1=true
+        disablePodSecurityPolicy: true
       controllerManager:
         extraArgs:
           bind-address: 0.0.0.0
@@ -141,6 +175,24 @@ patches:
           disabled: true
       proxy:
         disabled: true
+      scheduler:
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - pluginConfig:
+                  - args:
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
+                      defaultingType: List
+                    name: PodTopologySpread
+                plugins:
+                  score:
+                    disabled:
+                      - name: ImageLocality
+                schedulerName: default-scheduler
 
   # Etcd metrics
   - |-
@@ -168,15 +220,6 @@ patches:
         admissionControl:
         - name: PodSecurity
           configuration:
-            apiVersion: pod-security.admission.config.k8s.io/v1alpha1
-            kind: PodSecurityConfiguration
-            defaults:
-              audit: restricted
-              audit-version: latest
-              enforce: baseline
-              enforce-version: latest
-              warn: restricted
-              warn-version: latest
             exemptions:
               namespaces:
                 - network
@@ -184,10 +227,3 @@ patches:
                 - openebs
                 - rook-ceph
                 - system
-              runtimeClasses: []
-              usernames: []
-        auditPolicy:
-          apiVersion: audit.k8s.io/v1
-          kind: Policy
-          rules:
-            - level: Metadata

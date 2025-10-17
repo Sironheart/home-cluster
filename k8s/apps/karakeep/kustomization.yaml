@@ -7,3 +7,5 @@ components:
 resources:
   - ./karakeep/ks.yaml
   - ./ollama/ks.yaml
+replacements:
+  - path: ../../../k8s-components/replacements/ks.yaml

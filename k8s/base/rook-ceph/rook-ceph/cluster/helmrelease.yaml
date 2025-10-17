@@ -55,8 +55,7 @@ spec:
           requireMsgr2: true
       storage:
         useAllNodes: true
-        useAllDevices: false
-        devicePathFilter: "^/dev/disk/by-id/nvme-WD_Red_SN700.+$"
+        useAllDevices: true
         config:
           osdsPerDevice: "1"
     cephBlockPools:

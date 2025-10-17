@@ -9,3 +9,5 @@ resources:
   - ./snapshot-controller/ks.yaml
 components:
   - ../../../k8s-components/common
+replacements:
+  - path: ../../../k8s-components/replacements/ks.yaml

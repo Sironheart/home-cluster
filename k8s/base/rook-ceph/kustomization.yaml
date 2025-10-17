@@ -6,3 +6,5 @@ components:
   - ../../../k8s-components/common
 resources:
   - ./rook-ceph/ks.yaml
+replacements:
+  - path: ../../../k8s-components/replacements/ks.yaml
