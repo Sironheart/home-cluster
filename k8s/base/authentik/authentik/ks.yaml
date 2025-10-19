@@ -26,7 +26,7 @@ spec:
       # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
       CNPG_VERSION: "18.0"
       CNPG_SIZE: 10Gi
-      CNPG_LIMITS_MEMORY: 1Gi
+      CNPG_REQUESTS_CPU: 1Gi
   prune: true
   retryInterval: 2m
   sourceRef:

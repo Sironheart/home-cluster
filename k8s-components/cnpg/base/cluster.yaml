@@ -27,9 +27,5 @@ spec:
     podAntiAffinityType: required
     nodeSelector:
       kubernetes.io/arch: amd64
-  # postgresql:
-  #   parameters:
-  #     max_connections: '${CNPG_MAX_CONNECTIONS:="600"}'
-  #     shared_buffers: ${CNPG_SHARED_BUFFERS:=512MB}
   monitoring:
     enablePodMonitor: true
