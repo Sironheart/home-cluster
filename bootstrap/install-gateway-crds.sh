@@ -10,6 +10,8 @@ function apply_crds() {
 		https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/experimental-install.yaml
 		# renovate: datasource=github-tags depName=kubernetes-sigs/external-dns
 		https://raw.githubusercontent.com/kubernetes-sigs/external-dns/refs/tags/v0.19.0/config/crd/standard/dnsendpoints.externaldns.k8s.io.yaml
+		# renovate: datasource=github-tags depName=grafana/grafana-operator
+		https://github.com/grafana/grafana-operator/releases/download/v5.19.4/crds.yaml
 	    )
 
 	    for crd in "${crds[@]}"; do

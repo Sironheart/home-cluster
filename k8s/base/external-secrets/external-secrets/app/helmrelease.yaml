@@ -31,3 +31,4 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: external-secrets-values
+  values:

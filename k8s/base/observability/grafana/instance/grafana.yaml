@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafana_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    grafana.internal/instance: grafana
+spec:
+  config:
+    analytics:
+      check_for_updates: "false"
+      check_for_plugin_updates: "false"
+      feedback_links_enabled: "false"
+      reporting_enabled: "false"
+    auth:
+      disable_login_form: "false"
+      signout_redirect_url: https://sso.siron.casa/application/o/grafana/end-session/
+    auth.anonymous:
+      enabled: "false"
+    auth.generic_oauth:
+      name: authentik
+      enabled: "true"
+      client_id: ${AUTH_CLIENT_ID}
+      client_secret: ${AUTH_CLIENT_SECRET}
+      scopes: "openid profile email"
+      email_attribute_path: email
+      auth_url: "https://sso.siron.casa/application/o/authorize/"
+      token_url: "https://sso.siron.casa/application/o/token/"
+      api_url: "https://sso.siron.casa/application/o/userinfo/"
+      role_attribute_path: contains(groups, 'authentik Admins') && 'Admin' || contains(groups, 'Grafana') && 'Editor' || 'Viewer'
+    log:
+      mode: console
+    metrics:
+      enabled: "true"
+    news:
+      news_feed_enabled: "false"
+    plugins:
+      plugin_admin_enabled: "false"
+    security:
+      angular_support_enabled: "true"
+    server:
+      enable_gzip: "true"
+      root_url: https://grafana.siron.casa
+  deployment:
+    spec:
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: grafana
+              envFrom:
+                - secretRef:
+                    name: grafana-admin
+                - secretRef:
+                    name: auth-generic-oauth-secret
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+  disableDefaultSecurityContext: All
