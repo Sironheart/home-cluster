@@ -5,6 +5,7 @@ namespace: flux-system
 resources:
   - ./flux-instance/ks.yaml
   - ./flux-operator/ks.yaml
+  - ./grafanadashboard/ks.yaml
 components:
   - ../../../k8s-components/common
 replacements:

@@ -20,6 +20,8 @@ operator:
   rollOutPods: true
   dashboards:
     enabled: true
+  metrics:
+    enabled: true
   prometheus:
     enabled: true
     serviceMonitor:
@@ -43,15 +45,6 @@ envoy:
   prometheus:
     serviceMonitor:
       enabled: true
-
-hubble:
-  enabled: true
-  ui:
-    enabled: true
-  relay:
-    enabled: true
-  # metrics:
-  #   enabled: true
 
 # -- from talos docs --
 ipam:
