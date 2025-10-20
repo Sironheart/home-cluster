@@ -23,5 +23,15 @@
       ],
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
     },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.ya?ml$/"],
+      "matchStrings": [
+        "(?ms)^\\s*kind:\\s*GrafanaDashboard\\b[\\s\\S]*?\\burl:\\s*[\"']https?://grafana\\.com/api/dashboards/(?<packageName>\\d+)/revisions/(?<currentValue>\\d+)/download(?:\\?[^\"'\\s]+)?[\"']",
+      ],
+      "depNameTemplate": "grafana.com dashboard {{packageName}}",
+      "versioningTemplate": "regex:^(?<major>\\d+)$",
+      "datasourceTemplate": "custom.grafana-dashboards",
+    },
   ],
 }

@@ -37,3 +37,5 @@ spec:
         pull:
           - gemma3:4b
           - llava:7b
+    updateStrategy:
+      type: RollingUpdate
