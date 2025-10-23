@@ -24,9 +24,6 @@ description = "Setup project for local use"
 # Flux
 flux2 = "2.7.2"
 
-# Kanidm
-"cargo:kanidm_tools" = "1.7.3"
-
 # Kubernetes
 cilium-cli = "0.18.7"
 helm = "3.19.0"

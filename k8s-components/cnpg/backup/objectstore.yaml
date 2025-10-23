@@ -11,11 +11,9 @@ spec:
     wal:
       compression: bzip2
       maxParallel: 8
-      encryption: AES256
     data:
       compression: bzip2
-      encryption: AES256
-    destinationPath: s3://nbg1.your-objectstorage.com/cnpg-home-backup
+    destinationPath: s3://cnpg-home-backups
     endpointURL: https://nbg1.your-objectstorage.com
     s3Credentials:
       accessKeyId:
