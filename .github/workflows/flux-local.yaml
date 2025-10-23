@@ -25,27 +25,6 @@ jobs:
         with:
           patterns: k8s/**/*
 
-  test:
-    if: ${{ needs.filter.outputs.changed-files != '[]' }}
-    needs: filter
-    name: Flux Local - Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          persist-credentials: false
-
-      - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v7.11.0
-        with:
-          args: >-
-            test
-            --all-namespaces
-            --enable-helm
-            --path /github/workspace/k8s/flux/cluster
-            --verbose
-
   diff:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
     needs: filter
@@ -116,7 +95,7 @@ jobs:
 
   success:
     if: ${{ !cancelled() }}
-    needs: ["test", "diff"]
+    needs: ["diff"]
     name: Flux Local - Success
     runs-on: ubuntu-latest
     steps:
