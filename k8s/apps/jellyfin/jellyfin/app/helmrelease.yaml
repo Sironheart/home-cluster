@@ -72,7 +72,7 @@ spec:
       app:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: network
             sectionName: https
         rules:
