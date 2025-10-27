@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: device-metrics-exporter
+spec:
+  interval: 5m
+  url: https://github.com/ROCm/device-metrics-exporter
+  ref:
+    tag: v1.3.1
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: device-metrics-exporter
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: ./helm-charts
+      sourceRef:
+        kind: GitRepository
+        name: device-metrics-exporter
+        namespace: system
+  values:
+    serviceMonitor:
+      enabled: true
+      interval: 15s
