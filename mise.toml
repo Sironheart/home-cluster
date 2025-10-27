@@ -20,12 +20,28 @@ description = "Read the kubeconfig via talosctl"
 depends = ['talos-secrets', 'config-gen']
 description = "Setup project for local use"
 
+[tasks.prepare-cluster]
+depends = ['kubeconfig', 'install-crds', 'install-required-services']
+description = "Install CRDs and basic tools"
+
+[tasks.install-crds]
+depends = ['kubeconfig']
+run = "helmfile template -f bootstrap/helmfile.d/00-crds.yaml | kubectl apply -f - || true"
+description = "Install all CRDs"
+dir = "{{ config_root }}"
+
+[tasks.install-required-services]
+depends = ['kubeconfig']
+run = "helmfile sync -f bootstrap/helmfile.d/01-basic-installation.yaml"
+description = "Install all required tools to have any running service"
+dir = "{{ config_root }}"
+
 [tools]
 # Flux
 flux2 = "2.7.2"
 
 # Kubernetes
-cilium-cli = "0.18.7"
+cilium-cli = "0.18.8"
 helm = "3.19.0"
 helmfile = "1.1.8"
 kubectl = "1.34.1"
@@ -33,4 +49,4 @@ kustomize = "5.7.1"
 
 # Talos
 talhelper = "3.0.38"
-talos = "1.11.2"
+talos = "1.11.3"
