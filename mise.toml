@@ -38,7 +38,7 @@ dir = "{{ config_root }}"
 
 [tools]
 # Flux
-flux2 = "2.7.2"
+flux2 = "2.7.3"
 
 # Kubernetes
 cilium-cli = "0.18.8"
