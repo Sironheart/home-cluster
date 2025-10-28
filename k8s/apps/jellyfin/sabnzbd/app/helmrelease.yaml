@@ -34,7 +34,6 @@ spec:
                 sabnzbd.default.svc.cluster.local,
                 sab.siron.casa,
                 sabnzbd.siron.casa
-              TZ: Europe/Berlin
             envFrom:
               - secretRef:
                   name: sabnzbd-secret
