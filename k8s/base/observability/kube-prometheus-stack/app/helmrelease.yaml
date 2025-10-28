@@ -36,26 +36,7 @@ spec:
         forceConflicts: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      route:
-        main:
-          enabled: true
-          hostnames: ["alertmanager.siron.casa"]
-          parentRefs:
-            - name: internal
-              namespace: network
-              sectionName: https
-      alertmanagerSpec:
-        alertmanagerConfiguration:
-          name: alertmanager
-          global:
-            resolveTimeout: 5m
-        externalUrl: https://alertmanager.siron.casa
-        storage:
-          volumeClaimTemplate:
-            spec:
-              resources:
-                requests:
-                  storage: 1Gi
+      enabled: false
     kubeEtcd:
       service:
         selector:
