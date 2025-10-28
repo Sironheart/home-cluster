@@ -40,4 +40,4 @@ releases:
   - name: rook-ceph
     namespace: rook-ceph
     chart: oci://ghcr.io/rook/rook-ceph
-    version: v1.18.5
+    version: v1.18.6
