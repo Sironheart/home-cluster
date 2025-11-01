@@ -4,6 +4,8 @@ kind: VMAgent
 metadata:
   name: vm-agent
 spec:
+  extraArgs:
+    enableTCP6: "true"
   scrapeInterval: 20s
   selectAllByDefault: true
   remoteWrite:

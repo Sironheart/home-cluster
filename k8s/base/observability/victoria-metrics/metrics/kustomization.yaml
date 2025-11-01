@@ -6,4 +6,5 @@ resources:
   - ./grafanadashboard.yaml
   - ./grafanadatasource.yaml
   - ./vmagent.yaml
+  - ./vmnodescrape.yaml
   - ./vmsingle.yaml

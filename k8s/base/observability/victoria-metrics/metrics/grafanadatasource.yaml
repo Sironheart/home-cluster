@@ -11,7 +11,7 @@ spec:
       instance: grafana
   datasource:
     access: proxy
-    type: victoriametrics-metrics-datasource
+    type: prometheus # Honestly, I don't get why this value is necessary but it works afterwards :c
     name: VictoriaMetrics
     url: http://vmsingle-vm:8428
     isDefault: true

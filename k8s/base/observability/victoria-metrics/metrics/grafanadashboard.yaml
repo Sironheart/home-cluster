@@ -105,10 +105,4 @@ spec:
   instanceSelector:
     matchLabels:
       instance: grafana
-  # envs:
-  #   - name: ds
-  #     value: VictoriaMetrics
-  datasources:
-    - datasourceName: VictoriaMetrics
-      inputName: ds
   url: "https://grafana.com/api/dashboards/10229/revisions/42/download"
