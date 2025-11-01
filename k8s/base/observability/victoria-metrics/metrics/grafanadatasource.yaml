@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: victorialogs
+  name: victoriametrics
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -11,10 +11,10 @@ spec:
       instance: grafana
   datasource:
     access: proxy
-    type: victoriametrics-logs-datasource
-    name: VictoriaLogs
-    url: http://vlsingle-vl:9428
+    type: victoriametrics-metrics-datasource
+    name: VictoriaMetrics
+    url: http://vmsingle-vm:8428
   resyncPeriod: "10m0s"
   plugins:
-    - name: victoriametrics-logs-datasource
-      version: 0.21.1
+    - name: victoriametrics-metrics-datasource
+      version: 0.19.5

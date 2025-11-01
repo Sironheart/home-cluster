@@ -37,7 +37,7 @@ releases:
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: 79.0.0
 
-  - name: rook-ceph
-    namespace: rook-ceph
-    chart: oci://ghcr.io/rook/rook-ceph
-    version: v1.18.6
+  - name: victoria-metrics-operator
+    namespace: observability
+    chart: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator
+    version: 0.54.0

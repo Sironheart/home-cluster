@@ -8,8 +8,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: grafana-operator
+      namespace: observability
   interval: 1h
-  path: ./k8s/base/observability/victoria-metrics/app
+  path: ./k8s/base/observability/victoria-metrics/operator
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -43,23 +46,28 @@ spec:
     namespace: flux-system
   timeout: 5m
   wait: false
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app vmks
-# spec:
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   interval: 1h
-#   path: ./k8s/base/observability/victoria-metrics/metrics
-#   prune: true
-#   retryInterval: 2m
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   timeout: 5m
-#   wait: false
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app victoria-metrics
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: victoria-metrics-operator
+      namespace: &namespace observability
+    - name: grafana-operator
+      namespace: *namespace
+  interval: 1h
+  path: ./k8s/base/observability/victoria-metrics/metrics
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
