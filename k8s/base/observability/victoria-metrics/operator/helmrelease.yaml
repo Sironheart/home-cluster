@@ -24,6 +24,9 @@ spec:
     kind: OCIRepository
     name: *app
   values:
+    crds:
+      upgrade:
+        enabled: true
     operator:
       enable_converter_ownership: true
     serviceMonitor:

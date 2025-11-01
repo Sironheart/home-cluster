@@ -17,4 +17,4 @@ spec:
   resyncPeriod: "10m0s"
   plugins:
     - name: victoriametrics-logs-datasource
-      version: 0.21.1
+      version: latest

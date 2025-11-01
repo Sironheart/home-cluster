@@ -14,7 +14,8 @@ spec:
     type: victoriametrics-metrics-datasource
     name: VictoriaMetrics
     url: http://vmsingle-vm:8428
+    isDefault: true
   resyncPeriod: "10m0s"
   plugins:
     - name: victoriametrics-metrics-datasource
-      version: 0.19.5
+      version: latest
