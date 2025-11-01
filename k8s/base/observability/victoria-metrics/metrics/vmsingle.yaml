@@ -5,8 +5,6 @@ metadata:
   name: vm
 spec:
   retentionPeriod: 30d
-  extraArgs:
-    dedup.minScrapeInterval: 60s
   storage:
     accessModes:
       - ReadWriteOnce
