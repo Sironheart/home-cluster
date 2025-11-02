@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   - ./grafanadashboard.yaml
   - ./grafanadatasource.yaml
+  - ./helmrelease.yaml
   - ./vmagent.yaml
-  - ./vmnodescrape.yaml
   - ./vmsingle.yaml

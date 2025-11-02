@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: victoria-metrics-k8s-stack
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.62.2
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app vmks
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: victoria-metrics-k8s-stack
+  dependsOn:
+    - name: victoria-metrics-operator
+  values:
+    nameOverride: *app
+
+    victoria-metrics-operator:
+      enabled: false
+
+    vmagent:
+      enabled: false
+
+    vmalert:
+      enabled: false
+
+    vmsingle:
+      enabled: false
+
+    grafana:
+      enabled: false
+
+    alertmanager:
+      enabled: false
+
+    defaultDashboards:
+      enabled: true
+      grafanaOperator:
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              dashboards: null
+              instance: grafana
+      dashboards:
+        victoriametrics-operator:
+          enabled: false
+        victoriametrics-vmalert:
+          enabled: false
+
+    kubelet:
+      enabled: false
+
+    kubeControllerManager:
+      enabled: true
+      service:
+        selector:
+          component: apiserver # Selects controller node IPs
+
+    kubeEtcd:
+      enabled: true
+      service:
+        # selector:
+        #   component: apiserver # Selects controller node IPs
+        port: 2381
+        targetPort: 2381
+      vmScrape:
+        spec:
+          endpoints:
+            - scheme: http
+          selector:
+            matchLabels:
+              app: null
+              app.kubernetes.io/instance: null
+              app.kubernetes.io/name: null
+              jobLabel: null
+              component: apiserver
+
+    kubeScheduler:
+      enabled: true
+      service:
+        selector:
+          component: apiserver # Selects controller node IPs
