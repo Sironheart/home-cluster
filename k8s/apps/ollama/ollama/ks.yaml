@@ -7,11 +7,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
-  path: ./k8s/apps/karakeep/ollama/app
+  path: ./k8s/apps/ollama/ollama/app
   postBuild:
     substitute:
       APP: *app
