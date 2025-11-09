@@ -6,7 +6,7 @@ metadata:
 spec:
   extraArgs:
     enableTCP6: "true"
-  retentionPeriod: 30d
+  retentionPeriod: 365d
   storage:
     accessModes:
       - ReadWriteOnce

@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./grafanadashboard.yaml
   - ./grafanadatasource.yaml
+  - ./helmrelease.yaml
   - ./vlsingle.yaml
