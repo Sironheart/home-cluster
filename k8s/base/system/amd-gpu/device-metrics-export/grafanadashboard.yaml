@@ -19,9 +19,6 @@ spec:
   instanceSelector:
     matchLabels:
       instance: grafana
-  datasources:
-    - datasourceName: VictoriaMetrics
-      inputName: DS_PROMETHEUS
   url: "https://raw.githubusercontent.com/ROCm/device-metrics-exporter/refs/heads/main/grafana/dashboard_overview.json"
   folderRef: amd-rocm
 ---
@@ -34,9 +31,6 @@ spec:
   instanceSelector:
     matchLabels:
       instance: grafana
-  datasources:
-    - datasourceName: VictoriaMetrics
-      inputName: DS_PROMETHEUS
   url: "https://raw.githubusercontent.com/ROCm/device-metrics-exporter/refs/heads/main/grafana/dashboard_gpu.json"
   folderRef: amd-rocm
 ---
@@ -49,9 +43,6 @@ spec:
   instanceSelector:
     matchLabels:
       instance: grafana
-  datasources:
-    - datasourceName: VictoriaMetrics
-      inputName: DS_PROMETHEUS
   url: "https://raw.githubusercontent.com/ROCm/device-metrics-exporter/refs/heads/main/grafana/dashboard_node.json"
   folderRef: amd-rocm
 ---
@@ -64,8 +55,5 @@ spec:
   instanceSelector:
     matchLabels:
       instance: grafana
-  datasources:
-    - datasourceName: VictoriaMetrics
-      inputName: DS_PROMETHEUS
   url: "https://raw.githubusercontent.com/ROCm/device-metrics-exporter/refs/heads/main/grafana/dashboard_job.json"
   folderRef: amd-rocm
