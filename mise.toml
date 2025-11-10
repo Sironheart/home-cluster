@@ -45,8 +45,8 @@ cilium-cli = "0.18.8"
 helm = "3.19.0"
 helmfile = "1.1.9"
 kubectl = "1.34.1"
-kustomize = "5.7.1"
+kustomize = "5.8.0"
 
 # Talos
-talhelper = "3.0.38"
-talos = "1.11.3"
+talhelper = "3.0.39"
+talos = { version = "1.11.5", exe = "talosctl" }

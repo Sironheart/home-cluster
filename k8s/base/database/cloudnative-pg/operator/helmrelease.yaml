@@ -31,5 +31,6 @@ spec:
   values:
     crds:
       create: true
-    monitoring:
-      podMonitorEnabled: true
+    cluster:
+      monitoring:
+        enabled: true
