@@ -1,9 +1,9 @@
 ---
 clusterName: home
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.11.2
+talosVersion: v1.11.5
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.34.1
+kubernetesVersion: v1.34.2
 
 endpoint: https://internal.siron.casa:6443
 allowSchedulingOnMasters: true
@@ -128,8 +128,6 @@ patches:
       kubelet:
         disableManifestsDirectory: true
         extraConfig:
-          featureGates:
-            ResourceHealthStatus: true
           maxPods: 250
           serializeImagePulls: false
 
@@ -165,7 +163,7 @@ patches:
       apiServer:
         extraArgs:
           enable-aggregator-routing: "true"
-          feature-gates: MutatingAdmissionPolicy=true,ResourceHealthStatus=true
+          feature-gates: MutatingAdmissionPolicy=true
           runtime-config: admissionregistration.k8s.io/v1beta1=true
         disablePodSecurityPolicy: true
       controllerManager:
