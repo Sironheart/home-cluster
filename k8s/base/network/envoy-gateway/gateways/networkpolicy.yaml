@@ -7,10 +7,9 @@ spec:
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
-  compression:
+  compressor:
     - type: Brotli
     - type: Gzip
-
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
