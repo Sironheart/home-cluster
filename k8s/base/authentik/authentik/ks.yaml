@@ -8,9 +8,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../../k8s-components/volsync
-    - ../../../../../k8s-components/dragonfly
-    - ../../../../../k8s-components/cnpg/backup
+    - ../../../../components/volsync
+    - ../../../../components/dragonfly
+    - ../../../../components/cnpg/backup
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph

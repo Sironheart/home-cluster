@@ -10,6 +10,6 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
 components:
-  - ../../../k8s-components/common
+  - ../../components/common
 replacements:
-  - path: ../../../k8s-components/replacements/ks.yaml
+  - path: ../../components/replacements/ks.yaml

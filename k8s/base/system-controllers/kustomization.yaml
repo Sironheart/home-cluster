@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: system-controllers
 components:
-  - ../../../k8s-components/common
+  - ../../components/common
 patches:
   - patch: |
       - op: add
@@ -14,4 +14,4 @@ patches:
 resources:
   - ./k8tz/ks.yaml
 replacements:
-  - path: ../../../k8s-components/replacements/ks.yaml
+  - path: ../../components/replacements/ks.yaml

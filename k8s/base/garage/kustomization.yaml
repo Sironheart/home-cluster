@@ -3,8 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: garage
 components:
-  - ../../../k8s-components/common
+  - ../../components/common
 replacements:
-  - path: ../../../k8s-components/replacements/ks.yaml
+  - path: ../../components/replacements/ks.yaml
 resources:
   - ./garage/ks.yaml
