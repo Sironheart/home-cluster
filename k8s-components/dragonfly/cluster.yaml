@@ -5,7 +5,7 @@ metadata:
   name: dragonfly-${APP}
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.34.1
-  replicas: 2
+  replicas: ${DRAGONFLY_REPLICAS:=2}
   env:
     - name: MAX_MEMORY
       valueFrom:
