@@ -56,8 +56,10 @@ spec:
           enabled: true
           baseURI: "https://sso.siron.casa/application/o/penpot/"
           roles: ""
-          scopes: "openid profile"
+          rolesAttribute: ""
+          scopes: "openid profile email"
           nameAttribute: nickname
+          emailAttribute: email
         existingSecret: "penpot"
         secretKeys:
           oidcClientIDKey: PENPOT_OIDC_CLIENT_ID
@@ -66,3 +68,4 @@ spec:
     persistence:
       assets:
         existingClaim: penpot
+
