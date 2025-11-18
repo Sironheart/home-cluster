@@ -29,11 +29,6 @@ spec:
     remediation:
       retries: 3
   values:
-    proxyConfig:
-      metrics:
-        enabled: true
-        serviceMonitor:
-          enabled: true
     operatorConfig:
       apiServerProxyConfig:
         allowImpersonation: true

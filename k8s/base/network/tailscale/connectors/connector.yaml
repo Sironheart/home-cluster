@@ -4,6 +4,7 @@ kind: Connector
 metadata:
   name: ts-cidrs
 spec:
+  proxyClass: home
   exitNode: true
   subnetRouter:
     advertiseRoutes:
