@@ -48,7 +48,7 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 800m
                 memory: 4Gi
               limits:
                 amd.com/gpu: 1
