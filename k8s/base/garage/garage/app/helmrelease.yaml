@@ -7,7 +7,7 @@ spec:
   interval: 5m
   url: https://git.deuxfleurs.fr/Deuxfleurs/garage.git
   ref:
-    branch: main-v2
+    tag: v2.1.0
   ignore: |-
     # exclude all
     /*
