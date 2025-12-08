@@ -13,7 +13,7 @@ spec:
     - name: RENOVATE_ALLOW_PLUGINS
       value: "true"
   # renovate: datasource=docker depName=renovate/renovate
-  image: renovate/renovate:42.19.3
+  image: renovate/renovate:42.39.4
   parallelism: 5
   schedule: 0 * * * *
   secretRef: sironheart-renovate
