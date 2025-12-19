@@ -48,5 +48,5 @@ kubectl = "1.35.0"
 kustomize = "5.8.0"
 
 # Talos
-talhelper = "3.0.41"
+talhelper = "3.0.42"
 talos = { version = "1.11.5", exe = "talosctl" }
