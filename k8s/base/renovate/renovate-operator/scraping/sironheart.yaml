@@ -4,13 +4,15 @@ kind: RenovateJob
 metadata:
   name: sironheart
 spec:
-  discoveryFilter: 'sironheart/*'
+  discoveryFilter: "sironheart/*"
   extraEnv:
     - name: RENOVATE_PLATFORM
       value: github
     - name: RENOVATE_ENDPOINT
       value: https://api.github.com/
     - name: RENOVATE_ALLOW_PLUGINS
+      value: "true"
+    - name: RENOVATE_PRINT_CONFIG
       value: "true"
   # renovate: datasource=docker depName=renovate/renovate
   image: renovate/renovate:42.64.1
