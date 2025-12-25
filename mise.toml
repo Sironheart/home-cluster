@@ -41,7 +41,6 @@ dir = "{{ config_root }}"
 flux2 = "2.7.5"
 
 # Kubernetes
-cilium-cli = "0.18.9"
 helm = "4.0.4"
 helmfile = "1.2.3"
 kubectl = "1.35.0"
