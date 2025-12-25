@@ -1,9 +1,9 @@
 ---
 clusterName: home
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.11.5
+talosVersion: v1.12.0
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.34.2
+kubernetesVersion: v1.35.0
 
 endpoint: https://internal.siron.casa:6443
 allowSchedulingOnMasters: true
@@ -45,8 +45,8 @@ nodes:
           physical: true
         dhcp: true
 
-    nodeLabels: &labels
-      feature.node.kubernetes.io/amd-gpu: "true"
+#    nodeLabels: &labels
+#      feature.node.kubernetes.io/amd-gpu: "true"
 
     userVolumes: &userVolumes
       - name: local-hostpath

@@ -23,6 +23,6 @@
     managerFilePatterns: ["/(^|/)k8s/.+\\.ya?ml$/"],
   },
   kubernetes: {
-    managerFilePatterns: ["/(^|/)k8s/.+\\.ya?ml$/"],
+    managerFilePatterns: ["/(^|/)k8s/.+\\.ya?ml$/", "/^talos/talconfig.yaml"],
   },
 }
