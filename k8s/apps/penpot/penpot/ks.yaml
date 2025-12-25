@@ -25,6 +25,7 @@ spec:
       CNPG_VERSION: "16.11"
       CNPG_REPLICAS: "1"
       VOLSYNC_CAPACITY: 20Gi
+      VOLSYNC_ACCESSMODES: ReadWriteMany
   prune: true
   retryInterval: 2m
   sourceRef:
