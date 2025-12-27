@@ -20,11 +20,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app device-metrics-export
+  name: device-metrics-export
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./k8s/base/system/rocm/device-metrics-export
   prune: true
