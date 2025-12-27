@@ -8,3 +8,4 @@ spec:
   replicaGroups:
     - name: default
       replicas: 1
+

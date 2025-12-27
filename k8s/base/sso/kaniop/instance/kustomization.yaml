@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - ./backendtlspolicy.yaml
   - ./certificate.yaml
+  - ./credentials-gitrepo.yaml
   - ./httproute.yaml
   - ./kanidm.yaml
