@@ -7,7 +7,7 @@ spec:
   targetRefs:
     - group: ""
       kind: Service
-      name: kanidm
+      name: auth
   validation:
     wellKnownCACertificates: System
     hostname: auth.siron.casa

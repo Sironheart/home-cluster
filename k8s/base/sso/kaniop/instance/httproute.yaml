@@ -11,6 +11,6 @@ spec:
       namespace: network
   rules:
     - backendRefs:
-        - name: kanidm
+        - name: auth
           namespace: sso
-          port: 443
+          port: 8443
