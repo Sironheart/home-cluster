@@ -1,0 +1,16 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kaniop
+spec:
+  hostnames:
+  - auth.siron.casa
+  parentRefs:
+    - name: external
+      namespace: network
+  rules:
+    - backendRefs:
+        - name: kanidm
+          namespace: sso
+          port: 443
