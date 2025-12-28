@@ -16,18 +16,4 @@ spec:
     name: flux-system
     namespace: flux-system
   timeout: 5m
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: device-metrics-export
-spec:
-  interval: 1h
-  path: ./k8s/base/system/rocm/device-metrics-export
-  prune: true
-  retryInterval: 2m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
+
