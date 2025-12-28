@@ -19,7 +19,7 @@ spec:
     controllers:
       prowlarr:
         containers:
-          app:
+          prowlarr:
             image:
               repository: ghcr.io/home-operations/prowlarr
               tag: 2.3.1.5238@sha256:4394dff2311238bf5c31e006872122ed4e5f6bf042d33528d80acd44a09c57f7
@@ -66,13 +66,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      prowlarr:
         controller: prowlarr
         ports:
           http:
             port: *port
     route:
-      app:
+      prowlarr:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: internal
@@ -80,7 +80,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: prowlarr
                 port: *port
     persistence:
       config:

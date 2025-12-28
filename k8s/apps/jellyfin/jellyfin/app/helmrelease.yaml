@@ -19,7 +19,7 @@ spec:
     controllers:
       jellyfin:
         containers:
-          app:
+          jellyfin:
             image:
               repository: ghcr.io/jellyfin/jellyfin
               # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
@@ -61,13 +61,13 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44]
     service:
-      app:
+      jellyfin:
         controller: jellyfin
         ports:
           http:
             port: *port
     route:
-      app:
+      jellyfin:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: external
@@ -75,7 +75,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: jellyfin
                 port: *port
     persistence:
       config:
@@ -96,7 +96,7 @@ spec:
         type: emptyDir
         advancedMounts:
           jellyfin:
-            app:
+            jellyfin:
               - path: /cache
                 subPath: cache
               - path: /config/log

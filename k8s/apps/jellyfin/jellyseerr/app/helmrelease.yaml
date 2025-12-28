@@ -19,7 +19,7 @@ spec:
     controllers:
       jellyseerr:
         containers:
-          app:
+          jellyseerr:
             image:
               repository: ghcr.io/fallenbagel/jellyseerr
               tag: 2.7.3@sha256:9cc9e9ee6cd5cf5a23feb45c37742ba34cfd6314d81d259cddb373a97ac92cdd
@@ -59,13 +59,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      jellyseerr:
         controller: jellyseerr
         ports:
           http:
             port: *port
     route:
-      app:
+      jellyseerr:
         hostnames:
           - "{{ .Release.Name }}.siron.casa"
           - request.siron.casa
@@ -75,7 +75,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: jellyseerr
                 port: *port
     persistence:
       config:
@@ -90,7 +90,7 @@ spec:
         type: emptyDir
         advancedMounts:
           jellyseerr:
-            app:
+            jellyseerr:
               - path: /app/config/logs
                 subPath: logs
               - path: /tmp

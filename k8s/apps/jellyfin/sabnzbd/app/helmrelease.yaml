@@ -19,7 +19,7 @@ spec:
     controllers:
       sabnzbd:
         containers:
-          app:
+          sabnzbd:
             image:
               repository: ghcr.io/home-operations/sabnzbd
               tag: 4.5.5@sha256:da57e01cdebc547852b6df85c8df8c0e4d87792742c7608c5590dc653b184e8c
@@ -67,13 +67,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      sabnzbd:
         controller: sabnzbd
         ports:
           http:
             port: *port
     route:
-      app:
+      sabnzbd:
         hostnames:
           - "{{ .Release.Name }}.siron.casa"
           - sab.siron.casa
@@ -83,7 +83,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: sabnzbd
                 port: *port
     persistence:
       config:

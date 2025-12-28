@@ -20,7 +20,7 @@ spec:
       cloudflare-tunnel:
         strategy: RollingUpdate
         containers:
-          app:
+          cloudflared:
             image:
               repository: docker.io/cloudflare/cloudflared
               tag: 2025.11.1
@@ -62,12 +62,12 @@ spec:
         runAsUser: 65534
         runAsGroup: 65534
     service:
-      app:
+      cloudflared:
         ports:
           http:
             port: *port
     serviceMonitor:
-      app:
+      cloudflared:
         endpoints:
           - port: http
     persistence:

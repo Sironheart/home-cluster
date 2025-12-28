@@ -17,7 +17,7 @@ spec:
     controllers:
       karakeep:
         containers:
-          app:
+          karakeep:
             image:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.29.3
@@ -55,7 +55,7 @@ spec:
                 memory: 1Gi
       chrome:
         containers:
-          app:
+          chrome:
             image:
               repository: gcr.io/zenika-hub/alpine-chrome
               tag: 124
@@ -92,7 +92,7 @@ spec:
                           - karakeep
                   topologyKey: kubernetes.io/hostname
         containers:
-          app:
+          meilisearch:
             image:
               repository: docker.io/getmeili/meilisearch
               tag: v1.31.0
@@ -117,7 +117,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     route:
-      app:
+      karakeep:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: external
@@ -125,22 +125,22 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: karakeep
                 port: &port 3000
     persistence:
       data:
         existingClaim: *app
         advancedMounts:
           karakeep:
-            app:
+            karakeep:
               - path: /data
                 subPath: karakeep
           meilisearch:
-            app:
+            meilisearch:
               - path: /meili_data
                 subPath: meilisearch
     service:
-      app:
+      karakeep:
         controller: karakeep
         ports:
           http:

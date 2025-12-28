@@ -19,7 +19,7 @@ spec:
     controllers:
       sonarr:
         containers:
-          app:
+          sonarr:
             image:
               repository: ghcr.io/home-operations/sonarr
               tag: 4.0.16.2946@sha256:3597fd572f4599c67abbeb8afd3cb85bce8a9e389f0779b7ea1273781544d15c
@@ -66,13 +66,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      sonarr:
         controller: sonarr
         ports:
           http:
             port: *port
     route:
-      app:
+      sonarr:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: internal
@@ -80,7 +80,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: sonarr
                 port: *port
     persistence:
       config:

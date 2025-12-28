@@ -19,7 +19,7 @@ spec:
     controllers:
       radarr:
         containers:
-          app:
+          radarr:
             image:
               repository: ghcr.io/home-operations/radarr
               tag: 6.1.0.10309@sha256:10f94c85f605d42e5e78de928f24758b5750a4e99eee8d0ef9ff150f7a2df033
@@ -66,13 +66,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      radarr:
         controller: radarr
         ports:
           http:
             port: *port
     route:
-      app:
+      radarr:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: internal
@@ -80,7 +80,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: radarr
                 port: *port
     persistence:
       config:
