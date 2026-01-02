@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
-  - ./externalsecret-oauth.yaml
+  - ./oauth-app.yaml

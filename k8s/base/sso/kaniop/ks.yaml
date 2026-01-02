@@ -12,6 +12,9 @@ spec:
   path: ./k8s/base/sso/kaniop/app
   prune: true
   retryInterval: 5m
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -5,12 +5,12 @@ metadata:
   name: kaniop
 spec:
   hostnames:
-  - auth.siron.casa
+  - sso.siron.casa
   parentRefs:
     - name: external
       namespace: network
   rules:
     - backendRefs:
-        - name: auth
+        - name: sso
           namespace: sso
           port: 8443

@@ -21,4 +21,13 @@ spec:
   chartRef:
     kind: OCIRepository
     name: *app
+  values:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+      prometheusRules:
+        enabled: true
+      dashboards:
+        enabled: true
 

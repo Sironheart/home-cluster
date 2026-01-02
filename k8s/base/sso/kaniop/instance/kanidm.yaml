@@ -2,10 +2,38 @@
 apiVersion: kaniop.rs/v1beta1
 kind: Kanidm
 metadata:
-  name: auth
+  name: sso
 spec:
-  domain: auth.siron.casa
+  domain: sso.siron.casa
+  ldapPortName: ldaps
+  oauth2ClientNamespaceSelector:
+    matchLabels:
+      {}
+  groupNamespaceSelector:
+    matchLabels:
+      {}
+  personNamespaceSelector:
+    matchLabels:
+      {}
+  serviceAccountNamespaceSelector:
+    matchLabels:
+      {}
   replicaGroups:
     - name: default
       replicas: 1
-
+      primaryNode: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 140Mi
+        limits:
+          memory: 200Mi
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: ceph-block
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi

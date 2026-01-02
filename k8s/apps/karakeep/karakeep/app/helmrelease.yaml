@@ -38,11 +38,21 @@ spec:
               INFERENCE_IMAGE_MODEL: llava
               INFERENCE_JOB_TIMEOUT_SEC: 120
               NEXTAUTH_URL: "https://karakeep.siron.casa"
+              OAUTH_PROVIDER_NAME: kanidm
+              OAUTH_WELLKNOWN_URL: https://sso.siron.casa/oauth2/openid/karakeep-app/.well-known/openid-configuration
+              OAUTH_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-app-kanidm-oauth2-credentials
+                    key: CLIENT_ID
+              OAUTH_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-app-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
             envFrom:
               - secretRef:
                   name: karakeep-secret
-              - secretRef:
-                  name: karakeep-oauth-secret
             probes:
               liveness:
                 enabled: true

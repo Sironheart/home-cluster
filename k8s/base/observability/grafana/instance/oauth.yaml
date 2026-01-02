@@ -1,0 +1,74 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: grafana-app
+spec:
+  displayname: Grafana
+  kanidmRef:
+    name: sso
+    namespace: sso
+  origin: https://grafana.siron.casa/
+  redirectUrl:
+    - https://grafana.siron.casa/login/generic_oauth
+  scopeMap:
+    - group: grafana-user
+      scopes:
+        - openid
+        - profile
+        - email
+        - groups
+  claimMap:
+    - name: grafana_role
+      valuesMap:
+        - group: grafana-admin
+          values: [GrafanaAdmin]
+        - group: grafana-normal-admin
+          values: [Admin]
+        - group: grafana-editor
+          values: [Editor]
+  jwtLegacyCryptoEnable: true
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: grafana-admin
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  members:
+    - sironheart
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: grafana-normal-admin
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  members:
+    - grafana-admin
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: grafana-editor
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  members:
+    - grafana-normal-admin
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: grafana-user
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  members:
+    - grafana-editor

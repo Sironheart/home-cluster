@@ -26,6 +26,8 @@ spec:
   path: ./k8s/apps
   prune: true
   retryInterval: 2m
+  dependsOn:
+    - name: cluster-base
   sourceRef:
     kind: GitRepository
     name: flux-system

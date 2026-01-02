@@ -7,7 +7,7 @@ spec:
   targetRefs:
     - group: ""
       kind: Service
-      name: auth
+      name: sso
   validation:
     wellKnownCACertificates: System
-    hostname: auth.siron.casa
+    hostname: sso.siron.casa
