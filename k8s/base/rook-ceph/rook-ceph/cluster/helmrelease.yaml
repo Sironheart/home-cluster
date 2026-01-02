@@ -58,6 +58,13 @@ spec:
         useAllDevices: true
         config:
           osdsPerDevice: "1"
+      resources:
+        osd:
+          limits:
+            memory: 2Gi
+          requests:
+            cpu: 1
+            memory: 2Gi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
