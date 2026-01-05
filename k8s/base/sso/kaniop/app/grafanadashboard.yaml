@@ -4,6 +4,7 @@ kind: GrafanaDashboard
 metadata:
   name: kaniop
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       instance: grafana

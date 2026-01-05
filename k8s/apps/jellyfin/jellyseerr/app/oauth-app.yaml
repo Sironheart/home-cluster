@@ -1,0 +1,23 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: jellyseer-app
+spec:
+  displayname: Request
+  kanidmRef:
+    name: sso
+    namespace: sso
+  origin: https://request.siron.casa/
+  redirectUrl:
+    - https://request.siron.casa/login?provider=kanidm&callback=true
+  preferShortUsername: true
+  # strictRedirectUrl: false
+  allowInsecureClientDisablePkce: true
+  scopeMap:
+    - group: jellyfin
+      scopes:
+        - openid
+        - profile
+        - email
+        - groups
