@@ -15,7 +15,7 @@ spec:
     - name: RENOVATE_PRINT_CONFIG
       value: "true"
   # renovate: datasource=docker depName=renovate/renovate
-  image: renovate/renovate:42.71.4
+  image: renovate/renovate:42.72.0
   parallelism: 5
   schedule: 0 * * * *
   secretRef: sironheart-renovate
