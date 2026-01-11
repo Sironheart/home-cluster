@@ -6,6 +6,8 @@ resources:
   - ./externalsecret.yaml
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
+  - ./postgres.yaml
+  - ./selfsigned.yaml
 configMapGenerator:
   - name: cert-manager-values
     files:

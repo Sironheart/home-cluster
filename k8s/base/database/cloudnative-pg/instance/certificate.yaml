@@ -1,0 +1,98 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name postgres-serving-ca
+spec:
+  isCA: true
+  commonName: postgres-ca
+  dnsNames:
+    - database.svc
+    - database.svc.cluster.local
+  subject:
+    countries:
+      - DE
+    organizations:
+      - homelab-cluster
+    organizationalUnits:
+      - postgres
+  usages:
+    - cert sign
+    - crl sign
+  nameConstraints:
+    critical: true
+    permitted:
+      dnsDomains:
+        - .database.svc.cluster.local
+        - .database.svc
+  duration: 8766h # 1 year
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    encoding: PKCS8
+    rotationPolicy: Always
+  issuerRef:
+    name: cluster-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  secretName: *name
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: &name postgres-serving-ca
+spec:
+  ca:
+    secretName: *name
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name postgres-serving-cert
+spec:
+  commonName: postgres
+  dnsNames:
+    - postgres-rw.database.svc
+    - postgres-ro.database.svc
+    - postgres-r.database.svc
+    - postgres-rw.database.svc.cluster.local
+    - postgres-ro.database.svc.cluster.local
+    - postgres-r.database.svc.cluster.local
+  subject:
+    countries:
+      - DE
+    organizations:
+      - homelab-cluster
+  usages:
+    - server auth
+  duration: 720h # 1 month
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    encoding: PKCS8
+    rotationPolicy: Always
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ""
+  issuerRef:
+    name: postgres-serving-ca
+    kind: Issuer
+    group: cert-manager.io
+  secretName: *name
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: postgres-replication-cert
+spec:
+  secretName: postgres-replication-cert
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ""
+  usages:
+    - client auth
+  commonName: streaming_replica
+  issuerRef:
+    name: postgres-client-ca
+    kind: ClusterIssuer
+    group: cert-manager.io

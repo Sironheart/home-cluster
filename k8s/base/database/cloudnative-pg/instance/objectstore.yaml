@@ -3,20 +3,23 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: ${APP}-db
+  name: hetzner-store
 spec:
   retentionPolicy: 14d
   configuration:
+    destinationPath: s3://cnpg-home-backups
+    endpointURL: https://nbg1.your-objectstorage.com
+
     wal:
       compression: bzip2
       maxParallel: 8
+
     data:
       compression: bzip2
-    destinationPath: s3://cnpg-home-backups
-    endpointURL: https://nbg1.your-objectstorage.com
+
     s3Credentials:
       accessKeyId:
-        name: &secret ${APP}-cnpg-secret
+        name: &secret cnpg-secret
         key: AWS_ACCESS_KEY_ID
       secretAccessKey:
         name: *secret

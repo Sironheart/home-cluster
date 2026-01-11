@@ -1,0 +1,32 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: penpot-app
+spec:
+  displayname: Penpot
+  kanidmRef:
+    name: sso
+    namespace: sso
+  origin: https://penpot.siron.casa/
+  redirectUrl:
+    - https://penpot.siron.casa/auth/oauth/oidc/callback
+  preferShortUsername: true
+  scopeMap:
+    - group: penpot
+      scopes:
+        - openid
+        - profile
+        - email
+        - groups
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: penpot
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  members:
+    - sironheart

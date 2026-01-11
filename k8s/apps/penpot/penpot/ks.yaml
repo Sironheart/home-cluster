@@ -12,7 +12,7 @@ spec:
   components:
     - ../../../../components/volsync
     - ../../../../components/dragonfly
-    - ../../../../components/cnpg/backup
+    - ../../../../components/database/postgres
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -22,8 +22,6 @@ spec:
     substitute:
       APP: *app
       DRAGONFLY_REPLICAS: "1"
-      CNPG_VERSION: "16.11"
-      CNPG_REPLICAS: "1"
       VOLSYNC_CAPACITY: 20Gi
       VOLSYNC_ACCESSMODES: ReadWriteMany
       VOLSYNC_STORAGECLASS: ceph-filesystem
@@ -35,4 +33,4 @@ spec:
     name: flux-system
     namespace: flux-system
   timeout: 5m
-  wait: true
+  wait: false

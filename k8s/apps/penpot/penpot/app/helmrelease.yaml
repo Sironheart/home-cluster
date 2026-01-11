@@ -38,12 +38,11 @@ spec:
       fileDataBackend: "db"
 
       postgresql:
-        existingSecret: penpot-db-app
-        host: "penpot-db-rw.penpot.svc"
-        database: app
+        username: penpot
+        password: ""
+        existingSecret: "penpot"
         secretKeys:
-          passwordKey: password
-          usernameKey: user
+          postgresqlUriKey: "connection_url"
 
       redis:
         host: dragonfly-penpot.penpot.svc.cluster.local
@@ -54,17 +53,34 @@ spec:
       providers:
         oidc:
           enabled: true
-          baseURI: "https://sso.siron.casa/application/o/penpot/"
+          baseURI: "https://sso.siron.casa/oauth2/openid/penpot-app/"
           roles: ""
           rolesAttribute: ""
           scopes: "openid profile email"
           nameAttribute: nickname
           emailAttribute: email
-        existingSecret: "penpot"
+        existingSecret: "penpot-app-kanidm-oauth2-credentials"
         secretKeys:
-          oidcClientIDKey: PENPOT_OIDC_CLIENT_ID
-          oidcClientSecretKey: PENPOT_OIDC_CLIENT_SECRET
+          oidcClientIDKey: CLIENT_ID
+          oidcClientSecretKey: CLIENT_SECRET
 
+    backend:
+      volumes:
+        - name: penpot-postgres
+          secret:
+            secretName: postgres-penpot-cert
+            defaultMode: 440
+        - name: root-ca
+          secret:
+            secretName: root-ca
+            defaultMode: 440
+      volumeMounts:
+        - name: penpot-postgres
+          mountPath: "/var/run/secrets/postgresql"
+          readOnly: true
+        - name: root-ca
+          mountPath: "/var/run/secrets/root-ca"
+          readOnly: true
     persistence:
       assets:
         existingClaim: penpot
