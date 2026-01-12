@@ -109,7 +109,7 @@ spec:
       bookdrop:
         type: nfs
         server: 192.168.0.2
-        path: /volume2/shows/books/incoming
+        path: /volume2/shows/bookdrop
         advancedMounts:
           booklore:
             booklore:
