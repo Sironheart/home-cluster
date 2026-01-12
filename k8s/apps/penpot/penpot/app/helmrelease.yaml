@@ -39,7 +39,7 @@ spec:
 
       postgresql:
         username: penpot
-        password: ""
+        password: ~
         existingSecret: "penpot"
         secretKeys:
           postgresqlUriKey: "connection_url"
@@ -67,13 +67,20 @@ spec:
     backend:
       volumes:
         - name: penpot-postgres
-          secret:
-            secretName: postgres-penpot-cert
-            defaultMode: 440
+          projected:
+            defaultMode: 288
+            sources:
+              - secret:
+                  name: postgres-penpot-cert
+                  items:
+                    - key: tls.crt
+                      path: tls.crt
+                    - key: key.der
+                      path: tls.key
         - name: root-ca
           secret:
             secretName: root-ca
-            defaultMode: 440
+            defaultMode: 288
       volumeMounts:
         - name: penpot-postgres
           mountPath: "/var/run/secrets/postgresql"
@@ -81,6 +88,7 @@ spec:
         - name: root-ca
           mountPath: "/var/run/secrets/root-ca"
           readOnly: true
+
     persistence:
       assets:
         existingClaim: penpot

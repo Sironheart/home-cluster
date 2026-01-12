@@ -10,8 +10,9 @@ spec:
     namespace: sso
   origin: https://penpot.siron.casa/
   redirectUrl:
-    - https://penpot.siron.casa/auth/oauth/oidc/callback
+    - https://penpot.siron.casa/api/auth/oidc/callback
   preferShortUsername: true
+  allowInsecureClientDisablePkce: true
   scopeMap:
     - group: penpot
       scopes:

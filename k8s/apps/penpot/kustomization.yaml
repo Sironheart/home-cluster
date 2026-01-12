@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: penpot
 components:
   - ../../components/common
-resources: []
-#  - ./penpot/ks.yaml
+resources:
+  - ./penpot/ks.yaml
 replacements:
   - path: ../../components/replacements/ks.yaml
