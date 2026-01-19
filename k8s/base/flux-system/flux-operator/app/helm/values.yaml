@@ -1,3 +1,11 @@
 ---
 serviceMonitor:
-  enabled: true
+  create: true
+
+web:
+  httpRoute:
+    enabled: true
+    parentRefs:
+      - name: internal
+        namespace: network
+    hostnames: ["flux.siron.casa"]
