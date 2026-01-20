@@ -6,7 +6,9 @@ metadata:
 spec:
   secretName: siron-casa-tls
   issuerRef:
-    name: letsencrypt-prod
+    name: letsencrypt-prod-short
     kind: ClusterIssuer
+  duration: 160h
+  usages: ["digital signature"]
   commonName: siron.casa
   dnsNames: ["siron.casa", "*.siron.casa"]
