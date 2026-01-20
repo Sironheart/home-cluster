@@ -9,6 +9,8 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./k8s/base/kube-system/coredns/app
+  components:
+    - ../../../../components/common
   prune: true
   retryInterval: 2m
   sourceRef:

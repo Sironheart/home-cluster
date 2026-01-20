@@ -9,6 +9,8 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./k8s/base/network/envoy-gateway/app
+  components:
+    - ../../../../components/common
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,6 +34,8 @@ spec:
       namespace: network
   interval: 1h
   path: ./k8s/base/network/envoy-gateway/gateways
+  components:
+    - ../../../../components/common
   prune: true
   sourceRef:
     kind: GitRepository

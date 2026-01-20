@@ -21,13 +21,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: 1password-connect
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   valuesFrom:
     - kind: ConfigMap
       name: 1password-connect-values

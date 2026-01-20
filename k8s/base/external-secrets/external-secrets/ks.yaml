@@ -23,6 +23,8 @@ spec:
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   interval: 1h
   path: ./k8s/base/external-secrets/external-secrets/app
+  components:
+    - ../../../../components/common
   prune: true
   retryInterval: 2m
   sourceRef:

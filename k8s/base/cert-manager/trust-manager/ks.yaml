@@ -8,7 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components: []
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -16,6 +15,8 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./k8s/base/cert-manager/trust-manager/app
+  components:
+    - ../../../../components/common
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -34,12 +35,13 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: trust-manager
-  components: []
   dependsOn:
     - name: trust-manager
       namespace: *namespace
   interval: 1h
   path: ./k8s/base/cert-manager/trust-manager/config
+  components:
+    - ../../../../components/common
   prune: true
   retryInterval: 2m
   sourceRef:

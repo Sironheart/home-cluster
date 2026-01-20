@@ -14,6 +14,8 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./k8s/base/rook-ceph/rook-ceph/operator
+  components:
+    - ../../../../components/common
   prune: true
   sourceRef:
     kind: GitRepository
@@ -49,6 +51,8 @@ spec:
       current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
   interval: 1h
   path: ./k8s/base/rook-ceph/rook-ceph/cluster
+  components:
+    - ../../../../components/common
   prune: true
   sourceRef:
     kind: GitRepository

@@ -8,13 +8,6 @@ spec:
     kind: OCIRepository
     name: rook-ceph
   interval: 30m
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   releaseName: rook-ceph
   values:
     crds:

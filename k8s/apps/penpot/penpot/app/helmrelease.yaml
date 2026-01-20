@@ -20,13 +20,6 @@ spec:
         kind: HelmRepository
         name: penpot
       version: 0.32.0
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  install:
-    remediation:
-      retries: -1
   values:
     config:
       publicUri: "https://penpot.siron.casa"

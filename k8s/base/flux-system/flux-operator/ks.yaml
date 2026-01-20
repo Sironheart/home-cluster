@@ -15,6 +15,8 @@ spec:
       namespace: *namespace
   interval: 1h
   path: ./k8s/base/flux-system/flux-operator/app
+  components:
+    - ../../../../components/common
   prune: true
   retryInterval: 2m
   sourceRef:
