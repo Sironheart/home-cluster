@@ -33,3 +33,7 @@ spec:
           approverPolicy:
             # enabled: true
             certManagerNamespace: cert-manager
+      metrics:
+        service:
+          servicemonitor:
+            enabled: true
