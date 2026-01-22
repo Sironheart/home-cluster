@@ -13,6 +13,7 @@ spec:
     - https://books.siron.casa/oauth2-callback
   strictRedirectUrl: false
   public: true
+  preferShortUsername: true
   scopeMap:
     - group: booklore
       scopes:

@@ -22,6 +22,7 @@ spec:
               GROUP_ID: "1000"
               BOOKLORE_PORT: &port 6060
               SWAGGER_ENABLED: "false"
+              LOGGING_STRUCTURED_FORMAT_CONSOLE: logstash
             envFrom:
               - secretRef:
                   name: booklore-secret
