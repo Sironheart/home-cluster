@@ -12,8 +12,6 @@ spec:
       value: https://api.github.com/
     - name: RENOVATE_ALLOW_PLUGINS
       value: "true"
-    - name: RENOVATE_PRINT_CONFIG
-      value: "true"
   # renovate: datasource=docker depName=renovate/renovate
   image: renovate/renovate:42.84.2
   parallelism: 5
