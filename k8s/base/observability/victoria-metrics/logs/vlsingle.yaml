@@ -4,6 +4,10 @@ kind: VLSingle
 metadata:
   name: vl
 spec:
+  image:
+    repository: victoriametrics/victoria-logs
+    tag: v1.43.1
+    pullPolicy: IfNotPresent
   extraArgs:
     enableTCP6: "true"
   retentionPeriod: 365d
