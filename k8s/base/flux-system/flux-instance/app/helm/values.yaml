@@ -32,7 +32,7 @@ instance:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-      - # Increase the memory limits
+      - # Decrease the memory limits
         patch: |
           apiVersion: apps/v1
           kind: Deployment
@@ -45,10 +45,10 @@ instance:
                   - name: manager
                     resources:
                       limits:
-                        memory: 2Gi
+                        memory: 512Mi
         target:
           kind: Deployment
-          name: (kustomize-controller|helm-controller|source-controller)
+          name: (kustomize-controller|helm-controller|source-controller|notification-controller)
       - # Enable in-memory kustomize builds
         patch: |
           - op: add

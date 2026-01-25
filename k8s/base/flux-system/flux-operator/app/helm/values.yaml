@@ -9,3 +9,11 @@ web:
       - name: internal
         namespace: network
     hostnames: ["flux.siron.casa"]
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 64Mi

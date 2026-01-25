@@ -225,7 +225,3 @@ patches:
                 - openebs
                 - rook-ceph
                 - system
-  # - |-
-  #   apiVersion: v1alpha1
-  #   kind: OOMConfig
-  #   triggerExpression: "false"
