@@ -1,0 +1,65 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: unifi-poller
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  maxHistory: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+    controllers:
+      unpoller:
+        containers:
+          unpoller:
+            image:
+              repository: ghcr.io/unpoller/unpoller
+              tag: v2.24.0@sha256:8ce4cfa443e833a3c9a300a8fd379742490869683f4a952c36c6c17fc6252a56
+            env:
+              UP_UNIFI_DEFAULT_ROLE: "home"
+              UP_UNIFI_DEFAULT_VERIFY_SSL: false
+              UP_UNIFI_DEFAULT_SAVE_SITES: true
+              UP_UNIFI_DEFAULT_SAVE_DPI: false
+              UP_INFLUXDB_DISABLE: true
+              UP_PROMETHEUS_DISABLE: false
+              UP_PROMETHEUS_NAMESPACE: unpoller
+            envFrom:
+              - secretRef:
+                  name: unifi-poller-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ "ALL" ] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+    service:
+      unpoller:
+        controller: unpoller
+        ports:
+          http:
+            port: 9130
+    serviceMonitor:
+      unpoller:
+        enabled: true
+        serviceName: unifi-poller
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            scrapeTimeout: 5s
