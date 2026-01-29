@@ -9,6 +9,8 @@ spec:
     name: grafana-operator
   interval: 1h
   values:
+    annotations:
+      reloader.stakater.com/auto: "true"
     dashboard:
       enabled: true
     serviceMonitor:

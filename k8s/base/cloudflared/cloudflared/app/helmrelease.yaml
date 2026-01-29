@@ -12,6 +12,8 @@ spec:
   values:
     controllers:
       cloudflare-tunnel:
+        annotations:
+          reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
         containers:
           cloudflared:

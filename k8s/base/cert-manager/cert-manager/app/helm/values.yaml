@@ -8,3 +8,5 @@ prometheus:
   enabled: true
   servicemonitor:
     enabled: true
+deploymentAnnotations:
+  reloader.stakater.com/auto: "true"

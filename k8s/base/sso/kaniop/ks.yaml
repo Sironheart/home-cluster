@@ -7,7 +7,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components: []
+  components:
+    - ../../../../components/common
   interval: 1h
   path: ./k8s/base/sso/kaniop/app
   prune: true

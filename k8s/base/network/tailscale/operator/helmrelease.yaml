@@ -23,6 +23,8 @@ spec:
     name: tailscale-operator
   values:
     operatorConfig:
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
       apiServerProxyConfig:
         allowImpersonation: true
         mode: true

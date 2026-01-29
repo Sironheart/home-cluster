@@ -58,6 +58,8 @@ spec:
           oidcClientSecretKey: CLIENT_SECRET
 
     backend:
+      deploymentAnnotations:
+        reloader.stakater.com/auto: "true"
       volumes:
         - name: penpot-postgres
           projected:
@@ -81,6 +83,10 @@ spec:
         - name: root-ca
           mountPath: "/var/run/secrets/root-ca"
           readOnly: true
+
+    exporter:
+      deploymentAnnotations:
+        reloader.stakater.com/auto: "true"
 
     persistence:
       assets:

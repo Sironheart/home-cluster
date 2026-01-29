@@ -18,6 +18,8 @@ spec:
         runAsGroup: 65534
     controllers:
       unpoller:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           unpoller:
             image:
