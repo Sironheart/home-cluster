@@ -44,7 +44,7 @@ flux2 = "2.7.5"
 helm = "4.1.1"
 helmfile = "1.2.3"
 kubectl = "1.35.1"
-kustomize = "5.8.0"
+kustomize = "5.8.1"
 
 # Talos
 talhelper = "3.1.5"
