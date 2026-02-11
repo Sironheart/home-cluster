@@ -9,7 +9,7 @@ spec:
     matchLabels:
       instance: grafana
   datasources:
-    - datasourceName: default
+    - datasourceName: VictoriaMetrics
       inputName: prometheus
   configMapRef:
     name: renovate-operator-dashboard
