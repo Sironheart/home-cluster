@@ -19,7 +19,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: penpot
-      version: 0.34.0
+      version: 0.33.0
   values:
     config:
       publicUri: "https://penpot.siron.casa"
@@ -63,7 +63,7 @@ spec:
       volumes:
         - name: penpot-postgres
           projected:
-            defaultMode: 288
+            defaultMode: 0400
             sources:
               - secret:
                   name: postgres-penpot-cert
@@ -75,7 +75,7 @@ spec:
         - name: root-ca
           secret:
             secretName: root-ca
-            defaultMode: 288
+            defaultMode: 0400
       volumeMounts:
         - name: penpot-postgres
           mountPath: "/var/run/secrets/postgresql"
@@ -84,6 +84,7 @@ spec:
           mountPath: "/var/run/secrets/root-ca"
           readOnly: true
 
+
     exporter:
       deploymentAnnotations:
         reloader.stakater.com/auto: "true"
@@ -91,4 +92,3 @@ spec:
     persistence:
       assets:
         existingClaim: penpot
-
