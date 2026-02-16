@@ -6,7 +6,7 @@ metadata:
 spec:
   image:
     repository: victoriametrics/victoria-metrics
-    tag: v1.135.0
+    tag: v1.136.0
     pullPolicy: IfNotPresent
   extraArgs:
     enableTCP6: "true"
