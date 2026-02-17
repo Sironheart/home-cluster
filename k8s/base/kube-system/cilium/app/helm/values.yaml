@@ -46,6 +46,23 @@ envoy:
     serviceMonitor:
       enabled: true
 
+dashboards:
+  enabled: true
+
+hubble:
+  enabled: true
+  tls:
+    auto:
+      method: certmanager
+      certManagerIssuerRef:
+        group: cert-manager.io
+        kind: Issuer
+        name: hubble-ca
+  ui:
+    enabled: true
+  relay:
+    enabled: true
+
 # -- from talos docs --
 ipam:
   mode: kubernetes
