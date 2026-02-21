@@ -15,7 +15,7 @@ releases:
 
   - name: 1password-connect
     namespace: onepassword
-    chart: oci://ghcr.io/home-operations/charts-mirror/connect
+    chart: https://1password.github.io/connect-helm-charts/connect
     version: 2.0.3
     values:
       ["../../k8s/base/onepassword/1password-connect/app/helm/values.yaml"]
