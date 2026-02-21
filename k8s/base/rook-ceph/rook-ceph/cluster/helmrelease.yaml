@@ -58,6 +58,11 @@ spec:
           requests:
             cpu: 1
             memory: 2Gi
+        mon:
+          limits:
+            memory: 768Mi
+          requests:
+            memory: 768Mi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -108,7 +113,7 @@ spec:
                 cpu: 100m
                 memory: 1Gi
               limits:
-                memory: 4Gi
+                memory: 1Gi
         storageClass:
           enabled: true
           isDefault: false

@@ -10,6 +10,13 @@ spec:
   interval: 30m
   values:
     kind: Deployment
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        cpu: ~
+        memory: 100Mi
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       metricsProviders:

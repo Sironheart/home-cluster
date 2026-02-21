@@ -32,7 +32,7 @@ instance:
         target:
           kind: Deployment
           name: (kustomize-controller|helm-controller|source-controller)
-      - # Decrease the memory limits
+      - # Decrease the memory limits and unset cpu limit
         patch: |
           apiVersion: apps/v1
           kind: Deployment
@@ -45,6 +45,7 @@ instance:
                   - name: manager
                     resources:
                       limits:
+                        cpu: ~
                         memory: 512Mi
         target:
           kind: Deployment
