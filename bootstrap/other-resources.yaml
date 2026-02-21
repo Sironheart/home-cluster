@@ -17,7 +17,7 @@ metadata:
 type: Opaque
 stringData:
   1password-credentials.json: |-
-    op://Home Cluster/1password-connect/credentials-base64
+    op://Home Cluster/1password-connect/credentials
 ---
 apiVersion: v1
 kind: Secret
