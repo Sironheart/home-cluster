@@ -50,7 +50,7 @@ spec:
           mariadb:
             image:
               repository: lscr.io/linuxserver/mariadb
-              tag: 11.4.8
+              tag: 11.4.9
             env:
               MYSQL_USER: booklore
               MYSQL_PASSWORD:
