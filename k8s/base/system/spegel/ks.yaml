@@ -7,7 +7,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components: []
   interval: 1h
   path: ./k8s/base/system/spegel/app
   prune: true

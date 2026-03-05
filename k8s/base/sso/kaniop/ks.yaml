@@ -33,7 +33,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: kaniop
-  components: []
   interval: 1h
   path: ./k8s/base/sso/kaniop/instance
   prune: true

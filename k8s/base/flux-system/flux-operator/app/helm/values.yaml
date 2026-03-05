@@ -12,7 +12,8 @@ web:
 
 resources:
   limits:
-    memory: 512Mi
+    cpu: ~
+    memory: 284Mi
   requests:
-    cpu: 100m
-    memory: 64Mi
+    cpu: 10m
+    memory: 284Mi

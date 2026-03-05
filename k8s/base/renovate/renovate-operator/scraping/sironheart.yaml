@@ -24,7 +24,7 @@ spec:
       value: "renovate.json5"
   resources:
     requests:
-      memory: 2G
+      memory: 1Gi
       cpu: 2
     limits:
-      memory: 2G
+      memory: 1Gi

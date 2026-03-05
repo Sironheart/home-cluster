@@ -8,7 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components: []
   interval: 1h
   path: ./k8s/base/kube-system/reloader/app
   prune: true

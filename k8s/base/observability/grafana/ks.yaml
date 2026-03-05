@@ -4,7 +4,6 @@ kind: Kustomization
 metadata:
   name: grafana-operator
 spec:
-  components: []
   interval: 1h
   path: ./k8s/base/observability/grafana/operator
   prune: true
@@ -19,7 +18,6 @@ kind: Kustomization
 metadata:
   name: grafana-instance
 spec:
-  components: []
   dependsOn:
     - name: grafana-operator
     - name: rook-ceph-cluster

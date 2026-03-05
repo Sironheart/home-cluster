@@ -116,6 +116,7 @@ spec:
         selector:
           k8s-app: cilium
           component: ~
+        targetPort: 2381
       vmScrape:
         spec:
           endpoints:

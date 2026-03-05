@@ -27,11 +27,12 @@ spec:
   values:
     resources:
       requests:
+        cpu: 10m
         amd.com/gpu: 1
-        memory: 2Gi
+        memory: 4925Mi
       limits:
         amd.com/gpu: 1
-        memory: 2Gi
+        memory: 4925Mi
     ollama:
       gpu:
         enabled: true

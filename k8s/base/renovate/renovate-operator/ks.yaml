@@ -4,7 +4,6 @@ kind: Kustomization
 metadata:
   name: &appname renovate-operator
 spec:
-  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
@@ -22,7 +21,6 @@ kind: Kustomization
 metadata:
   name: &appname renovate-jobs
 spec:
-  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname

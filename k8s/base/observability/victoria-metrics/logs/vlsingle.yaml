@@ -17,5 +17,10 @@ spec:
       - ReadWriteOnce
     resources:
       requests:
+        cpu: 20m
+        memory: 419Mi
         storage: 50Gi
+      limits:
+        cpu: ~
+        memory: 419Mi
     storageClassName: ceph-block

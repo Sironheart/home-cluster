@@ -44,9 +44,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 1Gi
+                memory: 1224Mi
               limits:
-                memory: 4Gi
+                memory: 1224Mi
           mariadb:
             image:
               repository: lscr.io/linuxserver/mariadb
@@ -64,6 +64,12 @@ spec:
                   secretKeyRef:
                     name: booklore-secret
                     key: DATABASE_ROOT_PASSWORD
+            resources:
+              requests:
+                cpu: 10m
+                memory: 139Mi
+              limits:
+                memory: 139Mi
     service:
       booklore:
         controller: *app

@@ -4,7 +4,6 @@ kind: Kustomization
 metadata:
   name: &appname smartctl-exporter
 spec:
-  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname

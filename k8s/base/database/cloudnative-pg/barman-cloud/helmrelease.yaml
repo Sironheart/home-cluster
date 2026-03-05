@@ -21,4 +21,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: barman-plugin
-  values: {}
+  values:
+    resources:
+      limits:
+        memory: 217Mi
+      requests:
+        memory: 217Mi
+        cpu: 10m
