@@ -4,6 +4,7 @@ kind: Kustomization
 metadata:
   name: &app victoria-metrics-operator
 spec:
+  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -26,6 +27,7 @@ kind: Kustomization
 metadata:
   name: &app victoria-logs
 spec:
+  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -50,6 +52,7 @@ kind: Kustomization
 metadata:
   name: &app victoria-metrics
 spec:
+  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

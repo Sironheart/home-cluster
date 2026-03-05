@@ -4,6 +4,7 @@ kind: Kustomization
 metadata:
   name: kopia
 spec:
+  components: []
   dependsOn:
     - name: volsync
   interval: 1h

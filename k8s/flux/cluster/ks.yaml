@@ -5,6 +5,7 @@ metadata:
   name: cluster-base
   namespace: flux-system
 spec:
+  components: []
   interval: 1h
   path: ./k8s/base
   prune: true
@@ -22,6 +23,7 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
+  components: []
   interval: 1h
   path: ./k8s/apps
   prune: true

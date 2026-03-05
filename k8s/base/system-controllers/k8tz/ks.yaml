@@ -4,6 +4,7 @@ kind: Kustomization
 metadata:
   name: &appname k8tz
 spec:
+  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname

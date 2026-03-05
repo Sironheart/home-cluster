@@ -5,6 +5,7 @@ metadata:
   name: &app volsync
   namespace: &namespace system
 spec:
+  components: []
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -31,6 +32,7 @@ kind: Kustomization
 metadata:
   name: volsync-maintenance
 spec:
+  components: []
   dependsOn:
     - name: volsync
   interval: 1h
