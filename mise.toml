@@ -48,4 +48,4 @@ kustomize = "5.8.1"
 
 # Talos
 talhelper = "3.1.5"
-talosctl = "1.12.4"
+talosctl = "1.12.5"
