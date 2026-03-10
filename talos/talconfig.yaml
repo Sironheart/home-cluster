@@ -130,6 +130,12 @@ patches:
         extraConfig:
           maxPods: 250
           serializeImagePulls: false
+          imageGCHighThresholdPercent: 60
+          imageGCLowThresholdPercent: 40
+µ          imageMinimumGCAge: "360h" # half a month
+        extraArgs:
+          container-log-max-size: "10Mi"
+          container-log-max-files: "2"
 
   # NFS settings
   - |-
