@@ -12,7 +12,6 @@ spec:
   redirectUrl:
     - https://books.siron.casa/oauth2-callback
   strictRedirectUrl: false
-  public: true
   preferShortUsername: true
   scopeMap:
     - group: booklore
@@ -20,6 +19,7 @@ spec:
         - openid
         - profile
         - email
+        - groups
         - offline_access
 ---
 apiVersion: kaniop.rs/v1beta1
