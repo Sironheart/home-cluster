@@ -10,3 +10,6 @@ spec:
   selectAllByDefault: true
   remoteWrite:
     - url: 'http://vmsingle-vm.observability.svc:8428/api/v1/write'
+  inlineRelabelConfig:
+    - action: labeldrop
+      regex: .*amd_com.*
