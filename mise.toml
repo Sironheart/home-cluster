@@ -38,7 +38,7 @@ dir = "{{ config_root }}"
 
 [tools]
 # Flux
-flux2 = "2.8.1"
+flux2 = "2.8.3"
 
 # Kubernetes
 helm = "4.1.1"
