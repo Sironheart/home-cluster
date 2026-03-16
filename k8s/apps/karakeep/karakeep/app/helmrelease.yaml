@@ -62,10 +62,11 @@ spec:
                 enabled: true
             resources:
               requests:
-                cpu: 13m
-                memory: 687Mi
+                cpu: 165m
+                memory: 721Mi
               limits:
-                memory: 687Mi
+                memory: 721Mi
+
       chrome:
         containers:
           chrome:
@@ -110,9 +111,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 1Gi
+                memory: 443Mi
               limits:
-                memory: 1Gi
+                memory: 443Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
