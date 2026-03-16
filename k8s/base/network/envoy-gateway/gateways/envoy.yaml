@@ -15,15 +15,18 @@ spec:
   provider:
     type: Kubernetes
     kubernetes:
+      envoyPDB:
+        minAvailable: 1
       envoyDeployment:
-        replicas: 2
+        replicas: 1
         container:
           image: mirror.gcr.io/envoyproxy/envoy:v1.37.1
           resources:
             requests:
-              cpu: 100m
+              cpu: 20m
+              memory: 120Mi
             limits:
-              memory: 1Gi
+              memory: 120Mi
       envoyService:
         externalTrafficPolicy: Cluster
   shutdown:
