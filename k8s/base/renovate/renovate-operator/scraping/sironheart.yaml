@@ -9,7 +9,7 @@ spec:
       reloader.stakater.com/auto: "true"
   discoveryFilter: "sironheart/*"
   # renovate: datasource=docker depName=renovate/renovate
-  image: renovate/renovate:43.66.1
+  image: renovate/renovate:43.73.1
   parallelism: 2
   schedule: 0 * * * *
   secretRef: sironheart-renovate
