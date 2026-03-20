@@ -1,14 +1,14 @@
 [env]
-TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
-TALHELPER_SECRETS = "{{config_root}}/talos/talsecret.yaml"
+TALOSCONFIG = "{{config_root}}/k8s/talos/clusterconfig/talosconfig"
+TALHELPER_SECRETS = "{{config_root}}/k8s/talos/talsecret.yaml"
 KUBECONFIG = "{{config_root}}/kubeconfig"
 
 [tasks.talos-secrets]
-run = "op inject -f -i {{config_root}}/op-templates/talsecret.yaml.tpl -o {{config_root}}/talos/talsecret.yaml"
+run = "op inject -f -i {{config_root}}/op-templates/talsecret.yaml.tpl -o {{config_root}}/k8s/talos/talsecret.yaml"
 description = "Uses the op-templates/talsecret.yaml.tpl file and injects secrets from 1password"
 
 [tasks.config-gen]
-run = "talhelper genconfig -s {{config_root}}/talos/talsecret.yaml -c {{config_root}}/talos/talconfig.yaml -o {{config_root}}/talos/clusterconfig"
+run = "talhelper genconfig -s {{config_root}}/k8s/talos/talsecret.yaml -c {{config_root}}/k8s/talos/talconfig.yaml -o {{config_root}}/k8s/talos/clusterconfig"
 description = "Generate machine configs"
 depends = ['talos-secrets']
 
