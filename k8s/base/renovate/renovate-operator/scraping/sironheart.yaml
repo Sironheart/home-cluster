@@ -27,3 +27,10 @@ spec:
   provider:
     name: github
     endpoint: https://api.github.com/
+  webhook:
+    enabled: true
+    authentication:
+      enabled: true
+      secretRef:
+        name: sironheart-renovate
+        key: webhook
