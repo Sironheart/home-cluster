@@ -25,7 +25,15 @@ spec:
     crds:
       install: true
       keep: true
-    networkPolicyEnabled: false
+    serviceMonitor:
+      enabled: true
+    grafanaDashboard:
+      enabled: true
+      grafanaOperator:
+        enabled: true
+        matchLabels:
+          dashboards: ~
+          instance: grafana
     extraArgs:
       - "--bind=::"
       - --maxmemory=$(MAX_MEMORY)Mi

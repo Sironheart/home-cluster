@@ -6,6 +6,7 @@ metadata:
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.37.0
   replicas: ${DRAGONFLY_REPLICAS:=2}
+  networkPolicyEnabled: false
   env:
     - name: MAX_MEMORY
       valueFrom:
