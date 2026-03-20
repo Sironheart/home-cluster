@@ -27,6 +27,12 @@ spec:
   interval: 1h
   path: ./k8s/base/renovate/renovate-operator/scraping
   prune: true
+  components:
+    - ../../../../components/dragonfly
+  postBuild:
+    substitute:
+      APP: renovate
+      DRAGONFLY_REPLICAS: "1"
   sourceRef:
     kind: GitRepository
     name: flux-system
