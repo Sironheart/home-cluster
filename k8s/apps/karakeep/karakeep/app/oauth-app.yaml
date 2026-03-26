@@ -5,6 +5,8 @@ metadata:
   name: karakeep-app
 spec:
   displayname: Karakeep
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/karakeep.svg
   kanidmRef:
     name: sso
     namespace: sso

@@ -5,6 +5,8 @@ metadata:
   name: penpot-app
 spec:
   displayname: Penpot
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/penpot.png
   kanidmRef:
     name: sso
     namespace: sso

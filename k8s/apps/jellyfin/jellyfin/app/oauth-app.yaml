@@ -5,6 +5,8 @@ metadata:
   name: jellyfin-app
 spec:
   displayname: Jellyfin
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/jellyfin.png
   kanidmRef:
     name: sso
     namespace: sso

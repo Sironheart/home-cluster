@@ -5,6 +5,8 @@ metadata:
   name: grafana-app
 spec:
   displayname: Grafana
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/grafana.svg
   kanidmRef:
     name: sso
     namespace: sso

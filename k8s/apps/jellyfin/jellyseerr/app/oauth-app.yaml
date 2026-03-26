@@ -5,6 +5,8 @@ metadata:
   name: jellyseer-app
 spec:
   displayname: Request
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/jellyseerr.svg
   kanidmRef:
     name: sso
     namespace: sso
