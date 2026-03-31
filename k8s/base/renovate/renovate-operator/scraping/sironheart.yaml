@@ -7,7 +7,8 @@ spec:
   metadata:
     annotations:
       reloader.stakater.com/auto: "true"
-  discoveryFilter: "sironheart/*"
+  discoveryFilter: sironheart/*
+  skipForks: true
   # renovate: datasource=docker depName=renovate/renovate
   image: renovate/renovate:43.96.0
   parallelism: 2
@@ -15,9 +16,9 @@ spec:
   secretRef: sironheart-renovate
   extraEnv:
     - name: RENOVATE_ONBOARDING_CONFIG_FILE_NAME
-      value: "renovate.json5"
+      value: renovate.json5
     - name: RENOVATE_REDIS_URL
-      value: "redis://dragonfly-renovate.renovate.svc.cluster.local:6379/0"
+      value: redis://dragonfly-renovate.renovate.svc.cluster.local:6379/0
   resources:
     requests:
       memory: 3Gi

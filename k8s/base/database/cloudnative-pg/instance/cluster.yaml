@@ -28,8 +28,6 @@ spec:
       memory: 1Gi
 
   bootstrap:
-#    initdb:
-#      database: penpot
     recovery:
       source: &src source
 
@@ -56,8 +54,8 @@ spec:
       - hostnossl all all 10.96.0.0/12  scram-sha-256
       - hostssl   all all all           cert clientcert=verify-full
     shared_preload_libraries:
-      - "vchord.so"
-      - "timescaledb"
+      - vchord.so
+      - timescaledb
     parameters:
       timescaledb.telemetry_level: "off"
       max_locks_per_transaction: "128"
