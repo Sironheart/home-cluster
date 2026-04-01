@@ -22,6 +22,10 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rocm
-  maxHistory: 3
-  uninstall:
-    keepHistory: false
+  values:
+    upgradePolicy:
+      upgradeStrategy: OnDelete
+    serviceMonitor:
+      enabled: true
+      attachMetadata:
+        node: true
