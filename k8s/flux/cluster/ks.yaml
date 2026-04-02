@@ -88,6 +88,7 @@ spec:
                   name: _
                 spec:
                   interval: 1h
+                  maxHistory: 2
                   timeout: 10m
                   install:
                     crds: CreateReplace
