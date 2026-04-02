@@ -1,9 +1,8 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
-resources:
-  - certificate.yml
-  - connection-url.yaml
+# openapi:
+#   path: http://crd-patcher.default.svc/definitions.json?crd=helm.toolkit.fluxcd.io.v2.HelmRelease&extraProp=helm.toolkit.fluxcd.io.v2.HelmRelease:spec.values.defaultPodOptions.schedulingGates
 patches:
   - target:
       kind: HelmRelease
@@ -20,12 +19,12 @@ patches:
             postgres-certs:
               type: secret
               name: "postgres-{{ .Release.Name }}-cert"
-              defaultMode: 0440
+              defaultMode: 0640
               globalMounts:
                 - path: /var/run/secrets/postgresql
             root-ca:
-              type: secret
-              name: "root-ca"
+              type: configMap
+              name: root-ca
               defaultMode: 0440
               globalMounts:
                 - path: /var/run/secrets/root-ca

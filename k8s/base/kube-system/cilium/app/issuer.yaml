@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://k8s-schemas.m00nlit.dev/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -34,7 +33,6 @@ spec:
     group: cert-manager.io
   secretName: hubble-ca
 ---
-# yaml-language-server: $schema=https://k8s-schemas.m00nlit.dev/cert-manager.io/issuer_v1.json
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:

@@ -79,8 +79,7 @@ spec:
           - sh.siron.casa
         parentRefs:
           - name: internal
-            namespace: networking
-            sectionName: https
+            namespace: network
         rules:
           - backendRefs:
               - name: *app

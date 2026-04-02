@@ -1,0 +1,36 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ${APP}-db
+  namespace: &namespace database
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: &app ${APP}
+  dependsOn:
+    - name: instance
+      namespace: database
+  interval: 1h
+  path: ./k8s/components/database/base/postgres
+  postBuild:
+    substitute:
+      APP: *app
+      OWNER: ${DATABASE_OWNER:=${APP}}
+      EXTENSIONS: ${q:='}${DATABASE_EXTENSIONS}${q:='}
+
+      emptyArray: "[]"
+  healthChecks:
+    - name: postgres-${APP}
+      namespace: *namespace
+      kind: Database
+      apiVersion: postgresql.cnpg.io/v1
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false

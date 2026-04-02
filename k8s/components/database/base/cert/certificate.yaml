@@ -5,16 +5,15 @@ metadata:
   name: postgres-${APP}-cert
 spec:
   secretName: postgres-${APP}-cert
-  privateKey:
-    encoding: PKCS8
-    algorithm: RSA
-    size: 2048
   usages:
     - client auth
   commonName: ${DATABASE_OWNER:=${APP}}
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    encoding: PKCS8
+    rotationPolicy: Always
   issuerRef:
     name: postgres-client-ca
     kind: ClusterIssuer
     group: cert-manager.io
-  additionalOutputFormats:
-    - type: DER

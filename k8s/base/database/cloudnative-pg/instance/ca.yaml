@@ -2,49 +2,50 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: &name postgres-client-ca
+  name: &name postgres-server-ca
 spec:
   isCA: true
-  commonName: Postgres Authentication Certificate Authority
+  commonName: postgres-ca
   subject:
     countries:
       - DE
     organizations:
       - homelab-cluster
+    organizationalUnits:
+      - postgres
   usages:
     - cert sign
     - crl sign
   nameConstraints:
     critical: true
-    # Exclude everything. Only the CN may be set.
-    excluded:
-      dnsDomains: []
-      ipRanges: []
-      emailAddresses: []
-      uriDomains: []
-  duration: 87660h # 10 years
+    permitted:
+      dnsDomains:
+        - .database.svc.cluster.local
+        - .database.svc
+        - postgres-rw
+        - postgres-ro
+        - postgres-r
+  duration: 8760h # 1 year
   privateKey:
     algorithm: ECDSA
     size: 384
     encoding: PKCS8
     rotationPolicy: Never
   issuerRef:
-    name: selfsigned
+    name: cluster-ca
     kind: ClusterIssuer
     group: cert-manager.io
+  secretName: *name
   secretTemplate:
-    labels:
-      cnpg.io/reload: ""
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "database"
-  secretName: *name
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "cert-manager"
 ---
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
-  name: &name postgres-client-ca
+  name: &name postgres-server-ca
 spec:
   ca:
     secretName: *name

@@ -2,56 +2,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: &name postgres-serving-ca
-spec:
-  isCA: true
-  commonName: postgres-ca
-  dnsNames:
-    - database.svc
-    - database.svc.cluster.local
-  subject:
-    countries:
-      - DE
-    organizations:
-      - homelab-cluster
-    organizationalUnits:
-      - postgres
-  usages:
-    - cert sign
-    - crl sign
-  nameConstraints:
-    critical: true
-    permitted:
-      dnsDomains:
-        - .database.svc.cluster.local
-        - .database.svc
-  duration: 8766h # 1 year
-  privateKey:
-    algorithm: ECDSA
-    size: 384
-    encoding: PKCS8
-    rotationPolicy: Always
-  issuerRef:
-    name: cluster-ca
-    kind: ClusterIssuer
-    group: cert-manager.io
-  secretName: *name
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: &name postgres-serving-ca
-spec:
-  ca:
-    secretName: *name
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: &name postgres-serving-cert
+  name: &name postgres-server-cert
 spec:
   commonName: postgres
   dnsNames:
+    - postgres-rw
+    - postgres-ro
+    - postgres-r
     - postgres-rw.database.svc
     - postgres-ro.database.svc
     - postgres-r.database.svc
@@ -75,7 +32,7 @@ spec:
     labels:
       cnpg.io/reload: ""
   issuerRef:
-    name: postgres-serving-ca
+    name: postgres-server-ca
     kind: Issuer
     group: cert-manager.io
   secretName: *name
@@ -83,15 +40,73 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: postgres-replication-cert
+  name: &name postgres-client-cert
 spec:
-  secretName: postgres-replication-cert
+  secretName: *name
   secretTemplate:
     labels:
       cnpg.io/reload: ""
   usages:
     - client auth
   commonName: streaming_replica
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    encoding: PKCS8
+    rotationPolicy: Always
+  issuerRef:
+    name: postgres-client-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name pooler-server-cert
+spec:
+  commonName: pooler
+  dnsNames:
+    - pooler-rw.database.svc
+    - pooler-rw.database.svc.cluster.local
+  subject:
+    countries:
+      - DE
+    organizations:
+      - homelab-cluster
+  usages:
+    - server auth
+  duration: 720h # 1 month
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    encoding: PKCS8
+    rotationPolicy: Always
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ""
+  issuerRef:
+    name: postgres-server-ca
+    kind: Issuer
+    group: cert-manager.io
+  secretName: *name
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: &name pooler-client-cert
+spec:
+  secretName: *name
+  secretTemplate:
+    labels:
+      cnpg.io/reload: ""
+  usages:
+    - client auth
+  commonName: pooler-rw
+  privateKey:
+    algorithm: ECDSA
+    size: 384
+    encoding: PKCS8
+    rotationPolicy: Always
   issuerRef:
     name: postgres-client-ca
     kind: ClusterIssuer
