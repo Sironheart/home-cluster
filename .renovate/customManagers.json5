@@ -11,6 +11,15 @@
         "oci://(?<depName>[^:]+):(?<currentValue>\\S+)",
       ],
       datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
+      description: "Process common renovate comments across all files",
+      managerFilePatterns: ["/.*/"],
+      matchStrings: [
+        "#\\s*renovate:\\s*datasource=(?<datasource>[^\\s]+)\\s+depName=(?<depName>[^\\s]+)[^\\n]*\\n\\s*[^:\\n]+:\\s*[\"']?(?:(?:[^\\s\"':@]+(?:/[^\\s\"':@]+)*):)?(?<currentValue>[^\\s\"'@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?[\"']?",
+        "#\\s*renovate:\\s*depName=(?<depName>[^\\s]+)\\s+datasource=(?<datasource>[^\\s]+)[^\\n]*\\n\\s*[^:\\n]+:\\s*[\"']?(?:(?:[^\\s\"':@]+(?:/[^\\s\"':@]+)*):)?(?<currentValue>[^\\s\"'@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?[\"']?",
+      ],
     }
   ],
 }
