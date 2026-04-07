@@ -5,7 +5,7 @@ metadata:
   name: kaniop
 spec:
   hostnames:
-  - sso.siron.casa
+    - sso.siron.casa
   parentRefs:
     - name: external
       namespace: network

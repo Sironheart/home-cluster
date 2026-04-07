@@ -35,7 +35,6 @@ spec:
         parentRefs:
           - name: external
             namespace: network
-
     metrics:
       enabled: true
       serviceMonitor:
