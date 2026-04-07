@@ -6,6 +6,8 @@ metadata:
   labels:
     instance: grafana
 spec:
+  # renovate: datasource=github-releases depName=grafana/grafana
+  version: 12.4.2
   config:
     analytics:
       check_for_updates: "false"
@@ -46,6 +48,18 @@ spec:
     server:
       enable_gzip: "true"
       root_url: https://grafana.siron.casa
+  httpRoute:
+    spec:
+      hostnames:
+        - grafana.siron.casa
+      parentRefs:
+        - name: external
+          namespace: network
+          sectionName: https
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
   deployment:
     metadata:
       annotations:
