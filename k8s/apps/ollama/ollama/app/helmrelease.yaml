@@ -27,7 +27,7 @@ spec:
   values:
     resources:
       requests:
-        cpu: 520m
+        cpu: 8
         memory: 6144Mi
       limits:
         memory: 6144Mi
@@ -44,6 +44,8 @@ spec:
     extraEnv:
       - name: OLLAMA_USE_MMAP
         value: "false"
+      - name: OLLAMA_LOG_FORMAT
+        value: json
     persistentVolume:
       enabled: true
       storageClass: ceph-block
