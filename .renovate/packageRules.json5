@@ -13,18 +13,6 @@
       ignoreTests: false,
     },
     {
-      description: "Auto-merge high-cadence packages weekly",
-      matchDatasources: ["docker"],
-      automerge: true,
-      matchUpdateTypes: ["minor", "patch"],
-      matchPackageNames: [
-        "renovatebot/renovate",
-        "ghcr.io/emberstack/helm-charts/reflector",
-        "ghcr.io/mogenius/helm-charts/renovate-operator",
-      ],
-      schedule: ["before 6am on Monday"],
-    },
-    {
       description: "Override Talos Installer Package Name",
       matchDatasources: ["docker"],
       matchPackageNames: ["/factory\\.talos\\.dev/"],
