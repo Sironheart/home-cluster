@@ -5,7 +5,7 @@ metadata:
   name: vmsingle
 spec:
   hostnames:
-  - vmsingle.siron.casa
+    - vmsingle.siron.casa
   parentRefs:
     - name: internal
       namespace: network

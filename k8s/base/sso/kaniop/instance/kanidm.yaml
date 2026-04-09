@@ -9,17 +9,13 @@ spec:
   # renovate: datasource=docker depName=kanidm/server
   image: kanidm/server:1.9.2
   oauth2ClientNamespaceSelector:
-    matchLabels:
-      {}
+    matchLabels: {}
   groupNamespaceSelector:
-    matchLabels:
-      {}
+    matchLabels: {}
   personNamespaceSelector:
-    matchLabels:
-      {}
+    matchLabels: {}
   serviceAccountNamespaceSelector:
-    matchLabels:
-      {}
+    matchLabels: {}
   replicaGroups:
     - name: default
       replicas: 1
@@ -41,4 +37,3 @@ spec:
         resources:
           requests:
             storage: 100Mi
-

@@ -12,31 +12,31 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-      - name: penpot
-        namespace: penpot
-        port: 8080
+        - name: penpot
+          namespace: penpot
+          port: 8080
       matches:
         - path:
             type: PathPrefix
             value: /
     - backendRefs:
-      - name: penpot-backend
-        namespace: penpot
-        port: 6060
+        - name: penpot-backend
+          namespace: penpot
+          port: 6060
       matches:
-      - path:
-          type: PathPrefix
-          value: /api
-      - path:
-          type: PathPrefix
-          value: /assets
-      - path:
-          type: PathPrefix
-          value: /ws/notifcations
+        - path:
+            type: PathPrefix
+            value: /api
+        - path:
+            type: PathPrefix
+            value: /assets
+        - path:
+            type: PathPrefix
+            value: /ws/notifcations
     - backendRefs:
-      - name: penpot-exporter
-        namespace: penpot
-        port: 6061
+        - name: penpot-exporter
+          namespace: penpot
+          port: 6061
       matches:
         - path:
             type: PathPrefix

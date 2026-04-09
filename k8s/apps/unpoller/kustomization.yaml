@@ -7,4 +7,4 @@ components:
 resources:
   - ./unpoller/ks.yaml
 replacements:
-  - path:  ../../components/replacements/ks.yaml
+  - path: ../../components/replacements/ks.yaml

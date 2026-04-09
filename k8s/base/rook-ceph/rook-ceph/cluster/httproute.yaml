@@ -5,7 +5,7 @@ metadata:
   name: ceph-dashboard
 spec:
   hostnames:
-  - ceph.siron.casa
+    - ceph.siron.casa
   parentRefs:
     - name: internal
       namespace: network

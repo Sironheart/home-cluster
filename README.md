@@ -1,7 +1,8 @@
 <div align="center">
 ## Home Cluster
 
-_... managed using Flux and Renovate
+\_... managed using Flux and Renovate
+
 </div>
 
 ---

@@ -14,7 +14,7 @@
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":timezone(Europe/Berlin)"
+    ":timezone(Europe/Berlin)",
   ],
   flux: {
     managerFilePatterns: ["/(^|/)k8s/.+\\.ya?ml$/"],

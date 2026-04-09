@@ -84,7 +84,6 @@ spec:
           mountPath: "/var/run/secrets/root-ca"
           readOnly: true
 
-
     exporter:
       deploymentAnnotations:
         reloader.stakater.com/auto: "true"

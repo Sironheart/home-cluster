@@ -4,12 +4,8 @@
     {
       customType: "regex",
       description: "Process OCI dependencies",
-      managerFilePatterns: [
-        "/^k8s/.+\\.yaml(?:\\.j2)?$/"
-      ],
-      matchStrings: [
-        "oci://(?<depName>[^:]+):(?<currentValue>\\S+)",
-      ],
+      managerFilePatterns: ["/^k8s/.+\\.yaml(?:\\.j2)?$/"],
+      matchStrings: ["oci://(?<depName>[^:]+):(?<currentValue>\\S+)"],
       datasourceTemplate: "docker",
     },
     {
@@ -20,6 +16,6 @@
         "#\\s*renovate:\\s*datasource=(?<datasource>[^\\s]+)\\s+depName=(?<depName>[^\\s]+)[^\\n]*\\n\\s*[^:\\n]+:\\s*[\"']?(?:(?:[^\\s\"':@]+(?:/[^\\s\"':@]+)*):)?(?<currentValue>[^\\s\"'@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?[\"']?",
         "#\\s*renovate:\\s*depName=(?<depName>[^\\s]+)\\s+datasource=(?<datasource>[^\\s]+)[^\\n]*\\n\\s*[^:\\n]+:\\s*[\"']?(?:(?:[^\\s\"':@]+(?:/[^\\s\"':@]+)*):)?(?<currentValue>[^\\s\"'@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?[\"']?",
       ],
-    }
+    },
   ],
 }
