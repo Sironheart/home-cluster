@@ -14,7 +14,6 @@ spec:
   redirectUrl:
     - https://request.siron.casa/login?provider=kanidm&callback=true
   preferShortUsername: true
-  # strictRedirectUrl: false
   allowInsecureClientDisablePkce: true
   scopeMap:
     - group: jellyfin

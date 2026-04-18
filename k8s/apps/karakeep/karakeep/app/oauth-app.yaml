@@ -29,6 +29,8 @@ spec:
   kanidmRef:
     name: sso
     namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
   members:
     - sironheart
     - st-albus

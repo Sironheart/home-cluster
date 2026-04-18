@@ -39,6 +39,8 @@ spec:
   kanidmRef:
     name: sso
     namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
   members:
     - sironheart
 ---
@@ -50,6 +52,8 @@ spec:
   kanidmRef:
     name: sso
     namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
   members:
     - grafana-admin
 ---
@@ -61,6 +65,8 @@ spec:
   kanidmRef:
     name: sso
     namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
   members:
     - grafana-normal-admin
 ---
@@ -72,5 +78,7 @@ spec:
   kanidmRef:
     name: sso
     namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
   members:
     - grafana-editor
