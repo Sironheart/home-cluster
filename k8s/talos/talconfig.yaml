@@ -226,6 +226,7 @@ patches:
           configuration:
             exemptions:
               namespaces:
+                - cert-manager
                 - network
                 - observability
                 - openebs

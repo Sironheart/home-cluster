@@ -49,11 +49,6 @@ spec:
   usages:
     - client auth
   commonName: streaming_replica
-  privateKey:
-    algorithm: ECDSA
-    size: 384
-    encoding: PKCS8
-    rotationPolicy: Always
   issuerRef:
     name: postgres-client-ca
     kind: ClusterIssuer
@@ -102,11 +97,6 @@ spec:
   usages:
     - client auth
   commonName: pooler-rw
-  privateKey:
-    algorithm: ECDSA
-    size: 384
-    encoding: PKCS8
-    rotationPolicy: Always
   issuerRef:
     name: postgres-client-ca
     kind: ClusterIssuer

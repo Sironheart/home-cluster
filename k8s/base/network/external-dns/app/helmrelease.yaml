@@ -48,6 +48,7 @@ spec:
     triggerLoopOnEvent: true
     policy: sync
     sources:
+      - crd
       - gateway-httproute
       - gateway-grpcroute
       - gateway-tlsroute

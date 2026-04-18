@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres
+  name: &name postgres
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: enabled
     kustomize.toolkit.fluxcd.io/prune: disabled
@@ -21,13 +21,6 @@ spec:
   storage:
     size: 10Gi
     storageClass: openebs-hostpath
-
-  resources:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      memory: 1Gi
 
   bootstrap:
     recovery:

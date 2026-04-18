@@ -1,0 +1,165 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app forgejo
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  values:
+    gitea:
+      admin:
+        username: ""
+      config:
+        database:
+          DB_TYPE: postgres
+          HOST: pooler-rw.database.svc:5432
+          USER: forgejo
+          NAME: forgejo
+          SSL_MODE: verify-full
+        cache:
+          ENABLED: true
+          ADAPTER: redis
+          HOST: &redis_string redis://dragonfly-forgejo:6379?pool_size=100&idle_timeout=180s
+        cron.archive_cleanup:
+          ENABLED: true
+          RUN_AT_START: true
+          SCHEDULE: "@every 1h"
+          OLDER_THAN: 2h
+        indexer:
+          ISSUE_INDEXER_TYPE: bleve
+          REPO_INDEXER_ENABLED: true
+        lfs:
+          PATH: /data/git/lfs
+        mailer:
+          ENABLED: false
+        openid:
+          ENABLE_OPENID_SIGNIN: false
+          ENABLE_OPENID_SIGNUP: false
+        queue:
+          TYPE: redis
+          CONN_STR: *redis_string
+        repository:
+          DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
+          DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
+          ROOT: /data/git/repositories
+        repository.pull-request:
+          DEFAULT_MERGE_STYLE: fast-forward-only
+          DEFAULT_UPDATE_STYLE: rebase
+        repository.signing:
+          FORMAT: ssh
+          SIGNING_KEY: /data/signing/ed25519.pub
+          SIGNING_NAME: forgejo.siron.casa Instance
+          SIGNING_EMAIL: noreply@forgejo.siron.casa
+          INITIAL_COMMIT: pubkey
+          CRUD_ACTIONS: pubkey, parentsigned
+          WIKI: never
+          MERGES: pubkey
+        security:
+          REVERSE_PROXY_TRUSTED_PROXIES: 10.42.0.0/16
+        server:
+          APP_DATA_PATH: /data/gitea
+          ROOT_URL: https://forgejo.siron.casa
+          SSH_DOMAIN: forgejo.siron.casa
+          SSH_PORT: &sshPort 22
+          SSH_SERVER_HOST_KEYS: ssh/ssh_host_ed25519_key
+        service:
+          ALLOW_ONLY_EXTERNAL_REGISTRATION: true
+          DEFAULT_ENABLE_TIMETRACKING: false
+          ENABLE_INTERNAL_SIGNIN: false
+          ENABLE_PASSWORD_SIGNIN_FORM: false
+          SHOW_REGISTRASTION_BUTTON: false
+        service.explore:
+          REQUIRE_SIGNIN_VIEW: true
+        session:
+          PROVIDER: redis
+          PROVIDER_CONFIG: *redis_string
+          SESSION_LIFE_TIME: "2678400"
+        webhook:
+          ALLOWED_HOST_LIST: "*"
+
+      oauth:
+        - name: kanidm
+          adminGroup: forgejo_admins@siron.casa
+          autoDiscoverUrl: https://sso.siron.casa/oauth2/openid/forgejo-app/.well-known/openid-configuration
+          existingSecret: forgejo-kanidm-oidc
+          groupClaimName: groups
+          provider: openidConnect
+          scopes: profile email groups
+
+    deployment:
+      env:
+        - name: PGSSLROOTCERT
+          value: /var/run/secrets/root-ca/ca.crt
+        - name: PGSSLCERT
+          value: /var/run/secrets/postgresql/tls.crt
+        - name: PGSSLKEY
+          value: /var/run/secrets/postgresql/tls.key
+        - name: SSH_AUTH_SOCK
+          value: /tmp/ssh-tpm-agent.sock
+
+    extraContainerVolumeMounts:
+      - name: signing-key
+        mountPath: /data/signing
+        readOnly: true
+      - name: postgres-forgejo
+        mountPath: "/var/run/secrets/postgresql"
+      - name: root-ca
+        mountPath: "/var/run/secrets/root-ca"
+
+    extraInitVolumeMounts:
+      - name: postgres-forgejo
+        mountPath: "/var/run/secrets/postgresql"
+      - name: root-ca
+        mountPath: "/var/run/secrets/root-ca"
+      - name: signing-key
+        mountPath: /data/signing
+        readOnly: true
+
+    extraVolumes:
+      - name: signing-key
+        secret:
+          secretName: forgejo-signing-key
+          defaultMode: 0400
+      - name: postgres-forgejo
+        csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/issuer-name: postgres-client-ca
+            csi.cert-manager.io/issuer-kind: ClusterIssuer
+            csi.cert-manager.io/key-algorithm: ECDSA
+            csi.cert-manager.io/key-size: "384"
+            csi.cert-manager.io/key-encoding: PKCS8
+            csi.cert-manager.io/key-usages: client auth
+            csi.cert-manager.io/common-name: forgejo
+            csi.cert-manager.io/dns-names: $${POD_NAME}.$${POD_NAMESPACE}.svc.cluster.local
+      - name: root-ca
+        configMap:
+          defaultMode: 0600
+          name: root-ca
+
+    image:
+      rootless: true
+      registry: code.forgejo.org
+      repository: forgejo/forgejo
+      tag: 15.0.0-rootless
+    persistence:
+      create: false
+      claimName: forgejo
+
+    service:
+      ssh:
+        port: *sshPort
+
+    httpRoute:
+      enabled: false
+
+    tcpRoute:
+      enabled: true
+      parentRefs:
+        - name: internal
+          namespace: network
+          sectionName: ssh

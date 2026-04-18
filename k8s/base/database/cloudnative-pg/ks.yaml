@@ -53,28 +53,85 @@ spec:
     namespace: flux-system
   timeout: 5m
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
+apiVersion: fluxcd.controlplane.io/v1
+kind: ResourceSet
 metadata:
-  name: &app instance
-  namespace: database
+  name: cnpg-cluster
+  annotations:
+    fluxcd.controlplane.io/reconcile: "enabled"
+    fluxcd.controlplane.io/reconcileEvery: "30m"
+    fluxcd.controlplane.io/reconcileTimeout: "5m"
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudnative-pg
-    - name: barman-plugin
-    - name: external-secrets
-      namespace: external-secrets
-  interval: 1h
-  path: ./k8s/base/database/cloudnative-pg/instance
-  components:
-    - ../../../../components/common
-  prune: true
-  retryInterval: 2m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
+  inputStrategy:
+    name: Permute
+  inputs:
+    - role: pooler-rw
+  inputsFrom:
+    - apiVersion: fluxcd.controlplane.io/v1
+      kind: ResourceSetInputProvider
+      selector:
+        matchLabels:
+          postgresql.cnpg.io/role: "true"
+  resourcesTemplate: |
+    apiVersion: kustomize.toolkit.fluxcd.io/v1
+    kind: Kustomization
+    metadata:
+      name: &app instance
+      namespace: &namespace database
+    spec:
+      commonMetadata:
+        labels:
+          app.kubernetes.io/name: *app
+      components:
+        - ../../../../components/common
+      healthChecks:
+        - apiVersion: postgresql.cnpg.io/v1
+          kind: Cluster
+          name: postgres
+          namespace: database
+      interval: 1h
+      path: ./k8s/base/database/cloudnative-pg/instance
+      prune: true
+      retryInterval: 2m
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+      targetNamespace: *namespace
+      timeout: 5m
+      patches:
+        - target:
+            kind: Cluster
+            group: postgresql.cnpg.io
+            version: v1
+          patch: |-
+            apiVersion: postgresql.cnpg.io/v1
+            kind: Cluster
+            metadata:
+              name: not-used
+            spec:
+              managed:
+                roles:
+                  <<- $roleNames := list >>
+                  <<- range $k, $in := inputs >>
+                  <<-   if kindIs "map" $in >>
+                  <<-     $r := index $in "role" >>
+                  <<-     if $r >>
+                  <<-       $roleNames = concat $roleNames (list $r) >>
+                  <<-     end >>
+                  <<-   end >>
+                  <<- end >>
+                  <<- $roleNames = $roleNames | compact | uniq | sortAlpha >>
+
+                  <<- $roleObjs := list >>
+                  <<- range $r := $roleNames >>
+                  <<-   $roleObjs = concat $roleObjs (list (dict
+                        "name" $r
+                        "ensure" "present"
+                        "login" true
+                        "superuser" false
+                        "disablePassword" true
+                      )) >>
+                  <<- end >>
+
+                  <<- toYaml $roleObjs | nindent 18 >>

@@ -25,12 +25,12 @@ spec:
         - postgres-rw
         - postgres-ro
         - postgres-r
-  duration: 8760h # 1 year
+  duration: 8766h # 1 year
   privateKey:
     algorithm: ECDSA
     size: 384
     encoding: PKCS8
-    rotationPolicy: Never
+    rotationPolicy: Always
   issuerRef:
     name: cluster-ca
     kind: ClusterIssuer

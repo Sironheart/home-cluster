@@ -31,7 +31,7 @@ spec:
                   name: _
                 spec:
                   interval: 1h
-                  timeout: 10m
+                  timeout: 5m
                   install:
                     crds: CreateReplace
                     strategy:
@@ -89,7 +89,7 @@ spec:
                 spec:
                   interval: 1h
                   maxHistory: 2
-                  timeout: 10m
+                  timeout: 5m
                   install:
                     crds: CreateReplace
                     strategy:
