@@ -2,16 +2,18 @@
 apiVersion: kaniop.rs/v1beta1
 kind: KanidmOAuth2Client
 metadata:
-  name: jellyseer-app
+  name: seer-app
 spec:
   displayname: Request
   image:
-    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/jellyseerr.svg
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/seerr.svg
   kanidmRef:
     name: sso
     namespace: sso
   origin: https://request.siron.casa/
   redirectUrl:
+    - https://request.siron.casa/login
+    - https://request.siron.casa/profile/settings/linked-accounts
     - https://request.siron.casa/login?provider=kanidm&callback=true
   preferShortUsername: true
   allowInsecureClientDisablePkce: true

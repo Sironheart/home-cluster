@@ -2,18 +2,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app jellyseerr
+  name: &app seerr
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+    - ../../../../components/database
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./k8s/apps/jellyfin/jellyseerr/app
+  path: ./k8s/apps/jellyfin/seerr/app
   postBuild:
     substitute:
       APP: *app
