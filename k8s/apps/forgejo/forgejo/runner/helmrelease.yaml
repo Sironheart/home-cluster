@@ -1,0 +1,170 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo-runner
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  interval: 1h
+  values:
+    configMaps:
+      config:
+        suffix: config
+        data:
+          runner.yaml.tmpl: |-
+            cache:
+              enabled: true
+              dir: /data/cache
+            container:
+              docker_host: "-"
+              workdir_parent: shared/workdir
+            kubernetes:
+              namespace: dev
+              poll_timeout: 10m
+            log:
+              level: info
+            server:
+              connections:
+                forgejo:
+                  url: http://forgejo-http.forgejo.svc.cluster.local:3000
+                  uuid: __RUNNER_UUID__
+                  token: __RUNNER_TOKEN__
+            runner:
+              capacity: 4
+              labels:
+                - ubuntu-latest:k8spod:/config/podspec-default.yaml
+                - ubuntu-24.04:k8spod:/config/podspec-default.yaml
+                - default:k8spod:/config/podspec-default.yaml
+              timeout: 3h
+          podspec-default.yaml: |-
+            containers:
+              - env:
+                  - name: DEBIAN_FRONTEND
+                    value: noninteractive
+                image: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04@sha256:cbcf25eee3ccd1b5491cd74ec3ae57a5c1dbcf7012ae1bbf53723f08c79676e2
+                imagePullPolicy: IfNotPresent
+                name: main
+                resources:
+                  limits:
+                    memory: 2Gi
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+            restartPolicy: Never
+
+    controllers:
+      forgejo-runner:
+        type: statefulset
+        replicas: 1
+
+        statefulset:
+          volumeClaimTemplates:
+            - accessMode: ReadWriteOnce
+              globalMounts:
+                - path: /data
+              name: persistent
+              size: 1Gi
+
+        pod:
+          labels:
+            app.kubernetes.io/component: forgejo-runner
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        initContainers:
+          render-config:
+            image:
+              repository: git.erwanleboucher.dev/eleboucher/runner
+              tag: latest@sha256:89fe80f4d772de476482e12ddcdfc86e767cd250cb3d8054da178a4964c02a70
+            command:
+              - "sh"
+              - "-c"
+              - >
+                set -eu; rm -f /data/.runner; sed -e "s|__RUNNER_UUID__|${RUNNER_UUID}|" -e "s|__RUNNER_TOKEN__|${RUNNER_TOKEN}|" /config/runner.yaml.tmpl > /tmp/runner.yaml;
+            envFrom:
+              - secretRef:
+                  name: forgejo-runner-secret
+
+        containers:
+          runner:
+            image:
+              repository: git.erwanleboucher.dev/eleboucher/runner
+              tag: latest@sha256:89fe80f4d772de476482e12ddcdfc86e767cd250cb3d8054da178a4964c02a70
+            command:
+              - /bin/forgejo-runner
+              - daemon
+              - --config
+              - /tmp/runner.yaml
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              readOnlyRootFilesystem: true
+
+    persistence:
+      config:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config
+      tmpfs:
+        type: emptyDir
+        sizeLimit: 10Gi
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+
+    rbac:
+      bindings:
+        forgejo-runner:
+          type: RoleBinding
+          roleRef:
+            identifier: forgejo-runner
+          subjects:
+            - identifier: forgejo-runner
+      roles:
+        forgejo-runner:
+          type: Role
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+              verbs:
+                - list
+                - watch
+                - create
+                - get
+                - delete
+            - apiGroups:
+                - ""
+              resources:
+                - pods/exec
+              verbs:
+                - create
+                - get
+            - apiGroups:
+                - ""
+              resources:
+                - pods/log
+              verbs:
+                - list
+                - watch
+                - get
+
+    serviceAccount:
+      forgejo-runner: {}
