@@ -24,6 +24,8 @@ servers:
       - name: ready
       - name: rewrite
         parameters: name substring sso.siron.casa external.network.svc.cluster.local
+      - name: forward
+        parameters: internal.siron.casa 192.168.0.1
       - name: kubernetes
         parameters: cluster.local in-addr.arpa ip6.arpa
         configBlock: |-
