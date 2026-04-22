@@ -16,12 +16,12 @@ spec:
       reporting_enabled: "false"
     auth:
       disable_login_form: "false"
-      signout_redirect_url: https://sso.siron.casa/application/o/grafana/end-session/
     auth.anonymous:
       enabled: "false"
     auth.generic_oauth:
       name: kanidm
       enabled: "true"
+      auto_login: "true"
       client_id: ${CLIENT_ID}
       client_secret: ${CLIENT_SECRET}
       scopes: "openid profile email groups"
@@ -37,6 +37,8 @@ spec:
       role_attribute_path: "contains(grafana_role[*], 'GrafanaAdmin') && 'GrafanaAdmin' || contains(grafana_role[*], 'Admin') && 'Admin' || contains(grafana_role[*], 'Editor') && 'Editor' || 'Viewer'"
     log:
       mode: console
+    log.console:
+      format: json
     metrics:
       enabled: "true"
     news:
@@ -44,7 +46,8 @@ spec:
     plugins:
       plugin_admin_enabled: "false"
     security:
-      angular_support_enabled: "true"
+      angular_support_enabled: "false"
+      disable_initial_admin_creation: "true"
     server:
       enable_gzip: "true"
       root_url: https://grafana.siron.casa
@@ -72,8 +75,6 @@ spec:
           containers:
             - name: grafana
               envFrom:
-                - secretRef:
-                    name: grafana-admin
                 - secretRef:
                     name: grafana-app-kanidm-oauth2-credentials
               securityContext:
