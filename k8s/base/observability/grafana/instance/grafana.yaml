@@ -47,7 +47,6 @@ spec:
       plugin_admin_enabled: "false"
     security:
       angular_support_enabled: "false"
-      disable_initial_admin_creation: "true"
     server:
       enable_gzip: "true"
       root_url: https://grafana.siron.casa

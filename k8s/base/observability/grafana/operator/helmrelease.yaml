@@ -11,6 +11,8 @@ spec:
   values:
     annotations:
       reloader.stakater.com/auto: "true"
+    logging:
+      encoder: json
     dashboard:
       enabled: true
     serviceMonitor:
