@@ -26,6 +26,9 @@ spec:
   values:
     nameOverride: *app
 
+    global:
+      clusterLabel: home
+
     victoria-metrics-operator:
       enabled: false
 
@@ -93,14 +96,7 @@ spec:
             - targetLabel: job
               replacement: kubelet
 
-    kubeApiServer:
-      enabled: true
-
     kubeControllerManager:
-      enabled: true
-      service:
-        selector:
-          component: kube-apiserver # Selects controller node IPs
       vmScrape:
         spec:
           endpoints:
@@ -111,23 +107,22 @@ spec:
                 insecureSkipVerify: true
 
     kubeEtcd:
-      enabled: true
       service:
         selector:
-          k8s-app: cilium
-          component: ~
+          component: kube-apiserver
+        port: 2381
         targetPort: 2381
       vmScrape:
         spec:
           endpoints:
-            - port: http-metrics
-              scheme: http
+            - scheme: http
 
     kubeScheduler:
-      enabled: false
-
-    kubeProxy:
-      enabled: false
-
-    coreDns:
-      enabled: true
+      vmScrape:
+        spec:
+          endpoints:
+            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              port: http-metrics
+              scheme: https
+              tlsConfig:
+                insecureSkipVerify: true

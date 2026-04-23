@@ -22,7 +22,7 @@ spec:
               docker_host: "-"
               workdir_parent: shared/workdir
             kubernetes:
-              namespace: dev
+              namespace: forgejo
               poll_timeout: 10m
             log:
               level: info
@@ -33,7 +33,6 @@ spec:
                   uuid: __RUNNER_UUID__
                   token: __RUNNER_TOKEN__
             runner:
-              capacity: 4
               labels:
                 - ubuntu-latest:k8spod:/config/podspec-default.yaml
                 - ubuntu-24.04:k8spod:/config/podspec-default.yaml
@@ -64,7 +63,7 @@ spec:
           volumeClaimTemplates:
             - accessMode: ReadWriteOnce
               globalMounts:
-                - path: /data
+                - path: /persistent
               name: persistent
               size: 1Gi
 
@@ -89,7 +88,7 @@ spec:
               - "sh"
               - "-c"
               - >
-                set -eu; rm -f /data/.runner; sed -e "s|__RUNNER_UUID__|${RUNNER_UUID}|" -e "s|__RUNNER_TOKEN__|${RUNNER_TOKEN}|" /config/runner.yaml.tmpl > /tmp/runner.yaml;
+                set -eu; rm -f /persistent/.runner; sed -e "s|__RUNNER_UUID__|${RUNNER_UUID}|" -e "s|__RUNNER_TOKEN__|${RUNNER_TOKEN}|" /config/runner.yaml.tmpl > /tmp/runner.yaml;
             envFrom:
               - secretRef:
                   name: forgejo-runner-secret
@@ -125,6 +124,8 @@ spec:
         type: emptyDir
         sizeLimit: 10Gi
         globalMounts:
+          - path: /data
+            subPath: data
           - path: /tmp
             subPath: tmp
 
