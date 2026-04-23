@@ -68,7 +68,6 @@ spec:
         parentRefs:
           - name: internal
             namespace: network
-            sectionName: https
     configMaps:
       config:
         data:

@@ -71,12 +71,10 @@ spec:
     route:
       sabnzbd:
         hostnames:
-          - "{{ .Release.Name }}.siron.casa"
           - sab.siron.casa
         parentRefs:
           - name: internal
             namespace: network
-            sectionName: https
         rules:
           - backendRefs:
               - identifier: sabnzbd

@@ -57,11 +57,14 @@ spec:
       parentRefs:
         - name: external
           namespace: network
-          sectionName: https
-      rules:
-        - backendRefs:
-            - name: grafana-service
-              port: 3000
+  persistentVolumeClaim:
+    spec:
+      storageClassName: ceph-block
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
   deployment:
     metadata:
       annotations:

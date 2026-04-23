@@ -1,21 +1,8 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: victoria-metrics-k8s-stack
-spec:
-  interval: 5m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 0.74.1
-  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app vmks
+  name: &app victoria-metrics
 spec:
   interval: 1h
   chartRef:
@@ -33,19 +20,60 @@ spec:
       enabled: false
 
     vmagent:
-      enabled: false
+      enabled: enabled
 
     vmalert:
-      enabled: false
+      enabled: enabled
 
     vmsingle:
-      enabled: false
+      spec:
+        image:
+          repository: victoriametrics/victoria-metrics
+          tag: v1.140.0
+          pullPolicy: IfNotPresent
+        retentionPeriod: 30d
+      route:
+        enabled: true
+        parentRefs:
+          - name: internal
+            namespace: network
+        hostnames:
+          - vmsingle.siron.casa
 
     grafana:
       enabled: false
+      forceDeployDatasource: true
 
     alertmanager:
-      enabled: false
+      enabled: true
+      useManagedConfig: true
+
+      spec:
+        externalURL: https://vmalertmanager.siron.casa
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 1Gi
+
+      route:
+        enabled: true
+        hostnames:
+          - vmalertmanager.siron.casa
+        parentRefs:
+          - name: internal
+            namespace: network
+
+    defaultDatasources:
+      grafanaOperator:
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              instance: grafana
 
     defaultDashboards:
       enabled: true
@@ -55,12 +83,9 @@ spec:
           allowCrossNamespaceImport: true
           instanceSelector:
             matchLabels:
-              dashboards: null
               instance: grafana
       dashboards:
         victoriametrics-operator:
-          enabled: false
-        victoriametrics-vmalert:
           enabled: false
 
     prometheus-node-exporter:
