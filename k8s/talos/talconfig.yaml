@@ -24,6 +24,8 @@ controlPlane:
       systemExtensions:
         officialExtensions:
           - siderolabs/amdgpu
+      extraKernelArgs:
+        - talos.dashboard.disabled=1
 
 nodes:
   - hostname: talos01
@@ -132,7 +134,8 @@ patches:
           serializeImagePulls: false
           imageGCHighThresholdPercent: 60
           imageGCLowThresholdPercent: 40
-          imageMinimumGCAge: "360h" # half a month
+          imageMinimumGCAge: "12h" # half a day
+          imageMaximumGCAge: "168h" # 7 days
         extraArgs:
           container-log-max-size: "10Mi"
           container-log-max-files: "2"

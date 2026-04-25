@@ -1,0 +1,22 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: victoria-traces
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      instance: grafana
+  datasource:
+    access: proxy
+    name: VictoriaTraces
+    url: http://victoria-traces-server.observability.svc.cluster.local:10428/select/jaeger
+    type: jaeger
+    # jsonData:
+    #   tracesToLogs:
+    #     datasourceUid: victoria-logs
+    #     filterByTraceID: true
+    #     filterBySpanID: false
+    #     customQuery: true
+    #     query: '"$${__trace.traceId}"'

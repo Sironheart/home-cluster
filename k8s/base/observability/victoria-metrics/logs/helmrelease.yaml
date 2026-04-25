@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: logs-collector
+  name: victoria-logs
 spec:
   interval: 1h
   chartRef:
@@ -27,9 +27,38 @@ spec:
       route:
         enabled: true
         hostnames:
-          - vlogs.siron.casa
+          - vlsingle.siron.casa
         parentRefs:
           - name: internal
             namespace: network
       serviceMonitor:
         enabled: true
+      dashboards:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          spec:
+            allowCrossNamespaceImport: true
+            instanceSelector:
+              matchLabels:
+                instance: grafana
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs-collector
+spec:
+  interval: 1h
+  chartRef:
+    name: victoria-logs-collector
+    kind: OCIRepository
+  dependsOn:
+    - name: victoria-metrics-operator
+  values:
+    image:
+      repository: victoriametrics/vlagent
+      tag: v1.50.0
+    remoteWrite:
+      - url: "http://victoria-logs-server.observability.svc.cluster.local:9428/insert/native"
+    podMonitor:
+      enabled: true

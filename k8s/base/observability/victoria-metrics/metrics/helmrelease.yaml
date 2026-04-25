@@ -73,6 +73,7 @@ spec:
           allowCrossNamespaceImport: true
           instanceSelector:
             matchLabels:
+              dashboards: null
               instance: grafana
 
     defaultDashboards:
@@ -83,6 +84,7 @@ spec:
           allowCrossNamespaceImport: true
           instanceSelector:
             matchLabels:
+              dashboards: null
               instance: grafana
       dashboards:
         victoriametrics-operator:

@@ -14,6 +14,9 @@ spec:
     timezone: Europe/Berlin
     cronJobTimeZone: true
     webhook:
+      ignoredNamespaces:
+        - kube-system
+        - rook-ceph
       certManager:
         enabled: true
         issuerRef:
