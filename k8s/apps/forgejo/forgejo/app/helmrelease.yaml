@@ -42,8 +42,9 @@ spec:
           TYPE: redis
           CONN_STR: *redis_string
         repository:
-          DEFAULT_REPO_UNITS: repo.code,repo.releases,repo.issues,repo.pulls,repo.actions
+          DEFAULT_REPO_UNITS: repo.code,repo.issues,repo.releases,repo.packages,repo.pulls,repo.actions
           DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
+          DISABLE_FORKS: true
           ROOT: /data/git/repositories
         repository.pull-request:
           DEFAULT_MERGE_STYLE: fast-forward-only
