@@ -13,6 +13,9 @@ spec:
     - name: internal
       namespace: network
       sectionName: http
+    - name: internal
+      namespace: network
+      sectionName: s3-http
   rules:
     - filters:
         - requestRedirect:

@@ -12,3 +12,17 @@ spec:
   usages: ["digital signature"]
   commonName: siron.casa
   dnsNames: ["siron.casa", "*.siron.casa"]
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: s3-siron-casa
+spec:
+  secretName: s3-siron-casa-tls
+  issuerRef:
+    name: letsencrypt-prod-short
+    kind: ClusterIssuer
+  duration: 160h
+  usages: ["digital signature"]
+  # commonName: s3.siron.casa
+  dnsNames: ["*.s3.siron.casa"]
