@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: garage
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      instance: grafana
+  configMapRef:
+    name: garage-operator-garage-dashboard
+    key: garage-prometheus.json
+  datasources:
+    - datasourceName: DS_PROMETHEUS
+      inputName: VictoriaMetrics
