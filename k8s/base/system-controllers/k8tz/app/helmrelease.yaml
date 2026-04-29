@@ -15,6 +15,7 @@ spec:
     cronJobTimeZone: true
     webhook:
       ignoredNamespaces:
+        - forgejo
         - kube-system
         - rook-ceph
       certManager:

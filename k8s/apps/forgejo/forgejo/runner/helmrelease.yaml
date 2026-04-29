@@ -33,10 +33,12 @@ spec:
                   uuid: __RUNNER_UUID__
                   token: __RUNNER_TOKEN__
             runner:
+              file: /persistent/.runner
               labels:
                 - ubuntu-latest:k8spod:/config/podspec-default.yaml
                 - ubuntu-24.04:k8spod:/config/podspec-default.yaml
                 - default:k8spod:/config/podspec-default.yaml
+                - docker:k8spod:/config/podspec-dind.yaml
               timeout: 3h
           podspec-default.yaml: |-
             containers:
@@ -52,6 +54,64 @@ spec:
                   requests:
                     cpu: 100m
                     memory: 256Mi
+            restartPolicy: Never
+          podspec-dind.yaml: |-
+            initContainers:
+              - name: dind
+                image: docker:29-dind
+                securityContext:
+                  privileged: true
+                restartPolicy: Always
+                env:
+                  - name: DOCKER_TLS_CERTDIR
+                    value: /certs
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+                  limits:
+                    memory: 4Gi
+                volumeMounts:
+                  - name: docker-storage
+                    mountPath: /var/lib/docker
+                  - name: docker-certs
+                    mountPath: /certs
+                readinessProbe:
+                  exec:
+                    command:
+                      - sh
+                      - -c
+                      - test -f /certs/client/ca.pem && test -f /certs/client/cert.pem && test -f /certs/client/key.pem
+                  initialDelaySeconds: 2
+                  periodSeconds: 1
+            containers:
+              - env:
+                  - name: DEBIAN_FRONTEND
+                    value: noninteractive
+                  - name: DOCKER_HOST
+                    value: tcp://localhost:2376
+                  - name: DOCKER_TLS_VERIFY
+                    value: "1"
+                  - name: DOCKER_CERT_PATH
+                    value: /certs/client
+                image: ghcr.io/bjw-s-labs/forgejo-runner:ubuntu-24.04@sha256:cbcf25eee3ccd1b5491cd74ec3ae57a5c1dbcf7012ae1bbf53723f08c79676e2
+                imagePullPolicy: IfNotPresent
+                name: main
+                resources:
+                  limits:
+                    memory: 2Gi
+                  requests:
+                    cpu: 100m
+                    memory: 256Mi
+                volumeMounts:
+                  - name: docker-certs
+                    mountPath: /certs
+                    readOnly: true
+            volumes:
+              - name: docker-storage
+                emptyDir: {}
+              - name: docker-certs
+                emptyDir: {}
             restartPolicy: Never
 
     controllers:
@@ -88,7 +148,7 @@ spec:
               - "sh"
               - "-c"
               - >
-                set -eu; rm -f /persistent/.runner; sed -e "s|__RUNNER_UUID__|${RUNNER_UUID}|" -e "s|__RUNNER_TOKEN__|${RUNNER_TOKEN}|" /config/runner.yaml.tmpl > /tmp/runner.yaml;
+                set -eu; sed -e "s|__RUNNER_UUID__|${RUNNER_UUID}|" -e "s|__RUNNER_TOKEN__|${RUNNER_TOKEN}|" /config/runner.yaml.tmpl > /tmp/runner.yaml;
             envFrom:
               - secretRef:
                   name: forgejo-runner-secret

@@ -230,6 +230,7 @@ patches:
             exemptions:
               namespaces:
                 - cert-manager
+                - forgejo
                 - network
                 - observability
                 - openebs
