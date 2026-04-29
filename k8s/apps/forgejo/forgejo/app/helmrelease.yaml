@@ -13,6 +13,13 @@ spec:
       admin:
         username: ""
       config:
+        APP_NAME: "Steffens Forge"
+        APP_SLOGAN: "all'em sources"
+        ui:
+          SHOW_USER_EMAIL: false
+        ui.meta:
+          AUTHOR: Steffen Beisenherz
+          DESCRIPTION: "Steffen's Forge"
         database:
           DB_TYPE: postgres
           HOST: pooler-rw.database.svc:5432
@@ -63,7 +70,7 @@ spec:
         server:
           APP_DATA_PATH: /data/gitea
           ROOT_URL: https://forgejo.siron.casa
-          SSH_DOMAIN: forgejo.siron.casa
+          SSH_DOMAIN: "forgejo.siron.casa:22222"
           SSH_PORT: &sshPort 22
           SSH_SERVER_HOST_KEYS: ssh/ssh_host_ed25519_key
         service:
@@ -161,6 +168,6 @@ spec:
     tcpRoute:
       enabled: true
       parentRefs:
-        - name: internal
+        - name: external
           namespace: network
           sectionName: ssh

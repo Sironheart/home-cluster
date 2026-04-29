@@ -6,6 +6,7 @@ resources:
   - ./envoy-gateway/ks.yaml
   - ./external-dns/ks.yaml
   - ./tailscale/ks.yaml
+  - ./towonel-agent/ks.yaml
 components:
   - ../../components/common
 replacements:

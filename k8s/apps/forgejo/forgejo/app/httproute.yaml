@@ -7,7 +7,7 @@ spec:
   hostnames:
     - forgejo.siron.casa
   parentRefs:
-    - name: internal
+    - name: external
       namespace: network
   rules:
     - backendRefs:

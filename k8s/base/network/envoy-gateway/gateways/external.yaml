@@ -4,12 +4,12 @@ kind: Gateway
 metadata:
   name: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: "cftunnel.siron.casa"
+    external-dns.alpha.kubernetes.io/target: "external.siron.casa"
 spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: "cftunnel.siron.casa"
+      external-dns.alpha.kubernetes.io/hostname: "external.siron.casa"
   listeners:
     - name: http
       protocol: HTTP
