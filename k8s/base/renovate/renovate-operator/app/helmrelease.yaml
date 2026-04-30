@@ -34,6 +34,9 @@ spec:
         - name: internal
           namespace: network
 
+    config:
+      globalParallelismLimit: 3
+
     webhook:
       enabled: true
       route:

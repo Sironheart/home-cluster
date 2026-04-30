@@ -1,0 +1,45 @@
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: forgejo-sironheart
+spec:
+  metadata:
+    annotations:
+      reloader.stakater.com/auto: "true"
+  discoveryFilters:
+    - sironheart/*
+  # renovate: datasource=docker depName=renovate/renovate
+  image: renovate/renovate:43.141.6
+  parallelism: 2
+  schedule: 0 * * * *
+  secretRef: forgejo-renovate
+  extraEnv:
+    - name: RENOVATE_ONBOARDING_CONFIG
+      value: |
+        {
+          "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+          "extends": [
+            'config:recommended'
+          ]
+        }
+    - name: RENOVATE_ONBOARDING_CONFIG_FILE_NAME
+      value: renovate.json5
+    - name: RENOVATE_REDIS_URL
+      value: redis://dragonfly-renovate.renovate.svc.cluster.local:6379/0
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 1
+    limits:
+      memory: 2Gi
+  provider:
+    name: forgejo
+    endpoint: https://forgejo.siron.casa/api/v1
+  webhook:
+    enabled: true
+    authentication:
+      enabled: true
+      secretRef:
+        name: renovate-webhook
+        key: webhook
