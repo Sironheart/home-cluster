@@ -78,9 +78,10 @@ spec:
           DEFAULT_ENABLE_TIMETRACKING: false
           ENABLE_INTERNAL_SIGNIN: false
           ENABLE_PASSWORD_SIGNIN_FORM: false
-          SHOW_REGISTRASTION_BUTTON: false
+          REQUIRE_SIGNIN_VIEW: false
+          SHOW_REGISTRATION_BUTTON: false
         service.explore:
-          REQUIRE_SIGNIN_VIEW: true
+          REQUIRE_SIGNIN_VIEW: false
         session:
           PROVIDER: redis
           PROVIDER_CONFIG: *redis_string
