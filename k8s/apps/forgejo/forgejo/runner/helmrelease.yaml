@@ -14,31 +14,32 @@ spec:
       config:
         suffix: config
         data:
-          runner.yaml.tmpl: |-
+          runner.yaml: |-
             cache:
               enabled: true
               dir: /data/cache
             container:
               docker_host: "-"
               workdir_parent: shared/workdir
+            host:
+              workdir_parent: /data/act
             kubernetes:
               namespace: forgejo
               poll_timeout: 10m
             log:
               level: info
-            server:
-              connections:
-                forgejo:
-                  url: http://forgejo-http.forgejo.svc.cluster.local:3000
-                  uuid: __RUNNER_UUID__
-                  token: __RUNNER_TOKEN__
+            plugins:
+              k8s:
+                address: "unix:///plugin/forgejo-runner-k8s.sock"
+                options:
+                  namespace: forgejo
+                  poll_timeout: 10m
             runner:
-              file: /persistent/.runner
+              capacity: 2
               labels:
-                - ubuntu-latest:k8spod:/config/podspec-default.yaml
-                - ubuntu-24.04:k8spod:/config/podspec-default.yaml
-                - default:k8spod:/config/podspec-default.yaml
-                - docker:k8spod:/config/podspec-dind.yaml
+                - ubuntu-latest:k8s:/config/podspec-default.yaml
+                - default:k8s:/config/podspec-default.yaml
+                - docker:k8s:/config/podspec-dind.yaml
               timeout: 3h
           podspec-default.yaml: |-
             containers:
@@ -50,7 +51,7 @@ spec:
                 name: main
                 resources:
                   limits:
-                    memory: 2Gi
+                    memory: 4Gi
                   requests:
                     cpu: 100m
                     memory: 256Mi
@@ -99,7 +100,7 @@ spec:
                 name: main
                 resources:
                   limits:
-                    memory: 2Gi
+                    memory: 4Gi
                   requests:
                     cpu: 100m
                     memory: 256Mi
@@ -113,20 +114,12 @@ spec:
               - name: docker-certs
                 emptyDir: {}
             restartPolicy: Never
-
     controllers:
       forgejo-runner:
-        type: statefulset
+        type: deployment
         replicas: 1
-
-        statefulset:
-          volumeClaimTemplates:
-            - accessMode: ReadWriteOnce
-              globalMounts:
-                - path: /persistent
-              name: persistent
-              size: 1Gi
-
+        annotations:
+          reloader.stakater.com/auto: "true"
         pod:
           labels:
             app.kubernetes.io/component: forgejo-runner
@@ -136,67 +129,52 @@ spec:
             runAsGroup: 1000
             runAsNonRoot: true
             runAsUser: 1000
-        annotations:
-          reloader.stakater.com/auto: "true"
-
-        initContainers:
-          render-config:
-            image:
-              repository: git.erwanleboucher.dev/eleboucher/runner
-              tag: latest@sha256:b6bfcf90d4eb2496dcadbc0aa9f640413370f80a23d69dca6bdc77cfdc284e0c
-            command:
-              - "sh"
-              - "-c"
-              - >
-                set -eu; sed -e "s|__RUNNER_UUID__|${RUNNER_UUID}|" -e "s|__RUNNER_TOKEN__|${RUNNER_TOKEN}|" /config/runner.yaml.tmpl > /tmp/runner.yaml;
-            envFrom:
-              - secretRef:
-                  name: forgejo-runner-secret
-
         containers:
           runner:
             image:
               repository: git.erwanleboucher.dev/eleboucher/runner
-              tag: latest@sha256:b6bfcf90d4eb2496dcadbc0aa9f640413370f80a23d69dca6bdc77cfdc284e0c
+              tag: sha-3441551a9ef73bc1ca86e5f4f641dd74432d4e99
             command:
-              - /bin/forgejo-runner
-              - daemon
-              - --config
-              - /tmp/runner.yaml
+              - sh
+              - -ec
+              - |
+                exec /bin/forgejo-runner daemon \
+                  --config /config/runner.yaml \
+                  --url "http://forgejo-http:3000" \
+                  --uuid "$(cat /etc/forgejo-runner-secret/uuid)" \
+                  --token-url file:///etc/forgejo-runner-secret/token
+            resources:
+              requests:
+                cpu: 5m
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          k8s-plugin:
+            image:
+              repository: git.erwanleboucher.dev/eleboucher/runner-k8s-plugin
+              tag: sha-51699b96c36775a7d231d71ecc24bb4d992d2052
+            args:
+              - --listen
+              - unix:///plugin/forgejo-runner-k8s.sock
             resources:
               requests:
                 cpu: 5m
                 memory: 32Mi
             securityContext:
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
-              readOnlyRootFilesystem: true
 
-    persistence:
-      config:
-        type: configMap
-        identifier: config
-        globalMounts:
-          - path: /config
-      tmpfs:
-        type: emptyDir
-        sizeLimit: 10Gi
-        globalMounts:
-          - path: /data
-            subPath: data
-          - path: /tmp
-            subPath: tmp
+    serviceAccount:
+      forgejo-runner: {}
 
     rbac:
-      bindings:
-        forgejo-runner:
-          type: RoleBinding
-          roleRef:
-            identifier: forgejo-runner
-          subjects:
-            - identifier: forgejo-runner
       roles:
         forgejo-runner:
           type: Role
@@ -227,5 +205,34 @@ spec:
                 - watch
                 - get
 
-    serviceAccount:
-      forgejo-runner: {}
+      bindings:
+        forgejo-runner:
+          type: RoleBinding
+          roleRef:
+            identifier: forgejo-runner
+          subjects:
+            - identifier: forgejo-runner
+
+    persistence:
+      config:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config
+      runner-secret:
+        type: secret
+        name: forgejo-runner-secret
+        globalMounts:
+          - path: /etc/forgejo-runner-secret
+            readOnly: true
+      plugins:
+        type: emptyDir
+        globalMounts:
+          - path: /plugin
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /data
+            subPath: data
+          - path: /tmp
+            subPath: tmp
