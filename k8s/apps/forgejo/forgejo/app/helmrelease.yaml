@@ -75,6 +75,7 @@ spec:
           SSH_SERVER_HOST_KEYS: ssh/ssh_host_ed25519_key
         service:
           ALLOW_ONLY_EXTERNAL_REGISTRATION: true
+          ENABLE_TIMETRACKING: false
           DEFAULT_ENABLE_TIMETRACKING: false
           ENABLE_INTERNAL_SIGNIN: false
           ENABLE_PASSWORD_SIGNIN_FORM: false
