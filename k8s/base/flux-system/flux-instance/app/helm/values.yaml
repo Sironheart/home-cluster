@@ -12,7 +12,8 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    url: https://github.com/sironheart/home-cluster
+    # url: https://github.com/sironheart/home-cluster
+    url: http://forgejo-http.forgejo.svc.cluster.local:3000/sironheart/home-cluster.git
     ref: refs/heads/main
     path: k8s/flux/cluster
     interval: 1h
