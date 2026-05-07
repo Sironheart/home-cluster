@@ -77,8 +77,8 @@ spec:
           ALLOW_ONLY_EXTERNAL_REGISTRATION: true
           ENABLE_TIMETRACKING: false
           DEFAULT_ENABLE_TIMETRACKING: false
-          ENABLE_INTERNAL_SIGNIN: true
-          ENABLE_PASSWORD_SIGNIN_FORM: true
+          ENABLE_INTERNAL_SIGNIN: false
+          ENABLE_PASSWORD_SIGNIN_FORM: false
           REQUIRE_SIGNIN_VIEW: false
           SHOW_REGISTRATION_BUTTON: false
         service.explore:

@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Flux Local
 
 on:
@@ -98,6 +97,7 @@ jobs:
       - name: Add Comment
         if: ${{ steps.diff.outputs.diff != '' }}
         env:
+          GH_TOKEN: ${{ secrets.SIRON_BOT_TOKEN }}
           PR_NUMBER: ${{ forgejo.event.pull_request.number }}
           HEADER: "${{ forgejo.event.pull_request.number }}/kubernetes/${{ matrix.resources }}"
           DIFF_CONTENT: ${{ steps.diff.outputs.diff }}
