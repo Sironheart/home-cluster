@@ -133,7 +133,8 @@ spec:
           runner:
             image:
               repository: git.erwanleboucher.dev/eleboucher/runner
-              tag: sha-3441551a9ef73bc1ca86e5f4f641dd74432d4e99
+              # renovate: datasource=git-tags depName=https://git.erwanleboucher.dev/eleboucher/runner.git
+              tag: 12.10.1
             command:
               - sh
               - -ec
@@ -156,7 +157,8 @@ spec:
           k8s-plugin:
             image:
               repository: git.erwanleboucher.dev/eleboucher/runner-k8s-plugin
-              tag: sha-51699b96c36775a7d231d71ecc24bb4d992d2052
+              # renovate: datasource=git-tags depName=https://git.erwanleboucher.dev/eleboucher/runner-k8s-plugin.git
+              tag: 12.10.0
             args:
               - --listen
               - unix:///plugin/forgejo-runner-k8s.sock
