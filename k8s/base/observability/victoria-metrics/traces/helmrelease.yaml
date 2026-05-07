@@ -16,7 +16,7 @@ spec:
     server:
       image:
         repository: victoriametrics/victoria-traces
-        tag: v0.8.1
+        tag: v0.8.2
       retentionPeriod: 90d
       persistentVolume:
         size: 20Gi
