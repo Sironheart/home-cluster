@@ -22,9 +22,6 @@ spec:
     kind: OCIRepository
     name: envoy-gateway
   values:
-    global:
-      imageRegistry: mirror.gcr.io
-
     deployment:
       envoyGateway:
         resources:
@@ -36,6 +33,8 @@ spec:
 
     config:
       envoyGateway:
+        extensionApis:
+          enableBackend: true
         provider:
           type: Kubernetes
           kubernetes:
