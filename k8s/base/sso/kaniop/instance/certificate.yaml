@@ -9,10 +9,10 @@ spec:
   issuerRef:
     group: cert-manager.io
     kind: ClusterIssuer
-    name: letsencrypt-prod
+    name: letsencrypt-prod-short
   privateKey:
-    algorithm: ECDSA
-    size: 384
+    algorithm: RSA
+    size: 2048
   secretName: *name
   usages:
     - digital signature
