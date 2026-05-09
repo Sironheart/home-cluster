@@ -1,0 +1,115 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gotosocial
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  interval: 30m
+  values:
+    controllers:
+      gts:
+        type: deployment
+        pod:
+          securityContext:
+            fsGroup: 1000
+        containers:
+          gts:
+            image:
+              repository: docker.io/superseriousbusiness/gotosocial
+              tag: "0.21.2"
+            env:
+              GTS_HOST: gts.siron.casa
+              GTS_ACCOUNT_DOMAIN: siron.casa
+              GTS_STORAGE_LOCAL_BASE_PATH: /storage
+              GTS_SEMAPHORE_URL: https://phanpy.siron.casa
+              GTS_LANDING_PAGE_USER: "sironheart"
+              GTS_METRICS_ENABLED: "true"
+              GTS_TRUSTED_PROXIES: "127.0.0.1/32,::1,10.244.0.0/16"
+              GTS_ADVANCED_RATE_LIMIT_EXCEPTIONS: "192.168.0.0/24"
+              OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
+              GTS_ACCOUNTS_ALLOW_CUSTOM_CSS: "true"
+              OTEL_METRICS_PRODUCERS: prometheus
+              OTEL_METRICS_EXPORTER: prometheus
+              GTS_OIDC_ENABLED: "true"
+              GTS_OIDC_IDP_NAME: "Kanidm"
+              GTS_OIDC_ISSUER: "https://sso.siron.casa/oauth2/openid/gotosocial-app"
+              GTS_OIDC_SCOPES: "openid,email,profile,groups"
+              GTS_OIDC_LINK_EXISTING: "true"
+              GTS_OIDC_ADMIN_GROUPS: "admins"
+              GTS_OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-app-kanidm-oauth2-credentials
+                    key: CLIENT_ID
+              GTS_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-app-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
+              GTS_DB_TYPE: postgres
+              GTS_DB_POSTGRES_CONNECTION_STRING:
+                valueFrom:
+                  secretKeyRef:
+                    name: gotosocial-postgres
+                    key: url
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+
+    persistence:
+      storage:
+        type: persistentVolumeClaim
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - subPath: data
+            path: /storage
+      tmpfs:
+        type: emptyDir
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+    service:
+      main:
+        controller: gts
+        ports:
+          http:
+            port: 8080
+          metrics:
+            port: 9464
+
+    route:
+      app:
+        parentRefs:
+          - name: external
+            namespace: network
+        hostnames:
+          - gts.siron.casa
+        rules:
+          - backendRefs:
+              - name: gotosocial
+                port: 8080
+            filters:
+              - cors:
+                  allowHeaders:
+                    - "*"
+                  allowMethods:
+                    - "*"
+                  allowOrigins:
+                    - "*"
+                  maxAge: 86400
+                type: CORS
+
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: metrics
+            interval: 30s
+            path: /metrics
