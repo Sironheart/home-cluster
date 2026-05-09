@@ -10,6 +10,8 @@ spec:
     namespace: default
   interval: 1h
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
     configMaps:
       config:
         suffix: config
