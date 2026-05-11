@@ -150,6 +150,8 @@ spec:
               requests:
                 cpu: 5m
                 memory: 256Mi
+              limits:
+                memory: 1024Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -168,6 +170,8 @@ spec:
               requests:
                 cpu: 5m
                 memory: 32Mi
+              limits:
+                memory: 128Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
