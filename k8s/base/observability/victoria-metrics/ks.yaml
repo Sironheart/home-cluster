@@ -68,27 +68,3 @@ spec:
     namespace: flux-system
   timeout: 5m
   wait: false
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app victoria-traces
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: victoria-metrics-operator
-      namespace: &namespace observability
-    - name: grafana-operator
-      namespace: *namespace
-  interval: 1h
-  path: ./k8s/base/observability/victoria-metrics/traces
-  prune: true
-  retryInterval: 2m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
-  wait: false
