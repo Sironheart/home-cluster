@@ -9,6 +9,9 @@ spec:
   # renovate: datasource=github-releases depName=grafana/grafana
   version: 13.0.1
   config:
+    feature_toggles:
+      enable: "true"
+      unifiedNavbars: "true"
     analytics:
       check_for_updates: "false"
       check_for_plugin_updates: "false"
@@ -44,7 +47,8 @@ spec:
     news:
       news_feed_enabled: "false"
     plugins:
-      plugin_admin_enabled: "false"
+      plugin_admin_enabled: "true"
+      plugin_admin_external_manage_enabled: "false"
     security:
       angular_support_enabled: "false"
     server:
@@ -64,7 +68,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 5Gi
+          storage: 10Gi
   deployment:
     metadata:
       annotations:
@@ -74,6 +78,10 @@ spec:
         type: Recreate
       template:
         spec:
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: grafana-pvc
           containers:
             - name: grafana
               envFrom:
@@ -85,10 +93,10 @@ spec:
                 capabilities: { drop: ["ALL"] }
               resources:
                 requests:
-                  cpu: 160m
+                  cpu: 500m
                   memory: 363Mi
                 limits:
-                  memory: 363Mi
+                  memory: 2Gi
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
