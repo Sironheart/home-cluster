@@ -27,12 +27,6 @@ spec:
       value: renovate.json5
     - name: RENOVATE_REDIS_URL
       value: redis://dragonfly-renovate.renovate.svc.cluster.local:6379/0
-  resources:
-    requests:
-      memory: 2Gi
-      cpu: 1
-    limits:
-      memory: 2Gi
   provider:
     name: forgejo
     endpoint: https://forgejo.siron.casa/api/v1

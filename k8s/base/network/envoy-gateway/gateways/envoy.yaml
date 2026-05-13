@@ -21,7 +21,7 @@ spec:
             limits:
               memory: 2Gi
       envoyService:
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
   shutdown:
     drainTimeout: 180s
   telemetry:
@@ -81,7 +81,6 @@ spec:
     maxAcceptPerSocketEvent: 0
   http2:
     onInvalidMessage: TerminateStream
-  http3: {}
   proxyProtocol:
     optional: true
   path:

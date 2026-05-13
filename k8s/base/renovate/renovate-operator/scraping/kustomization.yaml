@@ -6,4 +6,3 @@ resources:
   - ./externalsecret-forgejo.yaml
   - ./externalsecret-webhook.yaml
   - ./forgejo.yaml
-  # - ./sironheart.yaml
