@@ -43,7 +43,7 @@ flux2 = "2.8.7"
 # Kubernetes
 helm = "4.1.4"
 helmfile = "1.5.1"
-kubectl = "1.36.0"
+kubectl = "1.36.1"
 kustomize = "5.8.1"
 pulumi = "3.232.0"
 
