@@ -27,6 +27,10 @@ spec:
       value: renovate.json5
     - name: RENOVATE_REDIS_URL
       value: redis://dragonfly-renovate.renovate.svc.cluster.local:6379/0
+    - name: RENOVATE_REBASE_WHEN
+      value: behind-base-branch
+    - name: RENOVATE_AUTOMERGE_STRATEGY
+      value: fast-forward
   provider:
     name: forgejo
     endpoint: https://forgejo.siron.casa/api/v1
