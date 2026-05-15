@@ -170,6 +170,12 @@ patches:
   - |-
     cluster:
       apiServer:
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1Gi
+          limits:
+            memory: 3Gi
         extraArgs:
           enable-aggregator-routing: "true"
           feature-gates: MutatingAdmissionPolicy=true
