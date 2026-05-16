@@ -27,10 +27,6 @@ operator:
     serviceMonitor:
       enabled: true
 
-bandwidthManager:
-  enabled: true
-  bbr: true
-
 cni:
   exclusive: false
 
@@ -41,7 +37,6 @@ prometheus:
     trustCRDsExist: true
 
 envoy:
-  rollOutPods: true
   prometheus:
     serviceMonitor:
       enabled: true
@@ -50,7 +45,7 @@ dashboards:
   enabled: true
 
 hubble:
-  enabled: true
+  enabled: false
   tls:
     auto:
       method: certmanager
@@ -61,7 +56,7 @@ hubble:
   ui:
     enabled: false
   relay:
-    enabled: true
+    enabled: false
 
 # -- from talos docs --
 ipam:
