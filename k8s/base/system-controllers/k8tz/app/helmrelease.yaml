@@ -10,14 +10,24 @@ spec:
   interval: 30m
   values:
     namespace: system-controllers
-    replicaCount: 2
+    replicaCount: 1
     timezone: Europe/Berlin
-    cronJobTimeZone: true
+    cronJobTimeZone: false
     webhook:
       ignoredNamespaces:
+        - atuin
+        - cert-manager
+        - external-secrets
         - forgejo
+        - garage
+        - jellyfin
+        - karakeep
         - kube-system
+        - network
+        - openebs
+        - renovate
         - rook-ceph
+        - system-upgrade
       certManager:
         enabled: true
         issuerRef:
