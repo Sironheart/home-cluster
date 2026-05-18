@@ -20,7 +20,7 @@ spec:
   resources:
     requests:
       cpu: ${DRAGONFLY_REQUESTS_CPU:=100m}
-      memory: ${DRAGONFLY_REQUESTS_MEMORY:-${DRAGONFLY_LIMITS_MEMORY:=512Mi}}
+      memory: ${DRAGONFLY_REQUESTS_MEMORY:-${DRAGONFLY_LIMITS_MEMORY:=50Mi}}
     limits:
       memory: ${DRAGONFLY_LIMITS_MEMORY:=512Mi}
   topologySpreadConstraints:

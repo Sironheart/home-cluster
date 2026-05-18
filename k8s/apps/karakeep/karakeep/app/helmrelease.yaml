@@ -63,7 +63,7 @@ spec:
             resources:
               requests:
                 cpu: 165m
-                memory: 721Mi
+                memory: 420Mi
               limits:
                 memory: 721Mi
 
@@ -90,7 +90,7 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 215Mi
+                memory: 195Mi
               limits:
                 memory: 215Mi
 
@@ -111,7 +111,7 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 443Mi
+                memory: 70Mi
               limits:
                 memory: 800Mi
     defaultPodOptions:

@@ -45,7 +45,7 @@ spec:
             resources:
               requests:
                 cpu: 491m
-                memory: 1311Mi
+                memory: 480Mi
               limits:
                 memory: 1311Mi
                 amd.com/gpu: 1
