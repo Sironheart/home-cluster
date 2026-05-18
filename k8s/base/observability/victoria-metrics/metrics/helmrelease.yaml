@@ -23,7 +23,7 @@ spec:
       enabled: enabled
 
     vmalert:
-      enabled: enabled
+      enabled: false
 
     vmsingle:
       spec:
@@ -45,7 +45,7 @@ spec:
       forceDeployDatasource: true
 
     alertmanager:
-      enabled: true
+      enabled: false
       useManagedConfig: true
 
       spec:
