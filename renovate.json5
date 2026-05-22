@@ -4,6 +4,7 @@
     "config:recommended",
     "docker:enableMajor",
     "helpers:pinGitHubActionDigests",
+    "github>home-operations/renovate-presets",
     "github>sironheart/home-cluster//.renovate/customDataSources.json5",
     "github>sironheart/home-cluster//.renovate/customManagers.json5",
     "github>sironheart/home-cluster//.renovate/grafana.json5",
