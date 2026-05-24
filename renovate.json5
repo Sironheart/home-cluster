@@ -1,7 +1,7 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "github>home-operations/renovate-presets",
+    "local>home-operations/renovate-presets",
     "github>sironheart/home-cluster//.renovate/customManagers.json5",
     "github>sironheart/home-cluster//.renovate/groups.json5",
     "github>sironheart/home-cluster//.renovate/labels.json5",
