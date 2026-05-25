@@ -8,7 +8,7 @@
   packageRules: [
     {
       description: "Derive GitHub source URL for GHCR images missing OCI labels",
-      matchDatasources: ["docker"],
+      matchDatasources: ["docker", "helm"],
       matchPackageNames: ["/^ghcr\\.io/"],
       sourceUrl: "{{#if sourceUrl}}{{{sourceUrl}}}{{else}}https://github.com/{{{replace '^([^/]+)(?:/[^/]+)*/([^/]+)$' '$1/$2' (replace '^ghcr\\.io/' '' depName)}}}{{/if}}"
     },
