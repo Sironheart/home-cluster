@@ -1,0 +1,81 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "local>home-operations/renovate-presets",
+    ":semanticCommits",
+    ":timezone(Europe/Berlin)"
+  ],
+  packageRules: [
+    {
+      description: "Derive GitHub source URL for GHCR images missing OCI labels",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^ghcr\\.io/"],
+      sourceUrl: "{{#if sourceUrl}}{{{sourceUrl}}}{{else}}https://github.com/{{{replace '^([^/]+)(?:/[^/]+)*/([^/]+)$' '$1/$2' (replace '^ghcr\\.io/' '' depName)}}}{{/if}}"
+    },
+    {
+      description: "Auto merge minors and patches after minimumReleaseAge",
+      matchDatasources: ["docker"],
+      schedule: ["* 2 * * *"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: ["renovate/renovate"],
+      minimumReleaseAge: "3 days",
+      ignoreTests: false
+    },
+    {
+      description: "1Password Connect group",
+      groupName: "1Password Connect",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/1password/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group"
+      },
+      minimumGroupSize: 2
+    },
+    {
+      description: "Flux Operator Group",
+      groupName: "Flux Operator",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group"
+      }
+    },
+    {
+      description: "Kubernetes Group",
+      groupName: "Kubernetes",
+      matchDatasources: ["docker"],
+      matchPackageNames: [
+        "/kube-apiserver/",
+        "/kube-controller-manager/",
+        "/kube-proxy/",
+        "/kube-scheduler/",
+        "/kubelet/"
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group"
+      }
+    },
+    {
+      description: "Rook-Ceph Group",
+      groupName: "Rook-Ceph",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group"
+      },
+      minimumGroupSize: 2
+    },
+    {
+      description: "Talos group",
+      groupName: "Talos",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/installer/", "/talosctl/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group"
+      },
+      minimumGroupSize: 2
+    }
+  ]
+}
