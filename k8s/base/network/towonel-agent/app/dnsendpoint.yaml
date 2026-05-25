@@ -8,12 +8,4 @@ spec:
     - dnsName: external.siron.casa
       recordType: CNAME
       targets:
-        - &erwan_towonel_server tunnel.erwanleboucher.dev
-    # - dnsName: twnl.siron.casa
-    #   recordType: CNAME
-    #   targets:
-    #     - *erwan_towonel_server
-    # - dnsName: tunnel.siron.casa
-    #   recordType: CNAME
-    #   targets:
-    #     - *erwan_towonel_server
+        - &erwan_towonel_server edge-eu.towonel.dev
