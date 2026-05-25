@@ -45,7 +45,6 @@ helm = "4.2.0"
 helmfile = "1.5.1"
 kubectl = "1.36.1"
 kustomize = "5.8.1"
-pulumi = "3.232.0"
 
 # Talos
 talhelper = "3.1.10"
