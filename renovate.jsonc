@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>home-operations/renovate-presets",
+    "github>sironheart/home-cluster//.renovate/customManagers.jsonc",
+    "github>sironheart/home-cluster//.renovate/groups.jsonc",
+    "github>sironheart/home-cluster//.renovate/labels.jsonc",
+    "github>sironheart/home-cluster//.renovate/packageRules.jsonc",
+    ":semanticCommits",
+    ":timezone(Europe/Berlin)"
+  ]
+}
