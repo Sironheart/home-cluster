@@ -18,5 +18,11 @@
       matchPackageNames: ["/factory\\.talos\\.dev/"],
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
+    {
+      description: "Derive GitHub source URL for GHCR images missing OCI labels",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/^ghcr\\.io/"],
+      sourceUrl: "{{#if sourceUrl}}{{{sourceUrl}}}{{else}}https://github.com/{{{replace '^([^/]+)(?:/[^/]+)*/([^/]+)$' '$1/$2' (replace '^ghcr\\.io/' '' depName)}}}{{/if}}",
+    },
   ],
 }
