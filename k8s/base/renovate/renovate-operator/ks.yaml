@@ -7,6 +7,12 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
+  components:
+    - ../../../../components/dragonfly
+  postBuild:
+    substitute:
+      APP: *appname
+      DRAGONFLY_REPLICAS: "1"
   interval: 1h
   path: ./k8s/base/renovate/renovate-operator/app
   prune: true
@@ -27,12 +33,6 @@ spec:
   interval: 1h
   path: ./k8s/base/renovate/renovate-operator/scraping
   prune: true
-  components:
-    - ../../../../components/dragonfly
-  postBuild:
-    substitute:
-      APP: renovate
-      DRAGONFLY_REPLICAS: "1"
   sourceRef:
     kind: GitRepository
     name: flux-system

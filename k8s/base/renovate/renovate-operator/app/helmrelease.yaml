@@ -37,6 +37,9 @@ spec:
     config:
       globalParallelismLimit: 3
 
+    valkey:
+      existingSecret: renovate-redis-cache
+
     webhook:
       enabled: true
       route:

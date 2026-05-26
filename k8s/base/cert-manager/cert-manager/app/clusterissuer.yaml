@@ -5,6 +5,8 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
+    email: le@siron.casa
+    profile: classic
     privateKeySecretRef:
       name: letsencrypt-prod
     solvers:
@@ -23,6 +25,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
+    email: le@siron.casa
     profile: shortlived
     privateKeySecretRef:
       name: letsencrypt-prod-short
