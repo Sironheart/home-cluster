@@ -29,7 +29,7 @@ spec:
       spec:
         image:
           repository: victoriametrics/victoria-metrics
-          tag: v1.143.0
+          tag: v1.144.0
           pullPolicy: IfNotPresent
         retentionPeriod: 30d
       route:
