@@ -11,6 +11,7 @@ spec:
     - ../../../../components/volsync
     - ../../../../components/database
     - ../../../../components/dragonfly
+    - ../../../../components/anubis
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -21,6 +22,7 @@ spec:
       APP: forgejo
       VOLSYNC_CAPACITY: 20Gi
       DRAGONFLY_REPLICAS: "1"
+      ANUBIS_TARGET: http://forgejo-http:3000
   prune: true
   sourceRef:
     kind: GitRepository
