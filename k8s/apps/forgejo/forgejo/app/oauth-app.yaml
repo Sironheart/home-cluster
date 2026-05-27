@@ -12,7 +12,7 @@ spec:
     namespace: sso
   origin: https://forgejo.siron.casa/
   redirectUrl:
-    - https://forgejo.siron.casa/user/oauth2/kanidm/callback
+    - https://forgejo.siron.casa/
   scopeMap:
     - group: forgejo
       scopes:
