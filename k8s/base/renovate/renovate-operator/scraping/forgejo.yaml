@@ -31,7 +31,7 @@ spec:
       value: fast-forward
   provider:
     name: forgejo
-    endpoint: http://forgejo-http.forgejo.svc.cluster.local:3000/api/v1
+    endpoint: https://forgejo.siron.casa/api/v1
   webhook:
     enabled: true
     authentication:
