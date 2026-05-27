@@ -33,6 +33,7 @@ spec:
                   interval: 1h
                   timeout: 5m
                   install:
+                    serverSideApply: true
                     crds: CreateReplace
                     strategy:
                       name: RetryOnFailure
@@ -41,6 +42,7 @@ spec:
                   uninstall:
                     keepHistory: false
                   upgrade:
+                    serverSideApply: enabled
                     cleanupOnFail: true
                     crds: CreateReplace
                     strategy:
