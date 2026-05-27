@@ -12,7 +12,7 @@ spec:
   # renovate: datasource=docker depName=renovate/renovate
   image: renovate/renovate:43.191.2
   parallelism: 2
-  schedule: 0 * * * *
+  schedule: 0 */4 * * *
   secretRef: forgejo-renovate
   extraEnv:
     - name: RENOVATE_ONBOARDING_CONFIG
