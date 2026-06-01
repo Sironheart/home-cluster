@@ -5,13 +5,13 @@
     ":semanticCommits",
     ":timezone(Europe/Berlin)"
   ],
-  packageRules: [
+  hostRules: [
     {
-      description: "Derive GitHub source URL for GHCR images missing OCI labels",
-      matchDatasources: ["docker", "helm"],
-      matchPackageNames: ["/^ghcr\\.io/"],
-      sourceUrl: "{{#if sourceUrl}}{{{sourceUrl}}}{{else}}https://github.com/{{{replace '^([^/]+)(?:/[^/]+)*/([^/]+)$' '$1/$2' (replace '^ghcr\\.io/' '' depName)}}}{{/if}}"
-    },
+      matchHost: "git.erwanleboucher.dev",
+      hostType: "forgejo"
+    }
+  ],
+  packageRules: [
     {
       description: "Auto merge minors and patches after minimumReleaseAge",
       matchDatasources: ["docker"],
@@ -19,7 +19,11 @@
       automerge: true,
       automergeType: "pr",
       matchUpdateTypes: ["minor", "patch"],
-      matchPackageNames: ["renovate/renovate"],
+      matchPackageNames: [
+        "renovate/renovate",
+        "ghcr.io/stakater/charts/reloader",
+        "ghcr.io/emberstack/helm-charts/reflector"
+      ],
       minimumReleaseAge: "3 days",
       ignoreTests: false
     },
