@@ -1,5 +1,5 @@
 ---
-name: Flux Local
+name: Flate
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   filter:
-    name: Flux Local - Filter
+    name: Flate - Filter
     runs-on: ubuntu-latest
     outputs:
       changed-files: ${{ steps.changed-files.outputs.changed_files }}
@@ -34,72 +34,56 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run flux-local test
-        shell: bash
-        run: |-
-          flux-local test --enable-helm --all-namespaces --sources "flux-system=." --path k8s/flux/cluster -v
+      - name: Install flate
+        uses: https://github.com/home-operations/flate/action@90c0478740457fe22b4063a5c51689045c721f57 # 0.1.36
+        with:
+          # Defaults to ${{ github.token }} — a Forgejo-issued token that github.com
+          # rejects (401). flate's release is public, so force the unauthenticated path.
+          token: ""
+
+      - name: Run flate test
+        run: flate test ${{ matrix.resource }} --path ./k8s/flux/cluster --base ${{ forgejo.event.repository.default_branch }}
 
   diff:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
     needs: filter
-    name: Flux Local - Diff ${{ matrix.resources }}
+    name: Flate - Test ${{ matrix.resource }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        resources:
+        resource:
           - helmrelease
           - kustomization
-      max-parallel: 4
       fail-fast: false
     steps:
-      - name: Checkout Pull Request Branch
+      - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          path: pull
+          fetch-depth: 0
           persist-credentials: false
 
-      - name: Checkout Default Branch
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install flate
+        uses: https://github.com/home-operations/flate/action@90c0478740457fe22b4063a5c51689045c721f57 # 0.1.36
         with:
-          path: default
-          persist-credentials: false
-          ref: ${{ forgejo.event.repository.default_branch }}
+          # Defaults to ${{ github.token }} — a Forgejo-issued token that github.com
+          # rejects (401). flate's release is public, so force the unauthenticated path.
+          token: ""
 
-      - name: Run flux-local diff
-        shell: bash
-        working-directory: ${{ forgejo.workspace }}/pull
-        run: |-
-          flux-local diff ${{ matrix.resources }} \
-            --unified 6 \
-            --sources "flux-system=." \
-            --path k8s/flux/cluster \
-            --path-orig "${{ forgejo.workspace }}/default/k8s/flux/cluster" \
-            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
-            --limit-bytes 10000 \
-            --all-namespaces \
-            --output-file diff.patch
-
-      - name: Generate Diff
+      - name: Run flate diff
         id: diff
-        run: |
+        run: |-
           {
-              echo 'diff<<EOF'
-              cat pull/diff.patch
-              echo EOF
-          } >> "${FORGEJO_OUTPUT}";
-          {
-              echo "## Flux ${{ matrix.resources }} diff"
-              echo '```diff'
-              cat pull/diff.patch
-              echo '```'
-          } >> "${FORGEJO_STEP_SUMMARY}"
+            echo 'diff<<EOF'
+            flate diff ${{ matrix.resource }} --path ./k8s/flux/cluster
+            echo 'EOF'
+          } >> "${FORGEJO_OUTPUT}"
 
       - name: Add Comment
         if: ${{ steps.diff.outputs.diff != '' }}
         env:
           GH_TOKEN: ${{ secrets.SIRON_BOT_TOKEN }}
           PR_NUMBER: ${{ forgejo.event.pull_request.number }}
-          HEADER: "${{ forgejo.event.pull_request.number }}/kubernetes/${{ matrix.resources }}"
+          HEADER: "${{ forgejo.event.pull_request.number }}/k8s/${{ matrix.resource }}"
           DIFF_CONTENT: ${{ steps.diff.outputs.diff }}
         run: |-
           MARKER="<!-- sticky-comment: ${HEADER} -->"
