@@ -8,3 +8,4 @@ resources:
   - ./oidc-secret.yaml
   - ./oauth-app.yaml
   - ./ocirepository.yaml
+  - ./prometheusrule.yaml

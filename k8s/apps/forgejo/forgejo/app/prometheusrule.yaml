@@ -1,0 +1,57 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: forgejo
+spec:
+  groups:
+    - name: forgejo.rules
+      rules:
+        - alert: ForgejoGitLockStalled
+          annotations:
+            summary: >-
+              Forgejo container in namespace {{ $labels.namespace }} has
+              restarted, which may leave stale git lock files behind
+              (e.g. commit-graph-chain.lock). Verify and remove any stale
+              *.lock files under /data/git/repositories if PR creation
+              starts failing with 500 errors.
+          expr: |-
+            increase(
+              kube_pod_container_status_restarts_total{
+                namespace="forgejo",
+                container="forgejo"
+              }[15m]
+            ) > 0
+          for: 1m
+          labels:
+            severity: warning
+        - alert: ForgejoCrashLoopBackOff
+          annotations:
+            summary: >-
+              Forgejo pod is in CrashLoopBackOff. This will leave stale git
+              lock files behind and prevent pull request creation.
+          expr: |-
+            kube_pod_container_status_waiting_reason{
+              namespace="forgejo",
+              container="forgejo",
+              reason="CrashLoopBackOff"
+            } == 1
+          for: 1m
+          labels:
+            severity: critical
+        - alert: ForgejoHTTP500Errors
+          annotations:
+            summary: >-
+              Forgejo is returning HTTP 500 errors on endpoint
+              {{ $labels.handler }}. This may indicate stale git lock
+              files or other internal errors preventing PR creation.
+          expr: |-
+            increase(
+              http_request_duration_seconds_count{
+                namespace="forgejo",
+                code=~"5.."
+              }[5m]
+            ) > 0
+          for: 1m
+          labels:
+            severity: critical

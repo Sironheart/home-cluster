@@ -12,6 +12,8 @@ spec:
     gitea:
       podAnnotations:
         reloader.stakater.com/auto: "true"
+      metrics:
+        enabled: true
       admin:
         username: ""
       config:
@@ -44,6 +46,8 @@ spec:
           PATH: /data/git/lfs
         mailer:
           ENABLED: false
+        metrics:
+          ENABLED: true
         openid:
           ENABLE_OPENID_SIGNIN: false
           ENABLE_OPENID_SIGNUP: false
