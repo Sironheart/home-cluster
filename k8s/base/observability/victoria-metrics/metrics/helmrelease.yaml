@@ -104,6 +104,10 @@ spec:
             - matchers:
                 - alertname="InfoInhibitor"
               receiver: blackhole
+            - matchers:
+                - alertname="ScrapePoolHasNoTargets"
+                - scrape_job=~"serviceScrape/rook-ceph/csi-metrics.*"
+              receiver: blackhole
         receivers:
           - name: blackhole
           - name: discord
