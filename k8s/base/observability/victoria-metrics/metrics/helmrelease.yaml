@@ -98,6 +98,12 @@ spec:
             - matchers:
                 - alertname="etcdDatabaseHighFragmentationRatio"
               receiver: blackhole
+            - matchers:
+                - alertname="Watchdog"
+              receiver: blackhole
+            - matchers:
+                - alertname="InfoInhibitor"
+              receiver: blackhole
         receivers:
           - name: blackhole
           - name: discord
