@@ -5,7 +5,7 @@ metadata:
   name: grafana
 spec:
   endpoints:
-    - port: grafana
+    - port: http
       path: /metrics
       honorLabels: true
   jobLabel: grafana
@@ -14,4 +14,4 @@ spec:
       - observability
   selector:
     matchLabels:
-      grafana.internal/instance: grafana
+      app.kubernetes.io/name: grafana

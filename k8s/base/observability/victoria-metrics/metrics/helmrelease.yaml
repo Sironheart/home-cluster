@@ -30,7 +30,7 @@ spec:
           - name: internal
             namespace: network
         hostnames:
-          vmalert.siron.casa
+          - vmalert.siron.casa
 
     vmsingle:
       spec:
@@ -94,6 +94,9 @@ spec:
               receiver: blackhole
             - matchers:
                 - alertname="CephNodeDiskspaceWarning"
+              receiver: blackhole
+            - matchers:
+                - alertname="etcdDatabaseHighFragmentationRatio"
               receiver: blackhole
         receivers:
           - name: blackhole
