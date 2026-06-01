@@ -241,3 +241,10 @@ patches:
                 - openebs
                 - rook-ceph
                 - system
+
+  # Expose kube-scheduler metrics for scraping
+  - |-
+    cluster:
+      scheduler:
+        extraArgs:
+          bind-address: "0.0.0.0"
