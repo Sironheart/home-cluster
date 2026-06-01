@@ -23,7 +23,7 @@ spec:
       enabled: enabled
 
     vmalert:
-      enabled: false
+      enabled: true
 
     vmsingle:
       spec:
@@ -45,8 +45,8 @@ spec:
       forceDeployDatasource: true
 
     alertmanager:
-      enabled: false
-      useManagedConfig: true
+      enabled: true
+      useManagedConfig: false
 
       spec:
         externalURL: https://vmalertmanager.siron.casa
@@ -57,6 +57,14 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
+        volumes:
+          - name: discord-webhook
+            secret:
+              secretName: alertmanager-discord-webhook
+        volumeMounts:
+          - name: discord-webhook
+            mountPath: /etc/alertmanager/secrets/discord
+            readOnly: true
 
       route:
         enabled: true
@@ -65,6 +73,27 @@ spec:
         parentRefs:
           - name: internal
             namespace: network
+
+      config:
+        route:
+          receiver: discord
+          group_by: ['alertname', 'severity']
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+        receivers:
+          - name: discord
+            discord_configs:
+              - webhook_url_file: /etc/alertmanager/secrets/discord/webhook-url
+                send_resolved: true
+                title: |
+                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+                message: |
+                  {{ range .Alerts }}
+                  **Alert:** {{ .Annotations.summary }}
+                  **Description:** {{ .Annotations.description }}
+                  **Severity:** {{ .Labels.severity }}
+                  {{ end }}
 
     defaultDatasources:
       grafanaOperator:
