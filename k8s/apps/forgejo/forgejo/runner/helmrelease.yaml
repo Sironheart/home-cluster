@@ -134,8 +134,8 @@ spec:
         containers:
           runner:
             image:
-              repository: git.erwanleboucher.dev/eleboucher/runner
-              # renovate: datasource=git-tags depName=https://git.erwanleboucher.dev/eleboucher/runner.git
+              repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
+              # renovate: datasource=docker depName=registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
               tag: 12.10.2
             command:
               - sh
@@ -160,8 +160,8 @@ spec:
                   - ALL
           k8s-plugin:
             image:
-              repository: git.erwanleboucher.dev/eleboucher/runner-k8s-plugin
-              # renovate: datasource=git-tags depName=https://git.erwanleboucher.dev/eleboucher/runner-k8s-plugin.git
+              repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner-k8s-plugin
+              # renovate: datasource=docker depName=registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner-k8s-plugin
               tag: 12.10.2
             args:
               - --listen
