@@ -14,6 +14,8 @@ spec:
         reloader.stakater.com/auto: "true"
       metrics:
         enabled: true
+        serviceMonitor:
+          enabled: true
       admin:
         username: ""
       config:
