@@ -25,6 +25,8 @@ spec:
         }
     - name: RENOVATE_ONBOARDING_CONFIG_FILE_NAME
       value: renovate.json5
+    - name: RENOVATE_ADDITIONAL_REVIEWERS
+      value: "siron"
     # - name: RENOVATE_REBASE_WHEN
     #   value: behind-base-branch
     - name: RENOVATE_AUTOMERGE_STRATEGY
