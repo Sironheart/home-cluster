@@ -57,7 +57,7 @@ spec:
             memory: 2Gi
           requests:
             cpu: 1
-            memory: 2Gi
+            memory: 1500Mi
         mon:
           limits:
             memory: 768Mi
@@ -136,3 +136,16 @@ spec:
       isDefault: false
       deletionPolicy: Delete
     cephObjectStores: []
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              group: monitoring.coreos.com
+              version: v1
+              kind: PrometheusRule
+              name: prometheus-ceph-rules
+              namespace: rook-ceph
+            patch: |
+              - op: replace
+                path: /spec/groups/7/rules/0/expr
+                value: '(sum(predict_linear(ceph_pool_percent_used[2d], 3600 * 24 * 5)) by (cluster, pool_id, instance) * on(cluster,pool_id, instance) group_right() ceph_pool_metadata) >= 95'

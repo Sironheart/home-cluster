@@ -14,7 +14,7 @@ spec:
       enabled: true
     csi:
       serviceMonitor:
-        enabled: true
+        enabled: false
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
