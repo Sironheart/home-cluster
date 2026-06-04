@@ -19,6 +19,12 @@ spec:
         repository: victoriametrics/victoria-logs
         tag: v1.50.0
         pullPolicy: IfNotPresent
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          memory: 768Mi
       persistentVolume:
         enabled: true
         storageClassName: ceph-block
