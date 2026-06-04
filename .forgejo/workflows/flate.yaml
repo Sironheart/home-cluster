@@ -42,7 +42,7 @@ jobs:
           persist-credentials: false
 
       - name: Install flate
-        uses: https://github.com/home-operations/flate/action@d8f259847363d9c7921e489ab70adac8d27d6ee9 # 0.2.8
+        uses: https://github.com/home-operations/flate/action@13917764cfe2966e22510118ccf2f77d3c4d74ba # 0.2.12
         with:
           # Defaults to ${{ github.token }} — a Forgejo-issued token that github.com
           # rejects (401). flate's release is public, so force the unauthenticated path.
