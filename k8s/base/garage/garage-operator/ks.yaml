@@ -13,25 +13,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: garage-instance
-spec:
-  dependsOn:
-    - name: garage-operator
-  healthChecks:
-    - apiVersion: garage.rajsingh.info/v1alpha1
-      kind: GarageCluster
-      name: garage
-      namespace: garage
-  interval: 1h
-  retryInterval: 2m
-  timeout: 10m
-  path: ./k8s/base/garage/garage-operator/instance
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
