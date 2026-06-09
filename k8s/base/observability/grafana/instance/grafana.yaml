@@ -6,8 +6,8 @@ metadata:
   labels:
     instance: grafana
 spec:
-  # renovate: datasource=github-releases depName=grafana/grafana
-  version: v13.0.2
+  # renovate: datasource=docker depName=grafana/grafana
+  version: 13.0.2
   config:
     feature_toggles:
       enable: "true"
