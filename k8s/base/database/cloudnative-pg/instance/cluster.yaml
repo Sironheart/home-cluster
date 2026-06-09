@@ -12,6 +12,8 @@ spec:
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie@sha256:853438f8efd08a9aa39160d49123d3293ba6988be521c57f370b6155d6c70cac
 
+  enablePDB: false
+
   certificates:
     serverCASecret: postgres-server-cert
     serverTLSSecret: postgres-server-cert
