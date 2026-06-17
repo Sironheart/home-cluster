@@ -66,7 +66,7 @@ spec:
           - system
         image:
           # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgis-extension
-          reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.3-18-trixie@sha256:a4c9a1a87cdc94ec91a3c19aadabc0d2810c76738eacc8f905d44dfb776aff62
+          reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.3-18-trixie@sha256:24722ddb00b1ecfd0e869dc2c31a36b888417fe7a268b8e53a0819cd42d3b3af
 
       - name: vchord
         image:
