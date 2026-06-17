@@ -63,7 +63,7 @@ spec:
   values:
     image:
       repository: victoriametrics/vlagent
-      tag: v1.50.0
+      tag: v1.51.0
     remoteWrite:
       - url: "http://victoria-logs-server.observability.svc.cluster.local:9428/insert/native"
     podMonitor:
