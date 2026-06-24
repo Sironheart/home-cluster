@@ -7,4 +7,4 @@ spec:
   interval: 1h
   url: oci://ghcr.io/rajsinghtech/charts/garage-operator
   ref:
-    tag: 0.6.17
+    tag: 0.6.18
