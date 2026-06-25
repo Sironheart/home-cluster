@@ -30,7 +30,5 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-      prometheusRules:
-        enabled: true
       dashboards:
         enabled: true
