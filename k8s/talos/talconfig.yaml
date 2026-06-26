@@ -24,6 +24,8 @@ controlPlane:
       systemExtensions:
         officialExtensions:
           - siderolabs/amdgpu
+          # Needed for multi-arch runner
+          - siderolabs/binfmt-misc
       extraKernelArgs:
         - talos.dashboard.disabled=1
 
