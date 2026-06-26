@@ -126,6 +126,12 @@ patches:
       proxy:
         disabled: true
 
+  - |-
+    machine:
+      kernel:
+        modules:
+          - name: binfmt_misc
+
   # Kubelet configuration
   - |-
     machine:

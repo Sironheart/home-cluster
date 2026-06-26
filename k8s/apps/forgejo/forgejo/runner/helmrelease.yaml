@@ -37,12 +37,13 @@ spec:
                   namespace: forgejo
                   poll_timeout: 10m
             runner:
-              capacity: 4
+              capacity: 3
               labels:
                 - ubuntu-latest:k8s:/config/podspec-default.yaml
                 - default:k8s:/config/podspec-default.yaml
                 - docker:k8s:/config/podspec-dind.yaml
               timeout: 3h
+              shutdown_timeout: 3m
           podspec-default.yaml: |-
             containers:
               - env:
@@ -57,7 +58,10 @@ spec:
                     memory: 4Gi
                   requests:
                     cpu: 100m
-                    memory: 256Mi
+                    memory: 1Gi
+                  limits:
+                    cpu: 500m
+                    memory: 4Gi
             restartPolicy: Never
           podspec-dind.yaml: |-
             initContainers:
@@ -72,23 +76,24 @@ spec:
                 resources:
                   requests:
                     cpu: 100m
-                    memory: 256Mi
+                    memory: 1Gi
                   limits:
-                    cpu: "2"
-                    memory: 4Gi
+                    cpu: 500m
+                    memory: 8Gi
                 volumeMounts:
                   - name: docker-storage
                     mountPath: /var/lib/docker
                   - name: docker-certs
                     mountPath: /certs
-                readinessProbe:
+                startupProbe:
                   exec:
                     command:
                       - sh
                       - -c
-                      - test -f /certs/client/ca.pem && test -f /certs/client/cert.pem && test -f /certs/client/key.pem
-                  initialDelaySeconds: 2
+                      - docker --tlsverify --tlscacert=/certs/client/ca.pem --tlscert=/certs/client/cert.pem --tlskey=/certs/client/key.pem -H tcp://localhost:2376 info
+                  initialDelaySeconds: 5
                   periodSeconds: 1
+                  failureThreshold: 30
             containers:
               - env:
                   - name: DEBIAN_FRONTEND
@@ -103,12 +108,12 @@ spec:
                 imagePullPolicy: IfNotPresent
                 name: main
                 resources:
-                  limits:
-                    cpu: "2"
-                    memory: 4Gi
                   requests:
                     cpu: 100m
-                    memory: 256Mi
+                    memory: 1Gi
+                  limits:
+                    cpu: 500m
+                    memory: 4Gi
                 volumeMounts:
                   - name: docker-certs
                     mountPath: /certs
@@ -134,11 +139,33 @@ spec:
             runAsGroup: 1000
             runAsNonRoot: true
             runAsUser: 1000
+        initContainers:
+          # native sidecar: started before, and terminated after, the runner
+          # container, so the plugin socket outlives job draining on shutdown
+          k8s-plugin:
+            image:
+              repository: registry.erwanleboucher.dev/eleboucher/runner-k8s-plugin
+              tag: 12.10.6
+            args:
+              - --listen
+              - unix:///plugin/forgejo-runner-k8s.sock
+            restartPolicy: Always
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
         containers:
           runner:
             image:
-              repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
-              # renovate: datasource=docker depName=registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner
+              repository: registry.erwanleboucher.dev/eleboucher/runner
               tag: 12.10.2
             command:
               - sh
@@ -154,37 +181,13 @@ spec:
                 cpu: 5m
                 memory: 256Mi
               limits:
-                memory: 1024Mi
+                memory: 1Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
-          k8s-plugin:
-            image:
-              repository: registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner-k8s-plugin
-              # renovate: datasource=docker depName=registry.erwanleboucher.dev/erwanleboucher.dev/eleboucher/runner-k8s-plugin
-              tag: 12.10.6
-            args:
-              - --listen
-              - unix:///plugin/forgejo-runner-k8s.sock
-            resources:
-              requests:
-                cpu: 5m
-                memory: 32Mi
-              limits:
-                memory: 128Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-
-    serviceAccount:
-      forgejo-runner: {}
-
     rbac:
       roles:
         forgejo-runner:
@@ -223,7 +226,6 @@ spec:
                 - list
                 - watch
                 - get
-
       bindings:
         forgejo-runner:
           type: RoleBinding
@@ -231,7 +233,6 @@ spec:
             identifier: forgejo-runner
           subjects:
             - identifier: forgejo-runner
-
     persistence:
       config:
         type: configMap
