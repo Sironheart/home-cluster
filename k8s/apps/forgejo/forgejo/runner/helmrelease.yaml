@@ -37,7 +37,7 @@ spec:
                   namespace: forgejo
                   poll_timeout: 10m
             runner:
-              capacity: 2
+              capacity: 4
               labels:
                 - ubuntu-latest:k8s:/config/podspec-default.yaml
                 - default:k8s:/config/podspec-default.yaml
@@ -53,6 +53,7 @@ spec:
                 name: main
                 resources:
                   limits:
+                    cpu: "2"
                     memory: 4Gi
                   requests:
                     cpu: 100m
@@ -73,6 +74,7 @@ spec:
                     cpu: 100m
                     memory: 256Mi
                   limits:
+                    cpu: "2"
                     memory: 4Gi
                 volumeMounts:
                   - name: docker-storage
@@ -102,6 +104,7 @@ spec:
                 name: main
                 resources:
                   limits:
+                    cpu: "2"
                     memory: 4Gi
                   requests:
                     cpu: 100m
