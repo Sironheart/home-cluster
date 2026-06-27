@@ -2,8 +2,8 @@
 clusterName: home
 # renovate: datasource=custom.talos-factory depName=siderolabs/talos
 talosVersion: v1.13.5
-# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.36.1
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.36.2
 
 endpoint: https://internal.siron.casa:6443
 allowSchedulingOnMasters: true
