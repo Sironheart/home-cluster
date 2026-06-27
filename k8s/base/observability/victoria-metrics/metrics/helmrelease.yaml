@@ -108,6 +108,10 @@ spec:
                 - alertname="ScrapePoolHasNoTargets"
                 - scrape_job=~"serviceScrape/rook-ceph/csi-metrics.*"
               receiver: blackhole
+            - matchers:
+                - alertname="CPUThrottlingHigh"
+                - pod=~"forgejo-runner-.*"
+              receiver: blackhole
         receivers:
           - name: blackhole
           - name: discord
