@@ -197,6 +197,53 @@ spec:
               tlsConfig:
                 insecureSkipVerify: true
 
+    kubeApiServer:
+      vmScrape:
+        spec:
+          endpoints:
+            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              port: https
+              scheme: https
+              tlsConfig:
+                caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                serverName: kubernetes
+              max_scrape_size: "33554432"
+              metricRelabelConfigs:
+                # Sizes: rarely useful, high cardinality
+                - source_labels: [__name__]
+                  regex: apiserver_(request_body_size_bytes|response_sizes|watch_events_sizes)_(bucket|sum|count)
+                  action: drop
+
+                # Watch internals: useful only for deep watch debugging
+                - source_labels: [__name__]
+                  regex: apiserver_(watch_list_duration_seconds|watch_cache_read_wait_seconds)_(bucket|sum|count)
+                  action: drop
+
+                # APF buckets: keep gauges/counters, drop histograms
+                - source_labels: [__name__]
+                  regex: apiserver_flowcontrol_.*_bucket
+                  action: drop
+
+                # Admission histograms: keep totals, drop buckets
+                - source_labels: [__name__]
+                  regex: apiserver_admission_(controller|webhook|step|match_condition_evaluation)_duration_seconds_bucket
+                  action: drop
+
+                # Apiserver-internal workqueues: duplicated from controllers
+                - source_labels: [__name__]
+                  regex: workqueue_(queue_duration_seconds|work_duration_seconds)_(bucket|sum|count)
+                  action: drop
+
+                # Rest-client histograms from the apiserver: already dropped for kubelet
+                - source_labels: [__name__]
+                  regex: rest_client_(request_duration_seconds|request_size_bytes|response_size_bytes)_(bucket|sum|count)
+                  action: drop
+
+                # Static / per-CRD low-value metrics
+                - source_labels: [__name__]
+                  regex: (kubernetes_feature_enabled|apiextensions_openapi_v3_regeneration_count)
+                  action: drop
+
     kubeEtcd:
       service:
         selector:
