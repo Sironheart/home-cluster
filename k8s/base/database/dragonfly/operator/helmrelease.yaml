@@ -32,7 +32,6 @@ spec:
       grafanaOperator:
         enabled: true
         matchLabels:
-          dashboards: ~
           instance: grafana
     extraArgs:
       - "--bind=::"
