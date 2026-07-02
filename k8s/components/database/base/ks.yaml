@@ -17,7 +17,14 @@ spec:
       EXTENSIONS: ${q:='}${DATABASE_EXTENSIONS}${q:='}
 
       emptyArray: "[]"
+  dependsOn:
+    - name: instance
+      namespace: *namespace
   healthChecks:
+    - name: ${APP}
+      namespace: *namespace
+      kind: DatabaseRole
+      apiVersion: postgresql.cnpg.io/v1
     - name: postgres-${APP}
       namespace: *namespace
       kind: Database

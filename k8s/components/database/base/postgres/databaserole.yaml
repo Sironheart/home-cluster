@@ -1,0 +1,14 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: ${OWNER}
+spec:
+  cluster:
+    name: postgres
+  name: ${OWNER}
+  ensure: present
+  login: true
+  superuser: false
+  disablePassword: true
+  databaseRoleReclaimPolicy: delete

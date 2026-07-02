@@ -78,11 +78,3 @@ spec:
         image:
           # renovate: datasource=docker depName=ghcr.io/shusaan/timescaledb-testing
           reference: ghcr.io/shusaan/timescaledb-testing:2.24.0-18-trixie@sha256:dae25c2dde06455214ac5553b51d3ef2d48fe84795c2cfa48c51c6e15877044e
-
-  managed:
-    roles:
-      - name: pooler-rw
-        ensure: present
-        login: true
-        superuser: false
-        disablePassword: true

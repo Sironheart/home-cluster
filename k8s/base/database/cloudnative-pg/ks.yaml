@@ -62,16 +62,6 @@ metadata:
     fluxcd.controlplane.io/reconcileEvery: "30m"
     fluxcd.controlplane.io/reconcileTimeout: "5m"
 spec:
-  inputStrategy:
-    name: Permute
-  inputs:
-    - role: pooler-rw
-  inputsFrom:
-    - apiVersion: fluxcd.controlplane.io/v1
-      kind: ResourceSetInputProvider
-      selector:
-        matchLabels:
-          postgresql.cnpg.io/role: "true"
   resourcesTemplate: |
     apiVersion: kustomize.toolkit.fluxcd.io/v1
     kind: Kustomization
@@ -84,6 +74,8 @@ spec:
           app.kubernetes.io/name: *app
       components:
         - ../../../../components/common
+      dependsOn:
+        - name: barman-plugin
       healthChecks:
         - apiVersion: postgresql.cnpg.io/v1
           kind: Cluster
@@ -99,39 +91,3 @@ spec:
         namespace: flux-system
       targetNamespace: *namespace
       timeout: 5m
-      patches:
-        - target:
-            kind: Cluster
-            group: postgresql.cnpg.io
-            version: v1
-          patch: |-
-            apiVersion: postgresql.cnpg.io/v1
-            kind: Cluster
-            metadata:
-              name: not-used
-            spec:
-              managed:
-                roles:
-                  <<- $roleNames := list >>
-                  <<- range $k, $in := inputs >>
-                  <<-   if kindIs "map" $in >>
-                  <<-     $r := index $in "role" >>
-                  <<-     if $r >>
-                  <<-       $roleNames = concat $roleNames (list $r) >>
-                  <<-     end >>
-                  <<-   end >>
-                  <<- end >>
-                  <<- $roleNames = $roleNames | compact | uniq | sortAlpha >>
-
-                  <<- $roleObjs := list >>
-                  <<- range $r := $roleNames >>
-                  <<-   $roleObjs = concat $roleObjs (list (dict
-                        "name" $r
-                        "ensure" "present"
-                        "login" true
-                        "superuser" false
-                        "disablePassword" true
-                      )) >>
-                  <<- end >>
-
-                  <<- toYaml $roleObjs | nindent 18 >>
