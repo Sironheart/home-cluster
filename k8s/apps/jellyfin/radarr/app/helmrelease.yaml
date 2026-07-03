@@ -86,7 +86,7 @@ spec:
           - path: /config/MediaCover
       media:
         type: nfs
-        server: 192.168.0.2
+        server: 192.168.1.2
         path: /volume2/shows
         globalMounts:
           - path: /media

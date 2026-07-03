@@ -12,9 +12,9 @@ cniConfig:
 
 additionalMachineCertSans: &san
   - 127.0.0.1 #KubePrism
-  - 192.168.0.11 #Talos01
-  - 192.168.0.12 #Talos02
-  - 192.168.0.13 #Talos03
+  - 192.168.1.11 #Talos01
+  - 192.168.1.12 #Talos02
+  - 192.168.1.13 #Talos03
   - internal.siron.casa #DNS route to cluster
 additionalApiServerCertSans: *san
 
@@ -31,7 +31,7 @@ controlPlane:
 
 nodes:
   - hostname: talos01
-    ipAddress: 192.168.0.11
+    ipAddress: 192.168.1.11
     controlPlane: true
     disableSearchDomain: true
 
@@ -71,7 +71,7 @@ nodes:
           grow: false
 
   - hostname: talos02
-    ipAddress: 192.168.0.12
+    ipAddress: 192.168.1.12
     controlPlane: true
     disableSearchDomain: true
 
@@ -87,7 +87,7 @@ nodes:
     volumes: *volumes
 
   - hostname: talos03
-    ipAddress: 192.168.0.13
+    ipAddress: 192.168.1.13
     controlPlane: true
     disableSearchDomain: true
 

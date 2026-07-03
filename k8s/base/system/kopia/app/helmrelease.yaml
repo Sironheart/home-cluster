@@ -93,7 +93,7 @@ spec:
             subPath: repository.config
       repository:
         type: nfs
-        server: 192.168.0.2
+        server: 192.168.1.2
         path: /volume2/backups/kopia
         globalMounts:
           - path: /repository
