@@ -53,3 +53,6 @@ releases:
     version: 0.53.0
     values: ["../../k8s/base/flux-system/flux-instance/app/helm/values.yaml"]
     needs: ["flux-system/flux-operator"]
+    wait: false
+    waitForJobs: false
+    disableValidation: true

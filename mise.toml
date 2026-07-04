@@ -26,7 +26,7 @@ description = "Install CRDs and basic tools"
 
 [tasks.install-crds]
 depends = ['kubeconfig']
-run = "helmfile template -f bootstrap/helmfile.d/00-crds.yaml | kubectl apply --server-side -f - || true"
+run = "helmfile -q template -f bootstrap/helmfile.d/00-crds.yaml | yq ea -e 'select(.kind == \"CustomResourceDefinition\")' | kubectl apply --server-side -f - || true"
 description = "Install all CRDs"
 dir = "{{ config_root }}"
 

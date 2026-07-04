@@ -1,24 +1,21 @@
 ---
+# This helmfile renders CRD charts. Because Helm 4 runs post-renderers before
+# including CRDs, the CRD-only filtering has to happen outside of Helm. Apply
+# this file with:
+#   helmfile template -f bootstrap/helmfile.d/00-crds.yaml | \
+#     yq ea -e 'select(.kind == "CustomResourceDefinition")' | \
+#     kubectl apply --server-side -f -
+
 helmDefaults:
   args:
     - --include-crds
     - --no-hooks
-  postRenderer: yq
-  postRendererArgs:
-    - ea
-    - -e
-    - select(.kind == "CustomResourceDefinition")
 
 releases:
   - name: cloudflare-dns
     namespace: network
     chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
     version: 1.21.1
-
-  - name: external-secrets
-    namespace: external-secrets
-    chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 2.7.0
 
   - name: envoy-gateway
     namespace: network
