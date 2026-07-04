@@ -11,15 +11,13 @@ releases:
     chart: oci://quay.io/jetstack/charts/cert-manager
     version: v1.20.3
     values: ["../../k8s/base/cert-manager/cert-manager/app/helm/values.yaml"]
-    needs: ["kube-system/cilium"]
 
   - name: 1password-connect
     namespace: onepassword
-    chart: https://1password.github.io/connect-helm-charts/connect
-    version: 2.0.3
+    chart: oci://ghcr.io/1password/connect
+    version: 2.4.1
     values:
       ["../../k8s/base/onepassword/1password-connect/app/helm/values.yaml"]
-    needs: ["kube-system/cilium"]
 
   - name: external-secrets
     namespace: external-secrets

@@ -14,9 +14,7 @@ spec:
     substitute:
       APP: *app
       OWNER: ${DATABASE_OWNER:=${APP}}
-      EXTENSIONS: ${q:='}${DATABASE_EXTENSIONS}${q:='}
-
-      emptyArray: "[]"
+      EXTENSIONS: '${DATABASE_EXTENSIONS:-"[]"}'
   dependsOn:
     - name: instance
       namespace: *namespace
