@@ -7,7 +7,6 @@ spec:
   components:
     - ../../../../components/database
     - ../../../../components/kopiur
-    - ../../../../components/volsync
   dependsOn:
     - name: instance
       namespace: database
@@ -18,7 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 10Gi
       KOPIUR_CAPACITY: 10Gi
   prune: true
   sourceRef:

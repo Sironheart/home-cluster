@@ -9,7 +9,6 @@ spec:
       app.kubernetes.io/name: forgejo
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
     - ../../../../components/database
     - ../../../../components/dragonfly
     - ../../../../components/anubis
@@ -21,7 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: forgejo
-      VOLSYNC_CAPACITY: 20Gi
       KOPIUR_CAPACITY: 20Gi
       DRAGONFLY_REPLICAS: "1"
       ANUBIS_TARGET: http://forgejo-http:3000
