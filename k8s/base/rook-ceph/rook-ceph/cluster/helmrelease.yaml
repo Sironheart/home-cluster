@@ -15,6 +15,7 @@ spec:
     toolbox:
       enabled: false
     cephClusterSpec:
+      removeOSDsIfOutAndSafeToRemove: true
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
@@ -47,8 +48,15 @@ spec:
         connections:
           requireMsgr2: true
       storage:
-        useAllNodes: true
-        useAllDevices: true
+        useAllNodes: false
+        useAllDevices: false
+        nodes:
+          - name: talos01
+            devicePathFilter: ^/dev/disk/by-id/nvme-WD_Red_SN700_1000GB_[^_]+$
+          - name: talos02
+            devicePathFilter: ^/dev/disk/by-id/nvme-WD_Red_SN700_1000GB_[^_]+$
+          - name: talos03
+            devicePathFilter: ^/dev/disk/by-id/nvme-WD_Red_SN700_1000GB_[^_]+$
         config:
           osdsPerDevice: "1"
       resources:

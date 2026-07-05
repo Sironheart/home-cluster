@@ -6,19 +6,19 @@ talosVersion: v1.13.5
 kubernetesVersion: v1.36.2
 
 endpoint: https://internal.siron.casa:6443
-allowSchedulingOnMasters: true
+allowSchedulingOnControlPlanes: true
 cniConfig:
   name: none
 
-additionalMachineCertSans: &san
+additionalApiServerCertSans: &san
   - 127.0.0.1 #KubePrism
   - 192.168.1.11 #Talos01
   - 192.168.1.12 #Talos02
   - 192.168.1.13 #Talos03
   - internal.siron.casa #DNS route to cluster
-additionalApiServerCertSans: *san
 
 controlPlane:
+  certSANs: *san
   schematic:
     customization:
       systemExtensions:
@@ -64,7 +64,9 @@ nodes:
         provisioning:
           diskSelector:
             match: system_disk
+          grow: false
           minSize: 128GiB
+          maxSize: 128GiB
         filesystem:
           type: xfs
 
@@ -110,6 +112,17 @@ nodes:
     volumes: *volumes
 
 patches:
+  # Reserve the largest system-disk partition for a ZFS pool.
+  - |-
+    apiVersion: v1alpha1
+    kind: RawVolumeConfig
+    name: zfs-pool
+    provisioning:
+      diskSelector:
+        match: system_disk
+      grow: true
+      minSize: 256GiB
+
   # Enable host dns
   - |-
     machine:
@@ -195,7 +208,6 @@ patches:
           enable-aggregator-routing: "true"
           feature-gates: MutatingAdmissionPolicy=true
           runtime-config: admissionregistration.k8s.io/v1beta1=true
-        disablePodSecurityPolicy: true
       controllerManager:
         extraArgs:
           bind-address: 0.0.0.0
@@ -243,7 +255,6 @@ patches:
   - |-
     cluster:
       apiServer:
-        disablePodSecurityPolicy: true
         admissionControl:
         - name: PodSecurity
           configuration:
