@@ -60,10 +60,14 @@ spec:
           DEFAULT_REPO_UNITS: repo.code,repo.issues,repo.releases,repo.packages,repo.pulls,repo.actions
           DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
           DISABLE_FORKS: true
+          DISABLE_DOWNLOAD_SOURCE_ARCHIVES: true
+          ENABLE_PUSH_CREATE_USER: true
+          GO_GET_CLONE_URL_PROTOCOL: ssh
           ROOT: /data/git/repositories
         repository.pull-request:
           DEFAULT_MERGE_STYLE: fast-forward-only
           DEFAULT_UPDATE_STYLE: rebase
+          DEFAULT_DELETE_BRANCH_AFTER_MERGE: true
         repository.signing:
           FORMAT: ssh
           SIGNING_KEY: /data/signing/ed25519.pub

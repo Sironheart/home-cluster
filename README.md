@@ -31,7 +31,7 @@ The basics of this cluster rely on:
 - [1password Connect](https://developer.1password.com/docs/connect/)
 - [Grafana Operator](https://grafana.com/docs/grafana-cloud/developer-resources/infrastructure-as-code/grafana-operator/)
 - [VictoriaMetrics](https://victoriametrics.com/)
-- [Volsync](https://github.com/backube/volsync) with [Kopia](https://kopia.io/)
+- [Kopiur](https://github.com/home-operations/kopiur)
 - [Tailscale](https://tailscale.com/)
 - [Envoy Gateway](https://gateway.envoyproxy.io/)
 - [Cloudflared](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/)
