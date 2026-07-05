@@ -19,4 +19,3 @@ spec:
   sources:
     - pvc:
         name: ${KOPIUR_PVC:=${APP}}
-  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=openebs-snapshots}

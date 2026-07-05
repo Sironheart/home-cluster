@@ -8,6 +8,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/kopiur
     - ../../../../components/volsync
     - ../../../../components/database
   dependsOn:
@@ -19,6 +20,7 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_CAPACITY: 10Gi
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -10,7 +10,11 @@ spec:
       volume:
         nfs:
           server: 192.168.1.2
-          path: /volume2/backups/kopia
+          path: /volume2/backups/kopiur
+  catalog:
+    periodicRefresh: true
+  credentialProjection:
+    allowed: true
   encryption:
     passwordSecretRef:
       name: kopia-secret

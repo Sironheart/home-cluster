@@ -8,5 +8,6 @@ spec:
     name: "${APP}"
   schedule:
     concurrencyPolicy: Forbid
-    cron: "${KOPIUR_CRON:=0 */12 * * *}"
+    cron: "${KOPIUR_CRON:=H * * * *}"
+    jitter: 5m
     runOnCreate: false
