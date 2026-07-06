@@ -31,7 +31,7 @@ spec:
                   name: _
                 spec:
                   interval: 1h
-                  timeout: 5m
+                  timeout: 10m
                   install:
                     serverSideApply: true
                     crds: CreateReplace
@@ -91,7 +91,7 @@ spec:
                 spec:
                   interval: 1h
                   maxHistory: 2
-                  timeout: 5m
+                  timeout: 10m
                   install:
                     crds: CreateReplace
                     strategy:
