@@ -34,3 +34,8 @@ spec:
     ttlSecondsAfterFinished: 86400
   maintenance:
     enabled: true
+  server:
+    auth:
+      insecure:
+        acknowledgeInsecure: true
+    namespace: kopiur-system

@@ -5,7 +5,7 @@ metadata:
   name: kopia
 spec:
   hostnames:
-    - kopia-new.siron.casa
+    - kopia.siron.casa
   parentRefs:
     - name: internal
       namespace: network
