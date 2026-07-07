@@ -9,34 +9,33 @@ spec:
     name: kopiur
   interval: 1h
   values:
-    controller:
-      extraVolumes:
-        - name: repo
-          nfs:
-            server: 192.168.1.2
-            path: /volume2/backups/kopiur
-      extraVolumeMounts:
-        - name: repo
-          mountPath: /repo
+    extraVolumes:
+      - name: repo
+        nfs:
+          server: 192.168.1.2
+          path: /volume2/backups/kopiur
+    extraVolumeMounts:
+      - name: repo
+        mountPath: /repo
     features:
       credentialProjection:
         enabled: true
       kopiaUi:
         enabled: true
-    grafanaDashboard:
-      enabled: true
-      grafanaOperator:
-        enabled: true
-        matchLabels:
-          instance: grafana
     installScope: cluster
     logging:
       format: json
-    metrics:
+    monitoring:
       serviceMonitor:
         enabled: true
       prometheusRule:
         enabled: true
+      dashboards:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          matchLabels:
+            instance: grafana
     podSecurityContext:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
@@ -46,7 +45,5 @@ spec:
       seccompProfile:
         type: RuntimeDefault
     webhook:
-      certManager:
-        enabled: true
       serviceMonitor:
         enabled: true
