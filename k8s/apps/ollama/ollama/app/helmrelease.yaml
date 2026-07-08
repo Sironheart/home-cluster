@@ -28,9 +28,9 @@ spec:
     resources:
       requests:
         cpu: 8
-        memory: 6144Mi
+        memory: 10240Mi
       limits:
-        memory: 6144Mi
+        memory: 10240Mi
     ollama:
       gpu:
         enabled: true
