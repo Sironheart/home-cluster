@@ -24,7 +24,8 @@ spec:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.32.0
             env:
-              BROWSER_WEB_URL: http://karakeep-chrome.karakeep.svc.cluster.local:9222
+              BROWSER_CONNECT_ONDEMAND: true
+              BROWSER_WEBSOCKET_URL: ws://karakeep-chrome.karakeep.svc.cluster.local:3000/chrome?token=karakeep
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
@@ -34,13 +35,15 @@ spec:
               MEILI_ADDR: http://karakeep-meilisearch.karakeep.svc.cluster.local:7700
               DISABLE_NEW_RELEASE_CHECK: true
               COREPACK_INTEGRITY_KEYS: 0
-              OLLAMA_BASE_URL: http://ollama.ollama.svc.cluster.local:11434
+              OPENAI_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
+              OPENAI_API_KEY: ollama
               OLLAMA_KEEP_ALIVE: "15m"
-              INFERENCE_TEXT_MODEL: gemma3:4b
-              INFERENCE_IMAGE_MODEL: llava
+              INFERENCE_TEXT_MODEL: mistral:instruct
+              INFERENCE_IMAGE_MODEL: ''
               INFERENCE_JOB_TIMEOUT_SEC: 120
               NEXTAUTH_URL: "https://karakeep.siron.casa"
               OAUTH_PROVIDER_NAME: kanidm
+              OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
               OAUTH_WELLKNOWN_URL: https://sso.siron.casa/oauth2/openid/karakeep-app/.well-known/openid-configuration
               OAUTH_CLIENT_ID:
                 valueFrom:
@@ -68,31 +71,37 @@ spec:
                 memory: 721Mi
 
       chrome:
+        pod:
+          securityContext:
+            fsGroup: 999
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 999
+            runAsNonRoot: true
+            runAsUser: 999
         containers:
           chrome:
             image:
-              repository: gcr.io/zenika-hub/alpine-chrome
-              tag: 124
-            command:
-              - chromium-browser
-            args:
-              - --headless
-              - --no-sandbox
-              - --disable-gpu
-              - --disable-dev-shm-usage
-              - --remote-debugging-address=0.0.0.0
-              - --remote-debugging-port=9222
-              - --hide-scrollbars
+              repository: ghcr.io/browserless/chrome
+              tag: v2.54.2
+            env:
+              CONCURRENT: 1
+              ENABLE_DEBUGGER: false
+              HEALTH: true
+              HOST: 0.0.0.0
+              QUEUED: 5
+              TIMEOUT: 120000
+              TOKEN: karakeep
             securityContext:
+              allowPrivilegeEscalation: false
               capabilities:
                 drop:
                   - ALL
             resources:
               requests:
-                cpu: 10m
-                memory: 195Mi
+                cpu: 50m
+                memory: 512Mi
               limits:
-                memory: 215Mi
+                memory: 2Gi
 
       meilisearch:
         containers:
@@ -132,6 +141,14 @@ spec:
               - identifier: karakeep
                 port: &port 3000
     persistence:
+      chrome-shm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+        advancedMounts:
+          chrome:
+            chrome:
+              - path: /dev/shm
       data:
         existingClaim: *app
         advancedMounts:
@@ -153,7 +170,7 @@ spec:
         controller: chrome
         ports:
           http:
-            port: 9222
+            port: 3000
       meilisearch:
         controller: meilisearch
         ports:

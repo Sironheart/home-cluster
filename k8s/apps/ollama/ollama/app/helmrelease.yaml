@@ -39,8 +39,7 @@ spec:
       models:
         clean: true
         pull:
-          - gemma3:4b
-          - llava:7b
+          - mistral:instruct
     extraEnv:
       - name: OLLAMA_USE_MMAP
         value: "false"
