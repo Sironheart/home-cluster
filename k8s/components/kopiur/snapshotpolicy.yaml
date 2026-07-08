@@ -8,8 +8,7 @@ spec:
   credentialProjection:
     enabled: true
   files:
-    ignoreRules:
-      - lost+found
+    ignoreRules: ${KOPIUR_IGNORE_RULES:=[lost+found]}
   repository:
     kind: ClusterRepository
     name: ${KOPIUR_REPOSITORY:=nas}

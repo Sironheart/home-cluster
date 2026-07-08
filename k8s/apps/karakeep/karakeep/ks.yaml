@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      KOPIUR_IGNORE_RULES: '[lost+found, "meilisearch/**"]'
       KOPIUR_CAPACITY: 10Gi
       KOPIUR_ACCESSMODES: ReadWriteMany
       KOPIUR_STORAGECLASS: ceph-filesystem
