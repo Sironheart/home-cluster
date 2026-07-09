@@ -37,8 +37,8 @@ spec:
               OPENAI_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
               OPENAI_API_KEY: ollama
               OLLAMA_KEEP_ALIVE: "15m"
-              INFERENCE_TEXT_MODEL: mistral:instruct
-              INFERENCE_IMAGE_MODEL: ''
+              INFERENCE_TEXT_MODEL: qwen2.5:3b
+              INFERENCE_IMAGE_MODEL: moondream
               INFERENCE_JOB_TIMEOUT_SEC: 120
               NEXTAUTH_URL: "https://karakeep.siron.casa"
               OAUTH_PROVIDER_NAME: kanidm
@@ -67,7 +67,7 @@ spec:
                 cpu: 165m
                 memory: 420Mi
               limits:
-                memory: 721Mi
+                memory: 1024Mi
 
       chrome:
         containers:

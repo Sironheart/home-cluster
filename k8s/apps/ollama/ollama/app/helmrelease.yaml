@@ -39,7 +39,8 @@ spec:
       models:
         clean: true
         pull:
-          - mistral:instruct
+          - qwen2.5:3b
+          - moondream
     extraEnv:
       - name: OLLAMA_USE_MMAP
         value: "false"
