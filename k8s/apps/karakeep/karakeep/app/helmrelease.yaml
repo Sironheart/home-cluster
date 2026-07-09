@@ -24,8 +24,7 @@ spec:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.32.0
             env:
-              BROWSER_CONNECT_ONDEMAND: true
-              BROWSER_WEBSOCKET_URL: ws://karakeep-chrome.karakeep.svc.cluster.local:3000/chrome?token=karakeep
+              BROWSER_WEB_URL: http://karakeep-chrome.karakeep.svc.cluster.local:9222
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
@@ -71,37 +70,23 @@ spec:
                 memory: 721Mi
 
       chrome:
-        pod:
-          securityContext:
-            fsGroup: 999
-            fsGroupChangePolicy: OnRootMismatch
-            runAsGroup: 999
-            runAsNonRoot: true
-            runAsUser: 999
         containers:
           chrome:
             image:
-              repository: ghcr.io/browserless/chrome
-              tag: v2.54.2
-            env:
-              CONCURRENT: 1
-              ENABLE_DEBUGGER: false
-              HEALTH: true
-              HOST: 0.0.0.0
-              QUEUED: 5
-              TIMEOUT: 120000
-              TOKEN: karakeep
+              repository: docker.io/chromedp/headless-shell
+              tag: 150.0.7871.101
+            args:
+              - --hide-scrollbars
             securityContext:
-              allowPrivilegeEscalation: false
               capabilities:
                 drop:
                   - ALL
             resources:
               requests:
                 cpu: 50m
-                memory: 512Mi
+                memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 1Gi
 
       meilisearch:
         containers:
@@ -170,7 +155,7 @@ spec:
         controller: chrome
         ports:
           http:
-            port: 3000
+            port: 9222
       meilisearch:
         controller: meilisearch
         ports:
