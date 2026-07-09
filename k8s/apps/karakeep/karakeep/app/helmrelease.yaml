@@ -74,7 +74,7 @@ spec:
           chrome:
             image:
               repository: docker.io/chromedp/headless-shell
-              tag: 150.0.7871.101
+              tag: 151.0.7922.10
             args:
               - --hide-scrollbars
             securityContext:
