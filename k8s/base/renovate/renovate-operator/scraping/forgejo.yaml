@@ -20,7 +20,8 @@ spec:
         {
           "$schema": "https://docs.renovatebot.com/renovate-schema.json",
           "extends": [
-            'config:best-practices'
+            'config:best-practices',
+            'local>sironheart/renovate-preset',
           ]
         }
     - name: RENOVATE_ONBOARDING_CONFIG_FILE_NAME
