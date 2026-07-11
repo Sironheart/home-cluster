@@ -99,6 +99,10 @@ spec:
                 - alertname="KubeMemoryOvercommit"
               receiver: blackhole
             - matchers:
+                - alertname="RecordingRulesNoData"
+                - recording="count:up0"
+              receiver: blackhole
+            - matchers:
                 - alertname="CephNodeDiskspaceWarning"
               receiver: blackhole
             - matchers:
