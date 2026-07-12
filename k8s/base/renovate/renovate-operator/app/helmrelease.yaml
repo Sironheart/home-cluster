@@ -58,5 +58,4 @@ spec:
           allowCrossNamespaceImport: true
           instanceSelector:
             matchLabels:
-              grafana.internal/instance: ~
               instance: grafana
