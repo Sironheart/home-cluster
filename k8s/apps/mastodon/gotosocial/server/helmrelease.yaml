@@ -24,6 +24,7 @@ spec:
             env:
               GTS_HOST: gts.siron.casa
               GTS_ACCOUNT_DOMAIN: siron.casa
+              GTS_LOG_FORMAT: json
               GTS_STORAGE_LOCAL_BASE_PATH: /storage
               GTS_SEMAPHORE_URL: https://phanpy.siron.casa
               GTS_LANDING_PAGE_USER: "sironheart"

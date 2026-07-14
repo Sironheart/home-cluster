@@ -13,7 +13,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      OWNER: ${DATABASE_OWNER:=${APP}}
+      OWNER: ${APP}
       EXTENSIONS: '${DATABASE_EXTENSIONS:-"[]"}'
   dependsOn:
     - name: instance

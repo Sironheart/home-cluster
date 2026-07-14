@@ -21,9 +21,15 @@ spec:
 
     vmagent:
       enabled: enabled
+      spec:
+        extraArgs:
+          loggerFormat: json
 
     vmalert:
       enabled: true
+      spec:
+        extraArgs:
+          loggerFormat: json
       route:
         enabled: true
         parentRefs:
@@ -34,6 +40,8 @@ spec:
 
     vmsingle:
       spec:
+        extraArgs:
+          loggerFormat: json
         image:
           repository: victoriametrics/victoria-metrics
           tag: v1.147.0

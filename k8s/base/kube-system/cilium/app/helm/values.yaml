@@ -1,6 +1,8 @@
 ---
 rollOutCiliumPods: true
 policyAuditMode: true
+logOptions:
+  format: json
 # enableIPv4BIGTCP: true
 
 l2announcements:

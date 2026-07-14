@@ -4,9 +4,20 @@ crds:
 replicaCount: 1
 dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
 dns01RecursiveNameserversOnly: true
+config:
+  apiVersion: controller.config.cert-manager.io/v1alpha1
+  kind: ControllerConfiguration
+  logging:
+    format: json
 prometheus:
   enabled: true
   servicemonitor:
     enabled: true
+cainjector:
+  config:
+    apiVersion: cainjector.config.cert-manager.io/v1alpha1
+    kind: CAInjectorConfiguration
+    logging:
+      format: json
 deploymentAnnotations:
   reloader.stakater.com/auto: "true"
