@@ -6,5 +6,6 @@ components:
   - ../../components/common
 resources:
   - forgejo/ks.yaml
+  - konflate/ks.yaml
 replacements:
   - path: ../../components/replacements/ks.yaml

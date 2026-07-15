@@ -1,0 +1,46 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app konflate
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
+
+    config:
+      repo: forgejo://forgejo.siron.casa/sironheart/home-cluster
+      publicUrl: https://konflate.siron.casa
+      statusChecks: true
+      statusCheckName: Konflate
+      prComments: true
+
+    secret:
+      existingSecret: konflate-secret
+
+    httpRoute:
+      enabled: true
+      hostnames:
+        - konflate.siron.casa
+      parentRefs:
+        - name: internal
+          namespace: network
+
+    persistence:
+      enabled: true
+      existingClaim: *app
+
+    monitoring:
+      serviceMonitor:
+        enabled: true
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
