@@ -53,41 +53,31 @@ spec:
     namespace: flux-system
   timeout: 5m
 ---
-apiVersion: fluxcd.controlplane.io/v1
-kind: ResourceSet
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
 metadata:
-  name: cnpg-cluster
-  annotations:
-    fluxcd.controlplane.io/reconcile: "enabled"
-    fluxcd.controlplane.io/reconcileEvery: "30m"
-    fluxcd.controlplane.io/reconcileTimeout: "5m"
+  name: &app instance
+  namespace: &namespace database
 spec:
-  resourcesTemplate: |
-    apiVersion: kustomize.toolkit.fluxcd.io/v1
-    kind: Kustomization
-    metadata:
-      name: &app instance
-      namespace: &namespace database
-    spec:
-      commonMetadata:
-        labels:
-          app.kubernetes.io/name: *app
-      components:
-        - ../../../../components/common
-      dependsOn:
-        - name: barman-plugin
-      healthChecks:
-        - apiVersion: postgresql.cnpg.io/v1
-          kind: Cluster
-          name: postgres
-          namespace: database
-      interval: 1h
-      path: ./k8s/base/database/cloudnative-pg/instance
-      prune: true
-      retryInterval: 2m
-      sourceRef:
-        kind: GitRepository
-        name: flux-system
-        namespace: flux-system
-      targetNamespace: *namespace
-      timeout: 5m
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/common
+  dependsOn:
+    - name: barman-plugin
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      name: postgres
+      namespace: database
+  interval: 1h
+  path: ./k8s/base/database/cloudnative-pg/instance
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
