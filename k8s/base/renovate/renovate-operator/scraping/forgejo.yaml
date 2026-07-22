@@ -10,7 +10,7 @@ spec:
   discoveryFilters:
     - sironheart/*
   # renovate: datasource=docker depName=renovate/renovate
-  image: renovate/renovate:43.269.1
+  image: renovate/renovate:43.270.0
   parallelism: 2
   schedule: 0 */4 * * *
   secretRef: forgejo-renovate
