@@ -15,6 +15,9 @@ spec:
   schedule: 0 */4 * * *
   secretRef: forgejo-renovate
   extraEnv:
+    # Admin-only option: allows Renovate to run mise (mise lock), bazel mod deps, go generate, and gradlew during updates.
+    - name: RENOVATE_ALLOWED_UNSAFE_EXECUTIONS
+      value: '["bazelModDeps", "goGenerate", "gradleWrapper", "mise"]'
     - name: RENOVATE_ONBOARDING_CONFIG
       value: |
         {
