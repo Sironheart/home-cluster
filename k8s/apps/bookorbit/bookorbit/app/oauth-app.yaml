@@ -2,28 +2,29 @@
 apiVersion: kaniop.rs/v1beta1
 kind: KanidmOAuth2Client
 metadata:
-  name: papra-app
+  name: bookorbit-app
 spec:
-  displayname: Papra
+  displayname: BookOrbit
   kanidmRef:
     name: sso
     namespace: sso
   image:
-    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/papra.svg
-  origin: https://papra.siron.casa
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/bookorbit.svg
+  origin: https://books.siron.casa
   redirectUrl:
-    - https://papra.siron.casa/api/auth/oauth2/callback/kanidm
+    - https://books.siron.casa/oauth2-callback
   scopeMap:
-    - group: papra
+    - group: bookorbit
       scopes:
         - openid
         - profile
         - email
+        - groups
 ---
 apiVersion: kaniop.rs/v1beta1
 kind: KanidmGroup
 metadata:
-  name: papra
+  name: bookorbit
 spec:
   kanidmRef:
     name: sso

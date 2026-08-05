@@ -29,6 +29,7 @@ spec:
       client_tls_sslmode: verify-full
       max_client_conn: "1000"
       default_pool_size: "10"
+      ignore_startup_parameters: statement_timeout
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor

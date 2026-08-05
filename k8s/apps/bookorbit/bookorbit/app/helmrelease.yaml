@@ -1,0 +1,96 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app bookorbit
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  values:
+    controllers:
+      bookorbit:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          bookorbit:
+            image:
+              repository: ghcr.io/bookorbit/bookorbit
+              # renovate: datasource=docker depName=ghcr.io/bookorbit/bookorbit
+              tag: 2.4.0
+            env:
+              APP_DATA_PATH: /data
+              APP_URL: https://books.siron.casa
+              BOOK_DOCK_PATH: /books/book-dock
+              DATABASE_URL: postgresql://bookorbit@pooler-rw.database.svc:5432/bookorbit?sslmode=verify-full&sslrootcert=/var/run/secrets/root-ca/ca.crt&sslcert=/var/run/secrets/postgresql/tls.crt&sslkey=/var/run/secrets/postgresql/tls.key
+              LIBRARY_BROWSE_ROOT: /books
+              NODE_ENV: production
+              OIDC_ALLOW_LOCAL_ISSUERS: "true"
+              PORT: &port 3000
+              TRUST_PROXY: "true"
+            envFrom:
+              - secretRef:
+                  name: bookorbit-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  initialDelaySeconds: 20
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      bookorbit:
+        controller: bookorbit
+        ports:
+          http:
+            port: *port
+    route:
+      bookorbit:
+        hostnames: ["books.siron.casa"]
+        parentRefs:
+          - name: internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: bookorbit
+                port: *port
+    persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /data
+      books:
+        type: nfs
+        server: 192.168.1.2
+        path: /volume2/books
+        globalMounts:
+          - path: /books
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
