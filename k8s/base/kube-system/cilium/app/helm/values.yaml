@@ -5,6 +5,12 @@ logOptions:
   format: json
 # enableIPv4BIGTCP: true
 
+ipv4:
+  enabled: true
+ipv6:
+  enabled: true
+enableIPv6Masquerade: true
+
 l2announcements:
   enabled: true
 
