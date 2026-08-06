@@ -73,7 +73,7 @@ spec:
       bookorbit:
         hostnames: ["books.siron.casa"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: network
         rules:
           - backendRefs:
