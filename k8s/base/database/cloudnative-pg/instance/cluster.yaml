@@ -61,7 +61,7 @@ spec:
           - system
         image:
           # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgis-extension
-          reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.4-18-trixie@sha256:8dee5278f8c64b26fc6a64984e93bbca0ec4bd799272bef4e0a440b3ddbff99b
+          reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.4-18-trixie@sha256:4bdfebf86a7d4e9b186efd74b24ee60798007ffda0f10a5c919eb3ef120e1521
 
       - name: pgvector
         image:
