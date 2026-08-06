@@ -42,7 +42,7 @@ flux2 = "2.9.3"
 
 # Kubernetes
 helm = "4.2.3"
-helmfile = "1.7.2"
+helmfile = "1.7.3"
 kubectl = "1.36.3"
 kustomize = "5.8.1"
 
