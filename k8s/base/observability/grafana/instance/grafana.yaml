@@ -7,7 +7,7 @@ metadata:
     instance: grafana
 spec:
   # renovate: datasource=docker depName=grafana/grafana
-  version: 13.1.2
+  version: 13.1.3
   config:
     feature_toggles:
       enable: "true"
