@@ -9,6 +9,7 @@ spec:
       reloader.stakater.com/auto: "true"
   discoveryFilters:
     - sironheart/*
+  discoverTopics: [renovate]
   # renovate: datasource=docker depName=renovate/renovate
   image: renovate/renovate:44.14.3
   parallelism: 2
