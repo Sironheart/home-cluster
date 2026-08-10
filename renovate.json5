@@ -14,6 +14,19 @@
   ],
   packageRules: [
     {
+      // config:best-practices (via RENOVATE_EXTENDS) enables docker:pinDigests /
+      // action digest pins; those break renovate/pin-dependencies for OCI charts
+      // and regex version annotations. Skip pinning in this repo.
+      description: "Disable dependency pinning",
+      matchUpdateTypes: ["pin", "pinDigest"],
+      enabled: false
+    },
+    {
+      description: "Disable digest pinning",
+      matchPackageNames: ["*"],
+      pinDigests: false
+    },
+    {
       description: "Auto merge minors and patches after minimumReleaseAge",
       matchDatasources: ["docker"],
       schedule: ["* 2 * * *"],
