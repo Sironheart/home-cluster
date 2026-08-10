@@ -19,6 +19,8 @@ spec:
     # Admin-only option: allows Renovate to run mise (mise lock), bazel mod deps, go generate, and gradlew during updates.
     - name: RENOVATE_ALLOWED_UNSAFE_EXECUTIONS
       value: '["bazelModDeps", "goGenerate", "gradleWrapper", "mise"]'
+    - name: RENOVATE_EXTENDS
+      value: '["local>sironheart/renovate-preset"]'
     - name: RENOVATE_ONBOARDING_CONFIG
       value: |
         {
