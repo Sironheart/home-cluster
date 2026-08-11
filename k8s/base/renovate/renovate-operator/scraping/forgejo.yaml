@@ -21,15 +21,6 @@ spec:
       value: '["bazelModDeps", "goGenerate", "gradleWrapper", "mise"]'
     - name: RENOVATE_EXTENDS
       value: '["local>sironheart/renovate-preset"]'
-    - name: RENOVATE_ONBOARDING_CONFIG
-      value: |
-        {
-          "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-          "extends": [
-            'config:best-practices',
-            'local>sironheart/renovate-preset',
-          ]
-        }
     - name: RENOVATE_ONBOARDING_CONFIG_FILE_NAME
       value: renovate.json5
     # - name: RENOVATE_REBASE_WHEN
