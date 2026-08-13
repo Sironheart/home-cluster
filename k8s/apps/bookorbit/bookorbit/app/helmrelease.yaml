@@ -19,7 +19,7 @@ spec:
             image:
               repository: ghcr.io/bookorbit/bookorbit
               # renovate: datasource=docker depName=ghcr.io/bookorbit/bookorbit
-              tag: 2.5.0
+              tag: 2.6.0
             env:
               APP_DATA_PATH: /data
               APP_URL: https://books.siron.casa
