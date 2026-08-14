@@ -7,7 +7,7 @@ spec:
   domain: sso.siron.casa
   ldapPortName: ldaps
   # renovate: datasource=docker depName=kanidm/server
-  image: kanidm/server:1.11.0
+  image: kanidm/server:1.11.1
   oauth2ClientNamespaceSelector:
     matchLabels: {}
   groupNamespaceSelector:
