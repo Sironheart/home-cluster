@@ -41,7 +41,7 @@ dir = "{{ config_root }}"
 flux2 = "2.9.4"
 
 # Kubernetes
-helm = "4.2.3"
+helm = "4.2.4"
 helmfile = "1.7.4"
 kubectl = "1.36.3"
 kustomize = "5.8.1"
