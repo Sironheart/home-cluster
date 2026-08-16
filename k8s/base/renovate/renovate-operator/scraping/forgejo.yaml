@@ -11,7 +11,7 @@ spec:
     - sironheart/*
   discoverTopics: [renovate]
   # renovate: datasource=docker depName=renovate/renovate
-  image: renovate/renovate:44.24.3
+  image: renovate/renovate:44.27.0
   parallelism: 2
   schedule: H H/4 * * *
   secretRef: forgejo-renovate
