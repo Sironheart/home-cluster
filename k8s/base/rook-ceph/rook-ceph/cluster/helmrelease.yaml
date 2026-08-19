@@ -154,4 +154,7 @@ spec:
               name: prometheus-ceph-rules
               namespace: rook-ceph
             patch: |
-              [{"op":"replace","path":"/spec/groups/7/rules/0/expr","value":"(sum(predict_linear(ceph_pool_percent_used[2d], 3600 * 24 * 5)) by (cluster, pool_id, instance) * on(cluster,pool_id, instance) group_right() ceph_pool_metadata) >= 95"}]
+              [
+                {"op":"replace","path":"/spec/groups/7/rules/0/expr","value":"(sum(predict_linear(ceph_pool_percent_used[2d], 3600 * 24 * 5)) by (cluster, pool_id, instance) * on(cluster,pool_id, instance) group_right() ceph_pool_metadata) >= 95"},
+                {"op":"replace","path":"/spec/groups/6/rules/2/expr","value":"(rate(node_network_receive_errs_total{device!~\"lo|cilium.*|lxc.*|veth.*\"}[1m]) + rate(node_network_transmit_errs_total{device!~\"lo|cilium.*|lxc.*|veth.*\"}[1m])) / (rate(node_network_receive_packets_total{device!~\"lo|cilium.*|lxc.*|veth.*\"}[1m]) + rate(node_network_transmit_packets_total{device!~\"lo|cilium.*|lxc.*|veth.*\"}[1m])) >= 0.0001 or (rate(node_network_receive_errs_total{device!~\"lo|cilium.*|lxc.*|veth.*\"}[1m]) + rate(node_network_transmit_errs_total{device!~\"lo|cilium.*|lxc.*|veth.*\"}[1m])) >= 10"}
+              ]
