@@ -58,6 +58,33 @@ spec:
                 - RemovePodsViolatingInterPodAntiAffinity
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingNodeTaints
+        - name: UsageBalance
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                nodeFit: true
+                evictLocalStoragePods: true
+                evictFailedBarePods: true
+            - name: LowNodeUtilization
+              args:
+                useDeviationThresholds: true
+                thresholds:
+                  cpu: 10
+                  memory: 10
+                targetThresholds:
+                  cpu: 10
+                  memory: 10
+                metricsUtilization:
+                  source: KubernetesMetrics
+                evictionLimits:
+                  node: 2
+                evictableNamespaces:
+                  exclude:
+                    - kube-system
+          plugins:
+            balance:
+              enabled:
+                - LowNodeUtilization
     service:
       enabled: true
     serviceMonitor:
