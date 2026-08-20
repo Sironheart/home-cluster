@@ -19,7 +19,7 @@ spec:
   disableUpgradeChecks: true
   replicaGroups:
     - name: default
-      replicas: 1
+      replicas: 3
       primaryNode: true
       statefulSetAnnotations:
         reloader.stakater.com/auto: "true"
