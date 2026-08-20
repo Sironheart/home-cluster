@@ -21,9 +21,10 @@ spec:
           bdev_enable_discard: "true" # quote
           bdev_async_discard_threads: "1" # quote
           osd_class_update_on_start: "false" # quote
-          device_failure_prediction_mode: local # requires mgr module
+          device_failure_prediction_mode: "none" # dropping the key leaves prior 'local' in the mon store
         mgr:
-          mgr/crash/warn_recent_interval: "7200" # 2h
+          mgr/crash/warn_recent_interval: "300"
+          mgr/devicehealth/enable_monitoring: "false"
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
@@ -33,16 +34,33 @@ spec:
         urlPrefix: /
         ssl: false
         prometheusEndpoint: http://vmsingle-vm.observability.svc.cluster.local:9090/api/v1/import/prometheus
+      healthCheck:
+        muteHealthWarning:
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
       mgr:
         modules:
           - name: diskprediction_local
-            enabled: true
+            enabled: false
           - name: insights
             enabled: true
           - name: pg_autoscaler
             enabled: true
           - name: rook
-            enabled: true
+            enabled: false # prometheus scrape remotes node_proxy_fullreport; rook orch raises NotImplementedError
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+          csi:
+            keyType: aes # kernel 6.18; aes256k needs 7.0+
       network:
         provider: host
         connections:
