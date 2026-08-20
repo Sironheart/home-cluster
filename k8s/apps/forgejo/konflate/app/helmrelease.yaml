@@ -18,6 +18,7 @@ spec:
       statusChecks: true
       statusCheckName: Konflate
       prComments: true
+      renderConcurrency: "8"
 
     secret:
       existingSecret: konflate-secret

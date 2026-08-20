@@ -39,6 +39,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: forgejo
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./k8s/apps/forgejo/forgejo/runner
   prune: true

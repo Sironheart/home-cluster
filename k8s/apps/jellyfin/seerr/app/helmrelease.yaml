@@ -20,7 +20,7 @@ spec:
               repository: ghcr.io/seerr-team/seerr
               tag: v3.4.1@sha256:f4768de5f616248d723e05891f3345a1402123775d03bf0890dbfedc0831bda1
             env:
-              LOG_LEVEL: "debug"
+              LOG_LEVEL: "info"
               PORT: &port 80
             envFrom:
               - secretRef:
@@ -33,11 +33,11 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/status
+                    path: /api/v1/settings/public
                     port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
+                  initialDelaySeconds: 20
+                  periodSeconds: 15
+                  timeoutSeconds: 3
                   failureThreshold: 3
               readiness: *probes
             securityContext:

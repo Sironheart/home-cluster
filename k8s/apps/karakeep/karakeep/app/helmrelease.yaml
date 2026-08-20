@@ -35,10 +35,12 @@ spec:
               DISABLE_NEW_RELEASE_CHECK: true
               COREPACK_INTEGRITY_KEYS: 0
               OPENAI_BASE_URL: https://opencode.ai/zen/go/v1
-              INFERENCE_TEXT_MODEL: deepseek-v4-flash
+              INFERENCE_TEXT_MODEL: deepseek-v4-pro
               INFERENCE_IMAGE_MODEL: mimo-v2-omni
               INFERENCE_OUTPUT_SCHEMA: json
               INFERENCE_JOB_TIMEOUT_SEC: 120
+              OPENAI_TIMEOUT_SEC: 120
+              OCR_CACHE_DIR: /data/ocr-cache
               EMBEDDING_ENABLE_AUTO_INDEXING: "false"
               NEXTAUTH_URL: "https://karakeep.siron.casa"
               OAUTH_PROVIDER_NAME: kanidm
@@ -77,6 +79,7 @@ spec:
               tag: 152.0.7939.3
             args:
               - --hide-scrollbars
+              - --disable-gpu
             securityContext:
               capabilities:
                 drop:
@@ -99,6 +102,7 @@ spec:
               - --upgrade-db
             env:
               MEILI_NO_ANALYTICS: true
+              MEILI_MAX_INDEXING_MEMORY: 512MB
             envFrom:
               - secretRef:
                   name: karakeep-secret

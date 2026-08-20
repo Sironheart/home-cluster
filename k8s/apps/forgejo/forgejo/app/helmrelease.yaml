@@ -32,6 +32,8 @@ spec:
           USER: forgejo
           NAME: forgejo
           SSL_MODE: verify-full
+          MAX_OPEN_CONNS: 10
+          MAX_IDLE_CONNS: 10
         cache:
           ENABLED: true
           ADAPTER: redis
@@ -41,9 +43,19 @@ spec:
           RUN_AT_START: true
           SCHEDULE: "@every 1h"
           OLDER_THAN: 2h
+        cron.git_gc_repos:
+          ENABLED: true
+          RUN_AT_START: false
+          SCHEDULE: "@every 72h"
+          ARGS: "--auto"
+          TIMEOUT: 30m
+        git.config:
+          gc.auto: "0"
+        git.timeout:
+          GC: 1800
         indexer:
           ISSUE_INDEXER_TYPE: bleve
-          REPO_INDEXER_ENABLED: true
+          REPO_INDEXER_ENABLED: false
         lfs:
           PATH: /data/git/lfs
         mailer:
@@ -56,6 +68,7 @@ spec:
         queue:
           TYPE: redis
           CONN_STR: *redis_string
+          MAX_WORKERS: 2
         repository:
           DEFAULT_REPO_UNITS: repo.code,repo.issues,repo.releases,repo.packages,repo.pulls,repo.actions
           DISABLED_REPO_UNITS: repo.ext_wiki,repo.ext_issues
