@@ -34,12 +34,12 @@ spec:
               MEILI_ADDR: http://karakeep-meilisearch.karakeep.svc.cluster.local:7700
               DISABLE_NEW_RELEASE_CHECK: true
               COREPACK_INTEGRITY_KEYS: 0
-              OPENAI_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
-              OPENAI_API_KEY: ollama
-              OLLAMA_KEEP_ALIVE: "15m"
-              INFERENCE_TEXT_MODEL: qwen2.5:3b
-              INFERENCE_IMAGE_MODEL: moondream
+              OPENAI_BASE_URL: https://opencode.ai/zen/go/v1
+              INFERENCE_TEXT_MODEL: deepseek-v4-flash
+              INFERENCE_IMAGE_MODEL: mimo-v2-omni
+              INFERENCE_OUTPUT_SCHEMA: json
               INFERENCE_JOB_TIMEOUT_SEC: 120
+              EMBEDDING_ENABLE_AUTO_INDEXING: "false"
               NEXTAUTH_URL: "https://karakeep.siron.casa"
               OAUTH_PROVIDER_NAME: kanidm
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
