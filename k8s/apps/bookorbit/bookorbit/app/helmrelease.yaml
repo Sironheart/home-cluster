@@ -24,7 +24,7 @@ spec:
               APP_DATA_PATH: /data
               APP_URL: https://books.siron.casa
               BOOK_DOCK_PATH: /books/book-dock
-              DATABASE_URL: postgresql://bookorbit@pooler-rw.database.svc:5432/bookorbit?sslmode=verify-full&sslrootcert=/var/run/secrets/root-ca/ca.crt&sslcert=/var/run/secrets/postgresql/tls.crt&sslkey=/var/run/secrets/postgresql/tls.key
+              DATABASE_URL: postgresql://bookorbit@pooler-rw.database.svc.cluster.local:5432/bookorbit?sslmode=verify-full&sslrootcert=/var/run/secrets/root-ca/ca.crt&sslcert=/var/run/secrets/postgresql/tls.crt&sslkey=/var/run/secrets/postgresql/tls.key
               LIBRARY_BROWSE_ROOT: /books
               NODE_ENV: production
               OIDC_ALLOW_LOCAL_ISSUERS: "true"

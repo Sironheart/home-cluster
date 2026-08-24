@@ -28,7 +28,7 @@ spec:
           DESCRIPTION: "Steffen's Forge"
         database:
           DB_TYPE: postgres
-          HOST: pooler-rw.database.svc:5432
+          HOST: pooler-rw.database.svc.cluster.local:5432
           USER: forgejo
           NAME: forgejo
           SSL_MODE: verify-full
