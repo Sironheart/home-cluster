@@ -1,7 +1,7 @@
 ---
 clusterName: home
 # renovate: datasource=custom.talos-factory depName=siderolabs/talos
-talosVersion: v1.13.9
+talosVersion: v1.14.0-rc.2
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.36.4
 
@@ -9,6 +9,14 @@ endpoint: https://internal.siron.casa:6443
 allowSchedulingOnControlPlanes: true
 cniConfig:
   name: none
+
+# Dual-stack: pods need IPv6 for egress to IPv6-only public endpoints (e.g. Towonel)
+clusterPodNets:
+  - 10.244.0.0/16
+  - fd00:10:244::/48
+clusterSvcNets:
+  - 10.96.0.0/12
+  - fd00:10:96::/112
 
 additionalApiServerCertSans: &san
   - 127.0.0.1 #KubePrism
@@ -19,6 +27,9 @@ additionalApiServerCertSans: &san
 
 controlPlane:
   certSANs: *san
+  kernelModules:
+    - name: binfmt_misc
+    - name: zfs
   schematic:
     customization:
       systemExtensions:
@@ -123,16 +134,20 @@ patches:
       grow: true
       minSize: 256GiB
 
-  # Enable host dns
+  # Host DNS caching resolver
+  - |-
+    apiVersion: v1alpha1
+    kind: ResolverConfig
+    hostDNS:
+      enabled: true
+      resolveMemberNames: true
+      forwardKubeDNSToHost: false
+
   - |-
     machine:
       features:
         apidCheckExtKeyUsage: true
         diskQuotaSupport: true
-        hostDNS:
-          enabled: true
-          resolveMemberNames: true
-          forwardKubeDNSToHost: false
 
   # Wipe disk on install
   - |-
@@ -140,31 +155,9 @@ patches:
       install:
         wipe: true
 
-  # Replace kubeproxy with cilium
-  - |-
-    cluster:
-      proxy:
-        disabled: true
-
-  # Dual-stack: pods need IPv6 for egress to IPv6-only public endpoints (e.g. Towonel)
-  - |-
-    cluster:
-      network:
-        podSubnets:
-          - 10.244.0.0/16
-          - fd00:10:244::/48
-        serviceSubnets:
-          - 10.96.0.0/12
-          - fd00:10:96::/112
-
-  - |-
-    machine:
-      kernel:
-        modules:
-          - name: binfmt_misc
-          - name: zfs
-
   # Kubelet configuration
+  # Stays v1alpha1: talhelper 3.1.17 bundles machinery v1.14.0-alpha.2, which predates
+  # the KubeletConfig/CRICustomizationConfig/EtcFileConfig documents.
   - |-
     machine:
       kubelet:
@@ -206,52 +199,74 @@ patches:
           noatime=True
           nconnect=16
 
-  # Configure cluster
   - |-
-    cluster:
-      apiServer:
-        resources:
-          requests:
-            cpu: 200m
-            memory: 1Gi
-          limits:
-            memory: 3Gi
-        extraArgs:
-          enable-aggregator-routing: "true"
-          feature-gates: MutatingAdmissionPolicy=true
-          runtime-config: admissionregistration.k8s.io/v1beta1=true
-      controllerManager:
-        extraArgs:
-          bind-address: 0.0.0.0
-      coreDNS:
-          disabled: true
-      proxy:
-        disabled: true
-      scheduler:
-          config:
-            apiVersion: kubescheduler.config.k8s.io/v1
-            kind: KubeSchedulerConfiguration
-            profiles:
-              - pluginConfig:
-                  - args:
-                      defaultConstraints:
-                        - maxSkew: 1
-                          topologyKey: kubernetes.io/hostname
-                          whenUnsatisfiable: ScheduleAnyway
-                      defaultingType: List
-                    name: PodTopologySpread
-                plugins:
-                  score:
-                    disabled:
-                      - name: ImageLocality
-                schedulerName: default-scheduler
+    apiVersion: v1alpha1
+    kind: KubeAPIServerConfig
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        memory: 3Gi
+    extraArgs:
+      enable-aggregator-routing: "true"
+      feature-gates: MutatingAdmissionPolicy=true
+      runtime-config: admissionregistration.k8s.io/v1beta1=true
 
-  # Etcd metrics
+  - |-
+    apiVersion: v1alpha1
+    kind: KubeAdmissionControlConfig
+    name: PodSecurity
+    configuration:
+      exemptions:
+        namespaces:
+          - cert-manager
+          - forgejo
+          - network
+          - observability
+          - openebs
+          - rook-ceph
+          - system
+
+  # Expose controller-manager metrics for scraping
+  - |-
+    apiVersion: v1alpha1
+    kind: KubeControllerManagerConfig
+    extraArgs:
+      bind-address: 0.0.0.0
+
+  # Cilium replaces kube-proxy
+  - |-
+    apiVersion: v1alpha1
+    kind: KubeProxyConfig
+    enabled: false
+
+  - |-
+    apiVersion: v1alpha1
+    kind: KubeSchedulerConfig
+    extraArgs:
+      bind-address: "0.0.0.0" # Expose scheduler metrics for scraping
+    config:
+      profiles:
+        - schedulerName: default-scheduler
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+                defaultingType: List
+          plugins:
+            score:
+              disabled:
+                - name: ImageLocality
+
+  # CoreDNS is deployed via Helm instead
   - |-
     cluster:
-      etcd:
-        extraArgs:
-          listen-metrics-urls: http://0.0.0.0:2381
+      coreDNS:
+        disabled: true
 
   # Enable K8s Talos API Access
   - |-
@@ -264,25 +279,9 @@ patches:
           allowedKubernetesNamespaces:
             - system-upgrade
 
+  # Etcd metrics
   - |-
     cluster:
-      apiServer:
-        admissionControl:
-        - name: PodSecurity
-          configuration:
-            exemptions:
-              namespaces:
-                - cert-manager
-                - forgejo
-                - network
-                - observability
-                - openebs
-                - rook-ceph
-                - system
-
-  # Expose kube-scheduler metrics for scraping
-  - |-
-    cluster:
-      scheduler:
+      etcd:
         extraArgs:
-          bind-address: "0.0.0.0"
+          listen-metrics-urls: http://0.0.0.0:2381
