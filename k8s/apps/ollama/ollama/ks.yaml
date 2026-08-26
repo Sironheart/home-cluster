@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app karakeep
+  name: &app ollama
 spec:
   commonMetadata:
     labels:
@@ -12,18 +12,13 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: ollama
-      namespace: ollama
   interval: 1h
-  path: ./k8s/apps/karakeep/karakeep/app
+  path: ./k8s/apps/ollama/ollama/app
   postBuild:
     substitute:
       APP: *app
-      KOPIUR_IGNORE_RULES: '[lost+found, "meilisearch/**"]'
-      KOPIUR_CAPACITY: 10Gi
-      KOPIUR_ACCESSMODES: ReadWriteMany
-      KOPIUR_STORAGECLASS: ceph-filesystem
-      KOPIUR_SNAPSHOTCLASS: csi-ceph-filesystem
+      KOPIUR_CAPACITY: 30Gi
+      KOPIUR_STORAGECLASS: ceph-block
   prune: true
   retryInterval: 2m
   sourceRef:

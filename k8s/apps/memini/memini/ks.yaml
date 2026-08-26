@@ -8,13 +8,14 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/kopiur
     - ../../../../components/database
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: cloudnative-pg
       namespace: database
+    - name: ollama
+      namespace: ollama
   interval: 1h
   path: ./k8s/apps/memini/memini/app
   postBuild:
@@ -25,8 +26,6 @@ spec:
           { name: vector },
           { name: vchord }
         ]
-      KOPIUR_CAPACITY: 10Gi
-      KOPIUR_STORAGECLASS: ceph-block
   prune: true
   retryInterval: 2m
   sourceRef:

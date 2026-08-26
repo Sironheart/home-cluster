@@ -31,6 +31,7 @@ spec:
               DISABLE_PASSWORD_AUTH: true
               DISABLE_SIGNUPS: true
               DATA_DIR: /data
+              DB_WAL_MODE: "true"
               MEILI_ADDR: http://karakeep-meilisearch.karakeep.svc.cluster.local:7700
               DISABLE_NEW_RELEASE_CHECK: true
               COREPACK_INTEGRITY_KEYS: 0
@@ -41,7 +42,11 @@ spec:
               INFERENCE_JOB_TIMEOUT_SEC: 120
               OPENAI_TIMEOUT_SEC: 120
               OCR_CACHE_DIR: /data/ocr-cache
-              EMBEDDING_ENABLE_AUTO_INDEXING: "false"
+              EMBEDDING_ENABLE_AUTO_INDEXING: "true"
+              EMBEDDING_OPENAI_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
+              EMBEDDING_OPENAI_API_KEY: ollama
+              EMBEDDING_TEXT_MODEL: bge-m3
+              EMBEDDING_DIMENSIONS: "1024"
               NEXTAUTH_URL: "https://karakeep.siron.casa"
               OAUTH_PROVIDER_NAME: kanidm
               OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
