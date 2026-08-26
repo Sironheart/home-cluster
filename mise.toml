@@ -43,7 +43,7 @@ flux2 = "2.9.4"
 # Kubernetes
 helm = "4.2.4"
 helmfile = "1.7.4"
-kubectl = "1.36.4"
+kubectl = "1.37.0"
 kustomize = "5.8.1"
 
 # Talos
