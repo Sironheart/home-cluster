@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app memini
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/kopiur
+    - ../../../../components/database
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: cloudnative-pg
+      namespace: database
+  interval: 1h
+  path: ./k8s/apps/memini/memini/app
+  postBuild:
+    substitute:
+      APP: *app
+      DATABASE_EXTENSIONS: |
+        [
+          { name: vector },
+          { name: vchord }
+        ]
+      KOPIUR_CAPACITY: 10Gi
+      KOPIUR_STORAGECLASS: ceph-block
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
