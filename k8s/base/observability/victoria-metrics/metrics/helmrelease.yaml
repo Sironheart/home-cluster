@@ -47,6 +47,11 @@ spec:
           tag: v1.150.0
           pullPolicy: IfNotPresent
         retentionPeriod: 30d
+        storage:
+          storageClassName: ceph-block
+          resources:
+            requests:
+              storage: 30Gi
         resources:
           limits:
             memory: 2500Mi
