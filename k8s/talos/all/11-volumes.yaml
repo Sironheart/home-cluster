@@ -1,0 +1,32 @@
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  diskSelector:
+    match: system_disk
+  grow: false
+  minSize: 200GiB
+  maxSize: 400GiB
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+provisioning:
+  diskSelector:
+    match: system_disk
+  grow: false
+  minSize: 128GiB
+  maxSize: 128GiB
+filesystem:
+  type: xfs
+---
+# Reserve the largest system-disk partition for a ZFS pool.
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: zfs-pool
+provisioning:
+  diskSelector:
+    match: system_disk
+  grow: true
+  minSize: 256GiB

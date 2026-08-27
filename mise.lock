@@ -60,6 +60,40 @@ url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/505259830"
 [tools.flux2."platforms.windows-x64".provenance.slsa]
 url = "https://github.com/fluxcd/flux2/releases/download/v2.9.4/provenance.intoto.jsonl"
 
+[[tools."github:postfinance/topf"]]
+version = "0.5.0"
+backend = "github:postfinance/topf"
+
+[tools."github:postfinance/topf"."platforms.linux-arm64"]
+checksum = "sha256:d8aa6515ae9de54588fc0bba3fad9fe37a93c08cf20adc931baed4a67912cef1"
+url = "https://github.com/postfinance/topf/releases/download/v0.5.0/topf_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/postfinance/topf/releases/assets/508553235"
+
+[tools."github:postfinance/topf"."platforms.linux-arm64-musl"]
+checksum = "sha256:d8aa6515ae9de54588fc0bba3fad9fe37a93c08cf20adc931baed4a67912cef1"
+url = "https://github.com/postfinance/topf/releases/download/v0.5.0/topf_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/postfinance/topf/releases/assets/508553235"
+
+[tools."github:postfinance/topf"."platforms.linux-x64"]
+checksum = "sha256:0a5ba8187887972acc7905cf12e804317b1869219bbf070d8dd2a9e29b70570c"
+url = "https://github.com/postfinance/topf/releases/download/v0.5.0/topf_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/postfinance/topf/releases/assets/508553236"
+
+[tools."github:postfinance/topf"."platforms.linux-x64-musl"]
+checksum = "sha256:0a5ba8187887972acc7905cf12e804317b1869219bbf070d8dd2a9e29b70570c"
+url = "https://github.com/postfinance/topf/releases/download/v0.5.0/topf_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/postfinance/topf/releases/assets/508553236"
+
+[tools."github:postfinance/topf"."platforms.macos-arm64"]
+checksum = "sha256:e7de2cde889c1fba552a35c18e500f03ca120d79eb1a7643ee7503eb2572c166"
+url = "https://github.com/postfinance/topf/releases/download/v0.5.0/topf_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/postfinance/topf/releases/assets/508553237"
+
+[tools."github:postfinance/topf"."platforms.macos-x64"]
+checksum = "sha256:5075cf8120e2512065b174f444c725171663b2155faeceab5f85d45bb6740ea1"
+url = "https://github.com/postfinance/topf/releases/download/v0.5.0/topf_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/postfinance/topf/releases/assets/508553239"
+
 [[tools.helm]]
 version = "4.2.4"
 backend = "aqua:helm/helm"

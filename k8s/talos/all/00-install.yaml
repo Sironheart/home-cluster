@@ -1,0 +1,6 @@
+---
+machine:
+  install:
+    diskSelector:
+      model: CT1000P3PSSD8
+    wipe: true

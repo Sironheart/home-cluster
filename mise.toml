@@ -1,15 +1,19 @@
 [env]
 TALOSCONFIG = "{{config_root}}/k8s/talos/clusterconfig/talosconfig"
-TALHELPER_SECRETS = "{{config_root}}/k8s/talos/talsecret.yaml"
+TOPFCONFIG = "{{config_root}}/k8s/talos/topf.yaml"
 KUBECONFIG = "{{config_root}}/kubeconfig"
 
 [tasks.talos-secrets]
-run = "op inject -f -i {{config_root}}/op-templates/talsecret.yaml.tpl -o {{config_root}}/k8s/talos/talsecret.yaml"
-description = "Uses the op-templates/talsecret.yaml.tpl file and injects secrets from 1password"
+run = "op inject -f -i {{config_root}}/op-templates/secrets.yaml.tpl -o {{config_root}}/k8s/talos/secrets.yaml"
+description = "Uses the op-templates/secrets.yaml.tpl file and injects secrets from 1password"
 
 [tasks.config-gen]
-run = "talhelper genconfig -s {{config_root}}/k8s/talos/talsecret.yaml -c {{config_root}}/k8s/talos/talconfig.yaml -o {{config_root}}/k8s/talos/clusterconfig"
-description = "Generate machine configs"
+run = """
+topf render -o {{config_root}}/k8s/talos/clusterconfig
+topf talosconfig > {{config_root}}/k8s/talos/clusterconfig/talosconfig
+chmod 600 {{config_root}}/k8s/talos/clusterconfig/talosconfig
+"""
+description = "Generate machine configs and talosconfig"
 depends = ['talos-secrets']
 
 [tasks.kubeconfig]
@@ -47,5 +51,5 @@ kubectl = "1.37.0"
 kustomize = "5.8.1"
 
 # Talos
-talhelper = "3.1.17"
 talosctl = "1.14.0-rc.2"
+"github:postfinance/topf" = "0.5.0"

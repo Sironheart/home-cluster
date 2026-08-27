@@ -1,0 +1,16 @@
+---
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/amdgpu
+      # Needed for multi-arch runner
+      - siderolabs/binfmt-misc
+      - siderolabs/zfs
+  extraKernelArgs:
+    - amd_iommu=on # PCI Passthrough
+    - initcall_blacklist=algif_aead_init # copy.fail fix
+    - pcie_aspm=off # Disable PCIe ASPM
+    - usbcore.autosuspend=-1 # Disable USB autosuspend
+    - sysctl.kernel.kexec_load_disabled=1
+    - talos.dashboard.disabled=1
+    - zfs.zfs_arc_max=8589934592 # Cap ZFS ARC at 8GiB
