@@ -18,7 +18,7 @@ spec:
             image:
               repository: registry.erwanleboucher.dev/eleboucher/memini
               # renovate: datasource=docker depName=registry.erwanleboucher.dev/eleboucher/memini
-              tag: 0.7.20
+              tag: 0.7.21
             env:
               MEMINI_BACKEND: postgres
               MEMINI_POSTGRES_DSN:
