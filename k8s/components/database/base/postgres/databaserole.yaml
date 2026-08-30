@@ -9,6 +9,6 @@ spec:
   name: ${OWNER}
   ensure: present
   login: true
-  superuser: false
+  superuser: ${SUPERUSER}
   disablePassword: true
   databaseRoleReclaimPolicy: delete

@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgadmin-config
+data:
+  config_local.py: |
+    import os
+
+    AUTHENTICATION_SOURCES = ['oauth2']
+    MASTER_PASSWORD_REQUIRED = False
+
+    OAUTH2_CONFIG = [
+        {
+            'OAUTH2_NAME': 'kanidm',
+            'OAUTH2_DISPLAY_NAME': 'Login with Kanidm',
+            'OAUTH2_CLIENT_ID': os.environ.get('OAUTH2_CLIENT_ID'),
+            'OAUTH2_CLIENT_SECRET': os.environ.get('OAUTH2_CLIENT_SECRET'),
+            'OAUTH2_SERVER_METADATA_URL': 'https://sso.siron.casa/oauth2/openid/pgadmin-app/.well-known/openid-configuration',
+            'OAUTH2_SCOPE': 'openid email profile groups',
+            'OAUTH2_CHALLENGE_METHOD': 'S256',
+            'OAUTH2_RESPONSE_TYPE': 'code',
+            'OAUTH2_USERNAME_CLAIM': 'preferred_username',
+            'OAUTH2_AUTO_CREATE_USER': True,
+            'OAUTH2_SSL_CERT_VERIFICATION': True,
+        }
+    ]
+  servers.json: |
+    {
+      "Servers": {
+        "1": {
+          "Name": "postgres",
+          "Group": "home",
+          "Host": "pooler-rw.database.svc.cluster.local",
+          "Port": 5432,
+          "Username": "pgadmin",
+          "SSLMode": "verify-full",
+          "MaintenanceDB": "postgres",
+          "Service": "home",
+          "Shared": true
+        }
+      }
+    }
+  pg_service.conf: |
+    [home]
+    user=pgadmin
+    host=pooler-rw.database.svc.cluster.local
+    port=5432
+    dbname=postgres
+    sslmode=verify-full

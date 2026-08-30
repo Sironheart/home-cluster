@@ -1,0 +1,111 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app pgadmin
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  values:
+    controllers:
+      pgadmin:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: Recreate
+        containers:
+          pgadmin:
+            image:
+              repository: dpage/pgadmin4
+              # renovate: datasource=docker depName=dpage/pgadmin4
+              tag: "9.17"
+            env:
+              PGADMIN_DEFAULT_EMAIL: admin@siron.casa
+              PGADMIN_LISTEN_PORT: &port 5050
+              PGADMIN_DISABLE_POSTFIX: "true"
+              PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+              PGADMIN_CUSTOM_CONFIG_DISTRO_FILE: /tmp/config_distro.py
+              PGSSLCERT: /var/run/secrets/postgresql/tls.crt
+              PGSSLKEY: /var/run/secrets/postgresql/tls.key
+              PGSSLROOTCERT: /var/run/secrets/root-ca/ca.crt
+              PGSSLMODE: verify-full
+              PGSERVICEFILE: /pgadmin4/pg_service.conf
+              OAUTH2_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: pgadmin-app-kanidm-oauth2-credentials
+                    key: CLIENT_ID
+              OAUTH2_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: pgadmin-app-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
+            envFrom:
+              - secretRef:
+                  name: pgadmin-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /misc/ping
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      pgadmin:
+        controller: pgadmin
+        ports:
+          http:
+            port: *port
+    route:
+      pgadmin:
+        hostnames: ["pgadmin.siron.casa"]
+        parentRefs:
+          - name: internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: pgadmin
+                port: *port
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/pgadmin
+          - path: /tmp
+      config:
+        type: configMap
+        name: pgadmin-config
+        advancedMounts:
+          pgadmin:
+            pgadmin:
+              - path: /pgadmin4/config_local.py
+                subPath: config_local.py
+              - path: /pgadmin4/servers.json
+                subPath: servers.json
+              - path: /pgadmin4/pg_service.conf
+                subPath: pg_service.conf

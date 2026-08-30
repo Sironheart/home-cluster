@@ -1,0 +1,35 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: pgadmin-app
+spec:
+  displayname: pgAdmin
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/pgadmin.svg
+  kanidmRef:
+    name: sso
+    namespace: sso
+  origin: https://pgadmin.siron.casa
+  redirectUrl:
+    - https://pgadmin.siron.casa/oauth2/authorize
+  scopeMap:
+    - group: pgadmin
+      scopes:
+        - openid
+        - profile
+        - email
+        - groups
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: pgadmin
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
+  members:
+    - sironheart

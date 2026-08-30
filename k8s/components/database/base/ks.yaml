@@ -14,6 +14,7 @@ spec:
     substitute:
       APP: *app
       OWNER: ${DATABASE_OWNER:=${APP}}
+      SUPERUSER: ${q:='}${DATABASE_SUPERUSER:=false}${q:='}
       EXTENSIONS: ${q:='}${DATABASE_EXTENSIONS:=}${q:='}
   dependsOn:
     - name: instance
