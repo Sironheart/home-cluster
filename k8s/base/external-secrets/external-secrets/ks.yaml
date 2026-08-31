@@ -25,6 +25,7 @@ spec:
   path: ./k8s/base/external-secrets/external-secrets/app
   components:
     - ../../../../components/common
+    - ../../../../components/netpol
   prune: true
   retryInterval: 2m
   sourceRef:

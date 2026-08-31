@@ -1,0 +1,38 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-postgres-clients
+  namespace: database
+spec:
+  # any in-cluster app pod may reach postgres/pooler; LAN/external cannot route to pod CIDRs
+  endpointSelector: {}
+  ingress:
+    - fromCIDR:
+        - 10.244.0.0/16
+        - fd00:10:244::/48
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-backup-egress
+  namespace: database
+spec:
+  # barman-cloud → Hetzner S3; world minus cluster CIDRs so this can't pivot to other pods/services
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: postgres
+  egress:
+    - toCIDRSet:
+        - cidr: 0.0.0.0/0
+          except:
+            - 10.244.0.0/16
+            - 10.96.0.0/12
+        - cidr: ::/0
+          except:
+            - fd00:10:244::/48
+            - fd00:10:96::/112

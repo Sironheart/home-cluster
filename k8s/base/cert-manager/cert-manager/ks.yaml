@@ -25,6 +25,8 @@ spec:
   path: ./k8s/base/cert-manager/cert-manager/app
   components:
     - ../../../../components/common
+    - ../../../../components/netpol
+    - ../../../../components/netpol-world
   prune: true
   retryInterval: 2m
   sourceRef:

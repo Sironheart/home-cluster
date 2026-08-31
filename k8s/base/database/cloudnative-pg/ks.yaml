@@ -64,6 +64,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/common
+    - ../../../../components/netpol
   dependsOn:
     - name: barman-plugin
   healthChecks:

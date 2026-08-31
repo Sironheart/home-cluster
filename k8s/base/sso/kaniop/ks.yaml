@@ -36,6 +36,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/netpol
+    - ../../../../components/netpol-gateway
   dependsOn:
     - name: kaniop
   interval: 1h

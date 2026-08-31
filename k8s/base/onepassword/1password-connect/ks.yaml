@@ -17,6 +17,8 @@ spec:
   path: k8s/base/onepassword/1password-connect/app
   components:
     - ../../../../components/common
+    - ../../../../components/netpol
+    - ../../../../components/netpol-world
   prune: true
   retryInterval: 2m
   sourceRef:

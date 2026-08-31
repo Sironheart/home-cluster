@@ -1,0 +1,18 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-world
+spec:
+  # world minus cluster CIDRs; LAN stays reachable (gateway LB IPs, NAS live there)
+  endpointSelector: {}
+  egress:
+    - toCIDRSet:
+        - cidr: 0.0.0.0/0
+          except:
+            - 10.244.0.0/16
+            - 10.96.0.0/12
+        - cidr: ::/0
+          except:
+            - fd00:10:244::/48
+            - fd00:10:96::/112

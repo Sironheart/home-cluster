@@ -1,0 +1,17 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-onepassword-connect
+  namespace: external-secrets
+spec:
+  # ESO → 1Password Connect API (ClusterSecretStore onepassword)
+  endpointSelector: {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: onepassword
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP

@@ -5,6 +5,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml
+  - ./networkpolicies.yaml
   - ./oidc-secret.yaml
   - ./oauth-app.yaml
   - ./ocirepository.yaml

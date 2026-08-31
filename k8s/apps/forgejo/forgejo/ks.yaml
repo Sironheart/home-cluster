@@ -12,6 +12,9 @@ spec:
     - ../../../../components/database
     - ../../../../components/dragonfly
     - ../../../../components/anubis
+    - ../../../../components/netpol
+    - ../../../../components/netpol-gateway
+    - ../../../../components/netpol-world
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
