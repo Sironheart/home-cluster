@@ -139,6 +139,7 @@ spec:
             runAsGroup: 1000
             runAsNonRoot: true
             runAsUser: 1000
+            seccompProfile: { type: RuntimeDefault }
         initContainers:
           # native sidecar: started before, and terminated after, the runner
           # container, so the plugin socket outlives job draining on shutdown

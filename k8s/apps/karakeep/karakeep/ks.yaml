@@ -14,6 +14,11 @@ spec:
       namespace: rook-ceph
     - name: ollama
       namespace: ollama
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: karakeep
   interval: 1h
   path: ./k8s/apps/karakeep/karakeep/app
   postBuild:

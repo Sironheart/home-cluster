@@ -15,6 +15,11 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: forgejo
+      namespace: forgejo
   interval: 1h
   path: ./k8s/apps/forgejo/forgejo/app
   postBuild:
@@ -42,6 +47,11 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: forgejo-runner
+      namespace: forgejo
   interval: 1h
   path: ./k8s/apps/forgejo/forgejo/runner
   prune: true

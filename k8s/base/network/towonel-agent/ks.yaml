@@ -6,6 +6,11 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
 spec:
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: towonel-agent
+      namespace: network
   interval: 1h
   path: ./k8s/base/network/towonel-agent/app
   prune: true

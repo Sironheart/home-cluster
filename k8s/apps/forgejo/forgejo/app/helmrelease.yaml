@@ -9,6 +9,9 @@ spec:
     kind: OCIRepository
     name: *app
   values:
+    resources:
+      requests: { cpu: 100m, memory: 512Mi }
+      limits: { memory: 2Gi }
     gitea:
       podAnnotations:
         reloader.stakater.com/auto: "true"

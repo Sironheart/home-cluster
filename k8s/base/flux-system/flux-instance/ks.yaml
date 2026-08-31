@@ -11,6 +11,11 @@ spec:
   dependsOn:
     - name: flux-operator
       namespace: *namespace
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
   interval: 1h
   path: ./k8s/base/flux-system/flux-instance/app
   components:

@@ -12,6 +12,11 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: database
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: pgadmin
   interval: 1h
   path: ./k8s/apps/pgadmin/pgadmin/app
   postBuild:

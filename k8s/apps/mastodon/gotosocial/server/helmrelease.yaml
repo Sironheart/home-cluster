@@ -16,11 +16,27 @@ spec:
         pod:
           securityContext:
             fsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile: { type: RuntimeDefault }
         containers:
           gts:
             image:
               repository: docker.io/superseriousbusiness/gotosocial
               tag: "0.22.1"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /api/v1/instance, port: 8080 }
+                  periodSeconds: 30
+              readiness: *probes
             env:
               GTS_HOST: gts.siron.casa
               GTS_ACCOUNT_DOMAIN: siron.casa

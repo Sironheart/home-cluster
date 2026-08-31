@@ -16,6 +16,11 @@ spec:
       namespace: database
     - name: ollama
       namespace: ollama
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: memini
   interval: 1h
   path: ./k8s/apps/memini/memini/app
   postBuild:

@@ -35,6 +35,14 @@ spec:
                     name: atuin-postgres
                     key: url
             args: ["start"]
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket: { port: 80 }
+                  periodSeconds: 30
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -53,6 +61,7 @@ spec:
         runAsNonRoot: true
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
 
     service:
       atuin:
