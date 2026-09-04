@@ -1,6 +1,7 @@
 ---
-machine:
-  install:
-    diskSelector:
-      model: CT1000P3PSSD8
-    wipe: true
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.model == "CT1000P3PSSD8"
+  wipe: true

@@ -6,62 +6,78 @@ machine:
     - 192.168.1.12 # Talos02
     - 192.168.1.13 # Talos03
     - internal.siron.casa # DNS route to cluster
-  kernel:
-    modules:
-      - name: binfmt_misc
-      - name: zfs
-  nodeLabels:
-    feature.node.kubernetes.io/amd-gpu: "true"
-    # Talos 1.13 machinery still generates this legacy default label; 1.14 dropped it
-    node.kubernetes.io/exclude-from-external-load-balancers:
-      $patch: delete
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
-    # Host DNS caching resolver
-    hostDNS:
-      enabled: true
-      resolveMemberNames: true
-      forwardKubeDNSToHost: false
-    # Enable K8s Talos API Access
-    kubernetesTalosAPIAccess:
-      enabled: true
-      allowedRoles:
-        - os:admin
-      allowedKubernetesNamespaces:
-        - system-upgrade
-  kubelet:
-    disableManifestsDirectory: true
-    extraConfig:
-      maxPods: 250
-      serializeImagePulls: false
-      imageGCHighThresholdPercent: 60
-      imageGCLowThresholdPercent: 40
-      imageMinimumGCAge: 12h # half a day
-      imageMaximumGCAge: 168h # 7 days
-    extraArgs:
-      container-log-max-size: 10Mi
-      container-log-max-files: "2"
-  files:
-    - op: create
-      path: /etc/cri/conf.d/20-customization.part
-      content: |-
-        [plugins]
-        [plugins."io.containerd.grpc.v1.cri"]
-          enable_unprivileged_ports = true
-          enable_unprivileged_icmp = true
-        [plugins."io.containerd.cri.v1.images"]
-          discard_unpacked_layers = false
-        [plugins."io.containerd.cri.v1.runtime"]
-          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
-          device_ownership_from_security_context = true
-    # NFS settings
-    - op: overwrite
-      path: /etc/nfsmount.conf
-      permissions: 0o644
-      content: |
-        [ NFSMount_Global_Options ]
-        nfsvers=4.1
-        hard=True
-        noatime=True
-        nconnect=16
+---
+# topf 0.6/Talos 1.14 emit workloadIsolation: true by default; enabling it live
+# deadlocks cri (waits on sandboxd, which only starts at boot) -> node NotReady.
+apiVersion: v1alpha1
+kind: SecurityProfileConfig
+workloadIsolation: false
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: binfmt_misc
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: zfs
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  feature.node.kubernetes.io/amd-gpu: "true"
+  # Legacy default generated for control-plane nodes; harmless, removed for cleanliness
+  node.kubernetes.io/exclude-from-external-load-balancers:
+    $patch: delete
+# allowSchedulingOnControlPlanes: drop the default control-plane taint
+taints:
+  node-role.kubernetes.io/control-plane:
+    $patch: delete
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - system-upgrade
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+config:
+  maxPods: 250
+  serializeImagePulls: false
+  imageGCHighThresholdPercent: 60
+  imageGCLowThresholdPercent: 40
+  imageMinimumGCAge: 12h # half a day
+  imageMaximumGCAge: 168h # 7 days
+extraArgs:
+  container-log-max-size: 10Mi
+  container-log-max-files: "2"
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: unprivileged
+content: |-
+  [plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    enable_unprivileged_ports = true
+    enable_unprivileged_icmp = true
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+  [plugins."io.containerd.cri.v1.runtime"]
+    cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+    device_ownership_from_security_context = true
+---
+# NFS settings
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |-
+  [ NFSMount_Global_Options ]
+  nfsvers=4.1
+  hard=True
+  noatime=True
+  nconnect=16

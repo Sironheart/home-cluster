@@ -1,79 +1,95 @@
 ---
+# Dual-stack: pods need IPv6 for egress to IPv6-only public endpoints (e.g. Towonel)
+apiVersion: v1alpha1
+kind: KubeNetworkConfig
+podSubnets:
+  - 10.244.0.0/16
+  - fd00:10:244::/48
+serviceSubnets:
+  - 10.96.0.0/12
+  - fd00:10:96::/112
+---
+# Cilium is the CNI: remove the auto-generated Flannel deployment
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+# CoreDNS is deployed via Helm instead
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+enabled: false
+---
+# Cilium replaces kube-proxy
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+resources:
+  requests:
+    cpu: 200m
+    memory: 1Gi
+  limits:
+    memory: 3Gi
+extraArgs:
+  enable-aggregator-routing: "true"
+  feature-gates: MutatingAdmissionPolicy=true
+  runtime-config: admissionregistration.k8s.io/v1beta1=true
+---
+# Admission plugins merge by name into the Talos default PodSecurity entry;
+# namespace exemptions append to the default list (which holds kube-system).
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: PodSecurity
+configuration:
+  apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+  kind: PodSecurityConfiguration
+  defaults:
+    audit: restricted
+    audit-version: latest
+    enforce: baseline
+    enforce-version: latest
+    warn: restricted
+    warn-version: latest
+  exemptions:
+    namespaces:
+      - cert-manager
+      - flux-system
+      - network
+      - observability
+      - openebs
+      - rook-ceph
+      - system
+---
+# Expose controller-manager metrics for scraping
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  bind-address: 0.0.0.0
+---
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+extraArgs:
+  bind-address: 0.0.0.0 # Expose scheduler metrics for scraping
+config:
+  profiles:
+    - schedulerName: default-scheduler
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+            defaultingType: List
+      plugins:
+        score:
+          disabled:
+            - name: ImageLocality
+---
+# Etcd metrics
 cluster:
-  # Dual-stack: pods need IPv6 for egress to IPv6-only public endpoints (e.g. Towonel)
-  network:
-    cni:
-      name: none
-    podSubnets:
-      - 10.244.0.0/16
-      - fd00:10:244::/48
-    serviceSubnets:
-      - 10.96.0.0/12
-      - fd00:10:96::/112
-  # CoreDNS is deployed via Helm instead
-  coreDNS:
-    disabled: true
-  # Cilium replaces kube-proxy
-  proxy:
-    disabled: true
-  allowSchedulingOnControlPlanes: true
-  apiServer:
-    resources:
-      requests:
-        cpu: 200m
-        memory: 1Gi
-      limits:
-        memory: 3Gi
-    extraArgs:
-      enable-aggregator-routing: "true"
-      feature-gates: MutatingAdmissionPolicy=true
-      runtime-config: admissionregistration.k8s.io/v1beta1=true
-    # Admission plugins merge by name into the Talos default PodSecurity entry;
-    # namespace exemptions append to the default list (which holds kube-system).
-    admissionControl:
-      - name: PodSecurity
-        configuration:
-          apiVersion: pod-security.admission.config.k8s.io/v1alpha1
-          kind: PodSecurityConfiguration
-          defaults:
-            audit: restricted
-            audit-version: latest
-            enforce: baseline
-            enforce-version: latest
-            warn: restricted
-            warn-version: latest
-          exemptions:
-            namespaces:
-              - cert-manager
-              - flux-system
-              - network
-              - observability
-              - openebs
-              - rook-ceph
-              - system
-  # Expose controller-manager metrics for scraping
-  controllerManager:
-    extraArgs:
-      bind-address: 0.0.0.0
-  scheduler:
-    extraArgs:
-      bind-address: 0.0.0.0 # Expose scheduler metrics for scraping
-    config:
-      profiles:
-        - schedulerName: default-scheduler
-          pluginConfig:
-            - name: PodTopologySpread
-              args:
-                defaultConstraints:
-                  - maxSkew: 1
-                    topologyKey: kubernetes.io/hostname
-                    whenUnsatisfiable: ScheduleAnyway
-                defaultingType: List
-          plugins:
-            score:
-              disabled:
-                - name: ImageLocality
-  # Etcd metrics
   etcd:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381

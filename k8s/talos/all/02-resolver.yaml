@@ -3,3 +3,8 @@ apiVersion: v1alpha1
 kind: ResolverConfig
 searchDomains:
   disableDefault: true
+# Host DNS caching resolver
+hostDNS:
+  enabled: true
+  resolveMemberNames: true
+  forwardKubeDNSToHost: false
