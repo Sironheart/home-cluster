@@ -52,4 +52,4 @@ kustomize = "5.8.1"
 
 # Talos
 talosctl = "1.14.0"
-"github:postfinance/topf" = "0.5.0"
+"github:postfinance/topf" = "v0.6.0"
