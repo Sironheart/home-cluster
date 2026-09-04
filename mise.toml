@@ -51,5 +51,5 @@ kubectl = "1.37.0"
 kustomize = "5.8.1"
 
 # Talos
-talosctl = "1.14.0-rc.2"
+talosctl = "1.14.0"
 "github:postfinance/topf" = "0.5.0"
