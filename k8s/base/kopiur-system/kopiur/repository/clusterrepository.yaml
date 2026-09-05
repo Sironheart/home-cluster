@@ -32,8 +32,20 @@ spec:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
     ttlSecondsAfterFinished: 86400
+  health:
+    indexBlobWarnThreshold: 5000
   maintenance:
     enabled: true
+    schedule:
+      full:
+        cron: 0 */2 * * *
+        jitter: 30m
+      quick:
+        cron: 0 4 * * *
+        jitter: 1h
+  parameters:
+    epoch:
+      minDuration: 1h
   server:
     auth:
       insecure:
