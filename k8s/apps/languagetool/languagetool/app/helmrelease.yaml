@@ -1,0 +1,122 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app languagetool
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  values:
+    controllers:
+      languagetool:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: Recreate
+        initContainers:
+          models:
+            image: &image
+              repository: meyay/languagetool
+              # renovate: datasource=docker depName=meyay/languagetool
+              tag: 6.8-9
+            env:
+              CONTAINER_MODE: download-only
+              download_ngrams_for_langs: en,de
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        containers:
+          languagetool:
+            image: *image
+            env:
+              JAVA_XMS: 512m
+              JAVA_XMX: 4g
+              LISTEN_PORT: &port 8081
+              LOGBACK_CONFIG: /logback-custom/logback.xml
+              LOG_LEVEL: INFO
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v2/languages
+                    port: *port
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v2/languages
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 60
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 3Gi
+              limits:
+                memory: 5Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 783
+        runAsGroup: 783
+        fsGroup: 783
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      languagetool:
+        controller: languagetool
+        ports:
+          http:
+            port: *port
+    route:
+      languagetool:
+        hostnames: ["{{ .Release.Name }}.siron.casa"]
+        parentRefs:
+          - name: internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: languagetool
+                port: *port
+    persistence:
+      ngrams:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        storageClass: ceph-block
+        size: 32Gi
+        globalMounts:
+          - path: /ngrams
+      fasttext:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        storageClass: ceph-block
+        size: 1Gi
+        globalMounts:
+          - path: /fasttext
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      logback:
+        type: configMap
+        name: languagetool-logback
+        advancedMounts:
+          languagetool:
+            languagetool:
+              - path: /logback-custom/logback.xml
+                subPath: logback.xml
