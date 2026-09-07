@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.erwanleboucher.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: memini
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      instance: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  # Chart-rendered ConfigMap (grafanaDashboards.enabled); the operator has no
+  # ConfigMap auto-discovery, so it needs this explicit reference.
+  configMapRef:
+    name: memini-memini
+    key: memini.json

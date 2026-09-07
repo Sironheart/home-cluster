@@ -6,21 +6,32 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: default
+    name: *app
+  upgrade:
+    # Chart migration renamed the controller (memini -> main), which changes the
+    # immutable Deployment selector. Removable once the rollout has completed.
+    force: true
   values:
     controllers:
-      memini:
+      main:
+        type: deployment
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
         containers:
-          memini:
-            image:
-              repository: registry.erwanleboucher.dev/eleboucher/memini
-              # renovate: datasource=docker depName=registry.erwanleboucher.dev/eleboucher/memini
-              tag: 0.7.23
+          main:
             env:
               MEMINI_BACKEND: postgres
+              # Chart default moves the UI to :8081, which no route exposes.
+              # Empty serves it on the main port, as before the chart migration.
+              MEMINI_UI_ADDR: ""
               MEMINI_POSTGRES_DSN:
                 valueFrom:
                   secretKeyRef:
@@ -29,32 +40,7 @@ spec:
               MEMINI_EMBED_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
               MEMINI_EMBED_MODEL: bge-m3
               MEMINI_EMBED_DIMS: "1024"
-              MEMINI_METRICS_ADDR: ":9090"
-              MEMINI_DEFAULT_NAMESPACE: default
               MEMINI_REEMBED_ON_MODEL_CHANGE: true
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /healthz
-                    port: 8080
-                  initialDelaySeconds: 5
-                  periodSeconds: 15
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /readyz
-                    port: 8080
-                  initialDelaySeconds: 3
-                  periodSeconds: 10
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 500m
@@ -62,47 +48,26 @@ spec:
               limits:
                 memory: 2Gi
 
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-
-    service:
-      memini:
-        controller: memini
-        ports:
-          http: { port: &port 8080 }
-          metrics: { port: &metricsPort 9090 }
+    persistence:
+      data:
+        enabled: false
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
 
     serviceMonitor:
-      memini:
+      main:
         enabled: true
-        serviceName: memini
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 30s
-            scrapeTimeout: 10s
+
+    grafanaDashboards:
+      enabled: true
 
     route:
-      memini:
+      main:
+        enabled: true
         hostnames:
           - memini.siron.casa
         parentRefs:
           - name: internal
             namespace: network
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
-
-    persistence:
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
