@@ -162,6 +162,12 @@ spec:
           chrome:
             chrome:
               - path: /dev/shm
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          meilisearch:
+            meilisearch:
+              - path: /tmp
       data:
         existingClaim: *app
         advancedMounts:
