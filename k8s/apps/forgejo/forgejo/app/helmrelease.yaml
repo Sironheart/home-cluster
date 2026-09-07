@@ -116,7 +116,7 @@ spec:
           PROVIDER_CONFIG: *redis_string
           SESSION_LIFE_TIME: "2678400"
         webhook:
-          ALLOWED_HOST_LIST: "*"
+          ALLOWED_HOST_LIST: "external"
 
       oauth:
         - name: kanidm
