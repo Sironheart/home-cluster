@@ -14,8 +14,6 @@ spec:
       namespace: rook-ceph
     - name: cloudnative-pg
       namespace: database
-    - name: ollama
-      namespace: ollama
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease

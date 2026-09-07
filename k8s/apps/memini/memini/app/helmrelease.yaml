@@ -37,10 +37,20 @@ spec:
                   secretKeyRef:
                     name: memini-postgres
                     key: url
-              MEMINI_EMBED_BASE_URL: http://ollama.ollama.svc.cluster.local:11434/v1
-              MEMINI_EMBED_MODEL: bge-m3
-              MEMINI_EMBED_DIMS: "1024"
-              MEMINI_REEMBED_ON_MODEL_CHANGE: true
+              MEMINI_EMBED_BASE_URL: https://api.openai.com/v1
+              MEMINI_EMBED_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: memini-openai-secret
+                    key: MEMINI_EMBED_API_KEY
+              MEMINI_EMBED_MODEL: text-embedding-3-small
+              MEMINI_EMBED_DIMS: "1536"
+              # Serialize OpenAI requests to stay below project rate limits.
+              MEMINI_EMBED_MAX_CONCURRENCY: "1"
+              # Give rate-limit retries more time before a write is marked for
+              # asynchronous repair.
+              MEMINI_WRITE_EMBED_TIMEOUT: 30s
+              MEMINI_BACKGROUND_EMBED_TIMEOUT: 2m
             resources:
               requests:
                 cpu: 500m
