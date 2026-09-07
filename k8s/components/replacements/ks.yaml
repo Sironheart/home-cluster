@@ -1,6 +1,5 @@
 ---
-- # Apply targetNamespace to all Flux Kustomizations
-  source:
+- source:
     kind: Namespace
     fieldPath: metadata.name
   targets:

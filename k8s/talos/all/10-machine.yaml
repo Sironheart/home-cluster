@@ -50,7 +50,7 @@ config:
   serializeImagePulls: false
   imageGCHighThresholdPercent: 60
   imageGCLowThresholdPercent: 40
-  imageMinimumGCAge: 12h # half a day
+  imageMinimumGCAge: 12h
   imageMaximumGCAge: 168h # 7 days
 extraArgs:
   container-log-max-size: 10Mi
@@ -70,7 +70,6 @@ content: |-
     cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
     device_ownership_from_security_context = true
 ---
-# NFS settings
 apiVersion: v1alpha1
 kind: EtcFileConfig
 name: nfsmount.conf

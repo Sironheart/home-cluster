@@ -21,7 +21,6 @@ provisioning:
 filesystem:
   type: xfs
 ---
-# Reserve the largest system-disk partition for a ZFS pool.
 apiVersion: v1alpha1
 kind: RawVolumeConfig
 name: zfs-pool

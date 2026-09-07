@@ -26,8 +26,7 @@ releases:
     values:
       ["../../k8s/base/external-secrets/external-secrets/app/helm/values.yaml"]
     hooks:
-      - # Apply cluster secret store
-        events: ["postsync"]
+      - events: ["postsync"]
         command: kubectl
         args:
           - apply
