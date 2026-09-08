@@ -5,6 +5,7 @@ metadata:
   name: jellyfin
 spec:
   interval: 1h
+  timeout: 20m
   chartRef:
     kind: OCIRepository
     name: app-template
@@ -12,6 +13,7 @@ spec:
   values:
     controllers:
       jellyfin:
+        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -19,10 +21,11 @@ spec:
             image:
               repository: ghcr.io/jellyfin/jellyfin
               # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
-              tag: 10.11.11
+              tag: "12.0"
             probes:
+              # Re-enable after the Jellyfin 12.0 migration completes.
               liveness: &probes
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
@@ -34,9 +37,9 @@ spec:
                   failureThreshold: 3
               readiness: *probes
               startup:
-                enabled: true
+                enabled: false
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 90
                   periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
@@ -50,6 +53,7 @@ spec:
                 memory: 2Gi
                 amd.com/gpu: 1
     defaultPodOptions:
+      terminationGracePeriodSeconds: 120
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
