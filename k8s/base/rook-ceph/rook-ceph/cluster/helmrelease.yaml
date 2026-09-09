@@ -25,6 +25,10 @@ spec:
         mgr:
           mgr/crash/warn_recent_interval: "300"
           mgr/devicehealth/enable_monitoring: "false"
+        osd:
+          # pace snaptrim storms: *_sleep options are force-zeroed under mClock
+          osd_max_trimming_pgs: "1" # quote
+          osd_pg_max_concurrent_snap_trims: "1" # quote
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
