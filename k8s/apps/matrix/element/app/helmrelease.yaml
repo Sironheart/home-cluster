@@ -1,0 +1,99 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app element
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: default
+  values:
+    controllers:
+      element:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/element-hq/element-web
+              tag: v1.12.27
+            env:
+              ELEMENT_WEB_PORT: "8080"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet: { path: /config.json, port: 8080 }
+                  periodSeconds: 30
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile: { type: RuntimeDefault }
+    persistence:
+      config:
+        type: configMap
+        name: element-config
+        advancedMounts:
+          element:
+            app:
+              - path: /app/config.json
+                subPath: config.json
+                readOnly: true
+      # nginx-unprivileged writes proxy temp files and its pid here
+      nginx-cache:
+        type: emptyDir
+        advancedMounts:
+          element:
+            app:
+              - path: /var/cache/nginx
+      nginx-run:
+        type: emptyDir
+        advancedMounts:
+          element:
+            app:
+              - path: /var/run
+      # entrypoint scripts mkdir /tmp/element-web-config and envsubst-render conf.d
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          element:
+            app:
+              - path: /tmp
+      nginx-confd:
+        type: emptyDir
+        advancedMounts:
+          element:
+            app:
+              - path: /etc/nginx/conf.d
+    service:
+      app:
+        controller: element
+        ports:
+          http:
+            port: &port 8080
+    route:
+      app:
+        hostnames: ["element.siron.casa"]
+        parentRefs:
+          - name: external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port

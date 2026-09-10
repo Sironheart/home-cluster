@@ -1,0 +1,35 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: continuwuity
+spec:
+  displayname: Continuwuity
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/matrix.svg
+  kanidmRef:
+    name: sso
+    namespace: sso
+  origin: https://matrix.siron.casa
+  preferShortUsername: true
+  redirectUrl:
+    - https://matrix.siron.casa/_continuwuity/oidc/complete
+  scopeMap:
+    - group: matrix
+      scopes:
+        - openid
+        - profile
+        - email
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: matrix
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
+  members:
+    - sironheart
