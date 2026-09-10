@@ -1,4 +1,5 @@
 k8s/talos/secrets.yaml
+k8s/talos/output/
 mise.local.toml
 kubeconfig
 1password-credentials.json
