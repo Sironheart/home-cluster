@@ -20,7 +20,7 @@ spec:
             image:
               repository: dpage/pgadmin4
               # renovate: datasource=docker depName=dpage/pgadmin4
-              tag: "9.17"
+              tag: "9.18"
             env:
               PGADMIN_DEFAULT_EMAIL: admin@siron.casa
               PGADMIN_LISTEN_PORT: &port 5050
