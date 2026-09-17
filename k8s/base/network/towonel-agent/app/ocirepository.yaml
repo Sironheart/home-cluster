@@ -5,12 +5,12 @@ metadata:
   name: towonel-agent
 spec:
   interval: 15m
-  url: oci://codeberg.org/towonel/charts/towonel-agent
+  url: oci://git.ow-ops.eu/towonel/charts/towonel-agent
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.6.1
+    tag: 1.7.1
   verify:
     provider: cosign
     secretRef:

@@ -11,6 +11,10 @@
       matchHost: "git.erwanleboucher.dev",
       hostType: "forgejo",
     },
+    {
+      matchHost: "git.ow-ops.eu",
+      hostType: "forgejo",
+    },
   ],
   packageRules: [
     {
