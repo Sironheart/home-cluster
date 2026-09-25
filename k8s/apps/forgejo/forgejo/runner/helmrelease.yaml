@@ -10,6 +10,23 @@ spec:
     namespace: default
   interval: 1h
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: forgejo-runner
+        refreshInterval: 5m
+        target:
+          name: forgejo-runner-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              uuid: "{{ .forgejo_runner_uuid }}"
+              token: "{{ .forgejo_runner_token }}"
+        dataFrom:
+          - extract:
+              key: forgejo-runner
     defaultPodOptions:
       automountServiceAccountToken: true
     configMaps:

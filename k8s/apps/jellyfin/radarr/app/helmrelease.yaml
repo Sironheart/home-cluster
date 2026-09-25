@@ -10,6 +10,21 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: radarr
+        target:
+          name: radarr-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              RADARR__AUTH__APIKEY: "{{ .api_key }}"
+        dataFrom:
+          - extract:
+              key: radarr
     controllers:
       radarr:
         annotations:

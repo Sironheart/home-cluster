@@ -10,6 +10,25 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: pgadmin
+        refreshInterval: "0"
+        target:
+          name: pgadmin-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              PGADMIN_DEFAULT_PASSWORD: "{{ .password }}"
+        dataFrom:
+          - sourceRef:
+              generatorRef:
+                apiVersion: generators.external-secrets.io/v1alpha1
+                kind: Password
+                name: pgadmin-default-password
     controllers:
       pgadmin:
         annotations:

@@ -10,6 +10,22 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: sabnzbd
+        target:
+          name: sabnzbd-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              SABNZBD__API_KEY: "{{ .api_key }}"
+              SABNZBD__NZB_KEY: "{{ .api_key }}"
+        dataFrom:
+          - extract:
+              key: sabnzbd
     controllers:
       sabnzbd:
         annotations:

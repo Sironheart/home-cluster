@@ -10,6 +10,25 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: bookorbit
+        refreshInterval: 5m
+        target:
+          name: bookorbit-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              JWT_SECRET: "{{ .jwt_secret }}"
+              SETUP_BOOTSTRAP_TOKEN: "{{ .setup_bootstrap_token }}"
+              EMAIL_ENCRYPTION_KEY: "{{ .email_encryption_key }}"
+              MIGRATION_ENCRYPTION_KEY: "{{ .migration_encryption_key }}"
+        dataFrom:
+          - extract:
+              key: bookorbit
     controllers:
       bookorbit:
         annotations:

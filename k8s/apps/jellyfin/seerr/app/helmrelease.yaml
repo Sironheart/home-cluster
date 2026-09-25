@@ -10,6 +10,42 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: seerr
+        target:
+          name: seerr-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              API_KEY: "{{ .api_key }}"
+        dataFrom:
+          - extract:
+              key: seerr
+      database:
+        forceRename: seerr-db
+        refreshInterval: 5m
+        target:
+          name: seerr-db-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              DB_TYPE: postgres
+              DB_USE_SSL: "true"
+              DB_SSL_REJECT_UNAUTHORIZED: "true"
+              DB_HOST: "{{ .host }}"
+              DB_PORT: "{{ .port }}"
+              DB_USER: "{{ .user }}"
+              DB_NAME: "{{ .db_name }}"
+              DB_SSL_CA_FILE: "{{ .ssl_ca }}"
+              DB_SSL_KEY_FILE: "{{ .ssl_key }}"
+              DB_SSL_CERT_FILE: "{{ .ssl_cert }}"
+        dataFrom:
+          - extract:
+              key: seerr-postgres
     controllers:
       seerr:
         annotations:

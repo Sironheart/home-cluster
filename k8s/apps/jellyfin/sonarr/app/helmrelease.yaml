@@ -10,6 +10,21 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      credentials:
+        forceRename: sonarr
+        target:
+          name: sonarr-secret
+          deletionPolicy: Retain
+          template:
+            data:
+              SONARR__AUTH__APIKEY: "{{ .api_key }}"
+        dataFrom:
+          - extract:
+              key: sonarr
     controllers:
       sonarr:
         annotations:

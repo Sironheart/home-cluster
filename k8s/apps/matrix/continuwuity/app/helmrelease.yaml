@@ -10,6 +10,101 @@ spec:
     name: app-template
     namespace: default
   values:
+    defaultExternalSecretStoreRef:
+      kind: ClusterSecretStore
+      name: onepassword
+    externalSecrets:
+      config:
+        forceRename: continuwuity
+        target:
+          name: continuwuity
+          deletionPolicy: Retain
+          template:
+            templateFrom:
+              - configMap:
+                  name: continuwuity-config
+                  items:
+                    - key: continuwuity.toml
+        dataFrom:
+          - extract:
+              key: continuwuity
+    networkpolicies:
+      allow-kubelet-probes:
+        type: cilium
+        forceRename: allow-kubelet-probes
+        endpointSelector: {}
+        ingress:
+          - fromEntities:
+              - host
+      # This policy selects all endpoints and explicitly keeps both directions default-deny.
+      allow-same-namespace:
+        type: cilium
+        forceRename: allow-same-namespace
+        endpointSelector: {}
+        enableDefaultDeny:
+          ingress: true
+          egress: true
+        ingress:
+          - fromEndpoints:
+              - {}
+        egress:
+          - toEndpoints:
+              - {}
+      allow-dns:
+        type: cilium
+        forceRename: allow-dns
+        endpointSelector: {}
+        egress:
+          - toEndpoints:
+              - matchLabels:
+                  io.kubernetes.pod.namespace: kube-system
+                  k8s-app: kube-dns
+            toPorts:
+              - ports:
+                  - port: "53"
+                    protocol: UDP
+                  - port: "53"
+                    protocol: TCP
+      allow-apiserver:
+        type: cilium
+        forceRename: allow-apiserver
+        endpointSelector: {}
+        ingress:
+          - fromEntities:
+              - kube-apiserver
+        egress:
+          - toEntities:
+              - kube-apiserver
+      allow-metrics-scrape:
+        type: cilium
+        forceRename: allow-metrics-scrape
+        endpointSelector: {}
+        ingress:
+          - fromEndpoints:
+              - matchLabels:
+                  io.kubernetes.pod.namespace: observability
+      allow-gateway:
+        type: cilium
+        forceRename: allow-gateway
+        endpointSelector: {}
+        ingress:
+          - fromEndpoints:
+              - matchLabels:
+                  io.kubernetes.pod.namespace: network
+      allow-world:
+        type: cilium
+        forceRename: allow-world
+        endpointSelector: {}
+        egress:
+          - toCIDRSet:
+              - cidr: 0.0.0.0/0
+                except:
+                  - 10.244.0.0/16
+                  - 10.96.0.0/12
+              - cidr: ::/0
+                except:
+                  - fd00:10:244::/48
+                  - fd00:10:96::/112
     controllers:
       continuwuity:
         type: statefulset

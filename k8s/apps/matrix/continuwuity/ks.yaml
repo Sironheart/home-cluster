@@ -9,9 +9,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/netpol
-    - ../../../../components/netpol-gateway
-    - ../../../../components/netpol-world
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
