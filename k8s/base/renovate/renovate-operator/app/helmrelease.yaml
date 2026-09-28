@@ -10,7 +10,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/mogenius/helm-charts/renovate-operator
   ref:
-    tag: 6.3.0
+    tag: 6.4.0
   verify:
     provider: cosign
     matchOIDCIdentity:
