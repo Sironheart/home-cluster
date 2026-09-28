@@ -268,9 +268,13 @@ spec:
                   action: drop
 
     kubeEtcd:
+      # etcd runs as a Talos service, not a pod. Selecting kube-apiserver pods
+      # drops a member's metrics whenever its apiserver is NotReady.
+      endpoints:
+        - 192.168.1.11
+        - 192.168.1.12
+        - 192.168.1.13
       service:
-        selector:
-          component: kube-apiserver
         port: 2381
         targetPort: 2381
       vmScrape:
