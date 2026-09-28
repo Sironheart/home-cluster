@@ -114,7 +114,7 @@ spec:
           app:
             image:
               repository: forgejo.ellis.link/continuwuation/continuwuity
-              tag: v26.9.0
+              tag: v26.9.1
             env:
               CONTINUWUITY_CONFIG: /etc/continuwuity/continuwuity.toml
             probes:
