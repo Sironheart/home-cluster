@@ -49,6 +49,9 @@ spec:
     plugins:
       plugin_admin_enabled: "true"
       plugin_admin_external_manage_enabled: "false"
+      # Failed auto-updates on the read-only filesystem unload bundled plugins.
+      # https://github.com/grafana/grafana/issues/132528
+      preinstall_auto_update: "false"
     security:
       angular_support_enabled: "false"
     server:
