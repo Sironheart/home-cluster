@@ -2,19 +2,9 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: default-deny
-spec:
-  # empty lists: selected endpoints deny all ingress+egress
-  endpointSelector: {}
-  ingress: []
-  egress: []
----
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
   name: allow-kubelet-probes
 spec:
-  # without this, default-deny blocks kubelet liveness/readiness probes (source = node host)
+  # allow kubelet liveness/readiness probes from the node host
   endpointSelector: {}
   ingress:
     - fromEntities:
@@ -27,6 +17,9 @@ metadata:
 spec:
   # empty from/toEndpoints are implicitly scoped to the policy's own namespace (CNP semantics)
   endpointSelector: {}
+  enableDefaultDeny:
+    ingress: true
+    egress: true
   ingress:
     - fromEndpoints:
         - {}

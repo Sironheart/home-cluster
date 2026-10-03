@@ -7,8 +7,37 @@ spec:
   cluster:
     name: postgres
 
-  instances: 1
+  instances: 2
   type: rw
+  template:
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  cnpg.io/poolerName: pooler-rw
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: pgbouncer
+          # CNPG already provides the backend client certificate and CA here.
+          readinessProbe:
+            exec:
+              command:
+                - psql
+                - -XqAt
+                - -v
+                - ON_ERROR_STOP=1
+                - -d
+                - >-
+                  host=pooler-rw.database.svc.cluster.local hostaddr=127.0.0.1
+                  user=pooler-rw dbname=postgres sslmode=verify-full
+                  sslrootcert=/controller/configs/server-tls/ca.crt
+                  sslcert=/controller/configs/server-tls/tls.crt
+                  sslkey=/controller/configs/server-tls/tls.key connect_timeout=3
+                - -c
+                - SELECT 1
+            timeoutSeconds: 5
   pgbouncer:
     poolMode: session
 

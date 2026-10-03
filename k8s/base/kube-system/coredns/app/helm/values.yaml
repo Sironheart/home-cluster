@@ -57,6 +57,13 @@ affinity:
         - matchExpressions:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: coredns
+            app.kubernetes.io/name: coredns
+        topologyKey: kubernetes.io/hostname
 
 tolerations:
   - key: CriticalAddonsOnly
