@@ -4,9 +4,6 @@ kind: RenovateJob
 metadata:
   name: forgejo-sironheart
 spec:
-  metadata:
-    annotations:
-      reloader.stakater.com/auto: "true"
   discoveryFilters:
     - sironheart/*
   discoverTopics: [renovate]
