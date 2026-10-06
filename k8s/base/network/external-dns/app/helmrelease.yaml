@@ -102,6 +102,8 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
+    extraArgs:
+      - --exclude-target-net=fd00:10::/112
     triggerLoopOnEvent: true
     policy: sync
     sources:
@@ -110,6 +112,7 @@ spec:
       - gateway-tlsroute
       - gateway-tcproute
       - gateway-udproute
+      - service
     txtOwnerId: default
     txtPrefix: k8s.
     domainFilters: ["siron.casa"]
