@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: bookorbit
 resources:
   - ./bookorbit/ks.yaml
-  - ./shelfmark/ks.yaml
 components:
   - ../../components/common
 replacements:

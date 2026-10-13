@@ -1,0 +1,31 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: bookboss-app
+spec:
+  displayname: BookBoss
+  kanidmRef:
+    name: sso
+    namespace: sso
+  origin: https://bookboss.siron.casa
+  redirectUrl:
+    - https://bookboss.siron.casa/auth/oidc/callback
+  scopeMap:
+    - group: bookboss
+      scopes:
+        - openid
+        - email
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: bookboss
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
+  members:
+    - sironheart
