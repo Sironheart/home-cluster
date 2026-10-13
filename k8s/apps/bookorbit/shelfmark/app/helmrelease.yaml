@@ -36,7 +36,7 @@ spec:
               AUTH_METHOD: none
               BOOK_LANGUAGE: en,de
               FLASK_PORT: &port 8084
-              INGEST_DIR: /books/bookdrop
+              INGEST_DIR: /books/book-dock
               TZ: Europe/Berlin
             probes:
               liveness: &probes
