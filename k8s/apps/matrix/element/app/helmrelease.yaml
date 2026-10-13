@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/element-hq/element-web
-              tag: v1.12.30
+              tag: v1.12.31
             env:
               ELEMENT_WEB_PORT: "8080"
             probes:
