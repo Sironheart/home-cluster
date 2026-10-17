@@ -15,6 +15,11 @@ metadata:
   namespace: system
 spec:
   interval: 1h
+  # shortcut: Talos manages AMD drivers; bypass stale module-state hooks until upstream handles driver.enable=false.
+  upgrade:
+    disableHooks: true
+  rollback:
+    disableHooks: true
   chart:
     spec:
       chart: gpu-operator-charts
@@ -29,10 +34,11 @@ spec:
         upgrade: true
     deviceConfig:
       spec:
+        driver:
+          enable: false
         metricsExporter:
           resource:
             limits:
-              cpu: ~
               memory: 4G
             requests:
               cpu: 500m
