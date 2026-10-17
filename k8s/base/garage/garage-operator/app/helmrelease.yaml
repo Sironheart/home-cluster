@@ -18,6 +18,9 @@ spec:
     remediation:
       retries: -1
   values:
+    resources:
+      limits:
+        cpu: ~
     prometheusRules:
       enabled: true
       labels:

@@ -37,6 +37,9 @@ operator:
 
 cni:
   exclusive: false
+  resources:
+    limits:
+      cpu: ~
 
 prometheus:
   enabled: true

@@ -22,6 +22,10 @@ spec:
     kind: OCIRepository
     name: dragonfly
   values:
+    rbacProxy:
+      resources:
+        limits:
+          cpu: ~
     crds:
       install: true
       keep: true

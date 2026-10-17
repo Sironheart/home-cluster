@@ -23,6 +23,36 @@ spec:
         kind: HelmRepository
         name: rocm
   values:
+    crds:
+      defaultCR:
+        # Reconcile the DeviceConfig so exporter resource changes take effect.
+        upgrade: true
+    deviceConfig:
+      spec:
+        metricsExporter:
+          resource:
+            limits:
+              cpu: ~
+              memory: 4G
+            requests:
+              cpu: 500m
+              memory: 512M
+    controllerManager:
+      manager:
+        resources:
+          limits:
+            cpu: ~
+    kmm:
+      controller:
+        manager:
+          resources:
+            limits:
+              cpu: ~
+      webhookServer:
+        webhookServer:
+          resources:
+            limits:
+              cpu: ~
     upgradePolicy:
       upgradeStrategy: OnDelete
     serviceMonitor:

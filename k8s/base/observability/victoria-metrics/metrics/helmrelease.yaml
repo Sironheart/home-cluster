@@ -22,12 +22,19 @@ spec:
     vmagent:
       enabled: enabled
       spec:
+        # CPU requests suppress the operator's default CPU limits.
+        resources:
+          requests:
+            cpu: 50m
         extraArgs:
           loggerFormat: json
 
     vmalert:
       enabled: true
       spec:
+        resources:
+          requests:
+            cpu: 50m
         extraArgs:
           loggerFormat: json
       route:
@@ -75,6 +82,9 @@ spec:
       useManagedConfig: false
 
       spec:
+        resources:
+          requests:
+            cpu: 30m
         externalURL: https://vmalertmanager.siron.casa
         storage:
           volumeClaimTemplate:
