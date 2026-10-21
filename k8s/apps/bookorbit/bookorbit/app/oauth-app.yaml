@@ -13,6 +13,7 @@ spec:
   origin: https://books.siron.casa
   redirectUrl:
     - https://books.siron.casa/oauth2-callback
+    - bookorbit://oauth2-callback
   scopeMap:
     - group: bookorbit
       scopes:
