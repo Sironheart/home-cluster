@@ -18,7 +18,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install tools
-        uses: https://github.com/jdx/mise-action@v3
+        uses: https://github.com/jdx/mise-action@v3.6.3
         with:
           install_args: --locked yq github:guarnz/deadvalues
           # A Forgejo workflow token cannot authenticate to GitHub's release API.
