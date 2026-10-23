@@ -10,8 +10,6 @@ spec:
   interval: 30m
   values:
     fullnameOverride: smartctl-exporter
-    image:
-      registry: quay.io
     serviceMonitor:
       enabled: true
       relabelings:

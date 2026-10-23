@@ -28,8 +28,6 @@ operator:
   rollOutPods: true
   dashboards:
     enabled: true
-  metrics:
-    enabled: true
   prometheus:
     enabled: true
     serviceMonitor:

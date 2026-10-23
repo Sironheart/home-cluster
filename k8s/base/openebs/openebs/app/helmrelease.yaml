@@ -39,12 +39,6 @@ spec:
         create: true
     loki:
       enabled: false
-    lvm-localpv:
-      enabled: false
-    mayastor:
-      enabled: false
-    minio:
-      enabled: false
     openebs-crds:
       csi:
         volumeSnapshots:
@@ -55,7 +49,6 @@ spec:
     zfs-localpv:
       analytics:
         enabled: false
-      enabled: true
       zfs:
         bin: /usr/local/sbin/zfs
       zfsNode:

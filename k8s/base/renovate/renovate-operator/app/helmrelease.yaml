@@ -49,7 +49,6 @@ spec:
           - name: external
             namespace: network
     metrics:
-      enabled: true
       serviceMonitor:
         enabled: true
       dashboard:

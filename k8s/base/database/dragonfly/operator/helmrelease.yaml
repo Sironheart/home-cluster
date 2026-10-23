@@ -37,24 +37,11 @@ spec:
         enabled: true
         matchLabels:
           instance: grafana
-    extraArgs:
-      - "--bind=::"
-      - --maxmemory=$(MAX_MEMORY)Mi
-      - --proactor_threads=2
-      - --cluster_mode=emulated
-      - --lock_on_hashtags
-      - --default_lua_flags=allow-undeclared-keys
-    resources:
-      requests:
-        cpu: 10m
-        memory: 284Mi
-      limits:
-        cpu: ~
-        memory: 284Mi
-
-    env:
-      - name: MAX_MEMORY
-        valueFrom:
-          resourceFieldRef:
-            resource: limits.memory
-            divisor: 1Mi
+    manager:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 284Mi
+        limits:
+          cpu: ~
+          memory: 284Mi

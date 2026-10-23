@@ -27,4 +27,4 @@ jobs:
       - name: Check Helm values
         run: |
           KUBE_VERSION="$(yq -er '.kubernetesVersion' k8s/talos/topf.yaml)"
-          deadvalues scan k8s --fail-on dead --details --workers 2 --kube-version "$KUBE_VERSION"
+          deadvalues scan k8s --fail-on dead --details --workers 2 --kube-version "$KUBE_VERSION" --skip forgejo

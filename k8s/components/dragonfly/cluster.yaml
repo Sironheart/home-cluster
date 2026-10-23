@@ -13,9 +13,12 @@ spec:
           resource: limits.memory
           divisor: 1Mi
   args:
+    - "--bind=::"
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=${DRAGONFLY_ARGS_THREADS:=2}
     - --cluster_mode=emulated
+    - --lock_on_hashtags
+    - --default_lua_flags=allow-undeclared-keys
   resources:
     requests:
       cpu: ${DRAGONFLY_REQUESTS_CPU:=100m}

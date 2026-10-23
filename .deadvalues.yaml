@@ -1,0 +1,9 @@
+---
+ignore:
+  # These values affect upgrade renders, which deadvalues does not probe.
+  - app: openebs
+    keys:
+      - preUpgradeHook.enabled
+  - app: rocm
+    keys:
+      - crds.defaultCR.upgrade

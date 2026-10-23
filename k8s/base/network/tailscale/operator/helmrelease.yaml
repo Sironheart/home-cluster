@@ -25,6 +25,5 @@ spec:
     operatorConfig:
       podAnnotations:
         reloader.stakater.com/auto: "true"
-      apiServerProxyConfig:
-        allowImpersonation: true
-        mode: true
+    apiServerProxyConfig:
+      mode: "true"

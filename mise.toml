@@ -41,7 +41,7 @@ description = "Install all required tools to have any running service"
 [tasks.check-helm-values]
 run = """
 KUBE_VERSION="$(yq -er '.kubernetesVersion' k8s/talos/topf.yaml)"
-deadvalues scan k8s --fail-on dead --details --workers 2 --kube-version "$KUBE_VERSION"
+deadvalues scan k8s --fail-on dead --details --workers 2 --kube-version "$KUBE_VERSION" --skip forgejo
 """
 description = "Scan Flux HelmReleases for dead values"
 

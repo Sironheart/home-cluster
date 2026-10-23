@@ -1,3 +1,4 @@
 ---
-annotations:
-  reloader.stakater.com/auto: "true"
+connect:
+  annotations:
+    reloader.stakater.com/auto: "true"

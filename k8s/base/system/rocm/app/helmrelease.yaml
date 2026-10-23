@@ -36,13 +36,23 @@ spec:
       spec:
         driver:
           enable: false
+        devicePlugin:
+          upgradePolicy:
+            upgradeStrategy: OnDelete
         metricsExporter:
+          prometheus:
+            serviceMonitor:
+              enable: true
+              attachMetadata:
+                node: true
           resource:
             limits:
               memory: 4G
             requests:
               cpu: 500m
               memory: 512M
+          upgradePolicy:
+            upgradeStrategy: OnDelete
     controllerManager:
       manager:
         resources:
@@ -59,9 +69,3 @@ spec:
           resources:
             limits:
               cpu: ~
-    upgradePolicy:
-      upgradeStrategy: OnDelete
-    serviceMonitor:
-      enabled: true
-      attachMetadata:
-        node: true
