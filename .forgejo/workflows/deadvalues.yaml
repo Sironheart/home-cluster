@@ -1,0 +1,30 @@
+---
+name: Deadvalues
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deadvalues:
+    name: Deadvalues
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: https://data.forgejo.org/actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install tools
+        uses: https://github.com/jdx/mise-action@v3
+        with:
+          install_args: --locked yq github:guarnz/deadvalues
+          # A Forgejo workflow token cannot authenticate to GitHub's release API.
+          github_token: ""
+          cache: false
+      - name: Check Helm values
+        run: |
+          KUBE_VERSION="$(yq -er '.kubernetesVersion' k8s/talos/topf.yaml)"
+          deadvalues scan k8s --fail-on dead --details --workers 2 --kube-version "$KUBE_VERSION"

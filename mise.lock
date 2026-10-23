@@ -39,6 +39,45 @@ checksum = "sha256:164e87a13ee8be864a96dbfe597d938cfcea60b9f309a2bd8eaad3e539fba
 url = "https://github.com/fluxcd/flux2/releases/download/v2.9.6/flux_2.9.6_windows_amd64.zip"
 url_api = "https://api.github.com/repos/fluxcd/flux2/releases/assets/602941233"
 
+[[tools."github:guarnz/deadvalues"]]
+version = "0.1.8"
+backend = "github:guarnz/deadvalues"
+
+[tools."github:guarnz/deadvalues"."platforms.linux-arm64"]
+checksum = "sha256:fadae8e28722afd7aded5c10888b6190bef81371a950445f5e5f58c36e56305a"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745487"
+
+[tools."github:guarnz/deadvalues"."platforms.linux-arm64-musl"]
+checksum = "sha256:fadae8e28722afd7aded5c10888b6190bef81371a950445f5e5f58c36e56305a"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745487"
+
+[tools."github:guarnz/deadvalues"."platforms.linux-x64"]
+checksum = "sha256:d55b62972e5dadf3c1976557ce5a743878f78a153b6ade1f0dbb771923da9c39"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745486"
+
+[tools."github:guarnz/deadvalues"."platforms.linux-x64-musl"]
+checksum = "sha256:d55b62972e5dadf3c1976557ce5a743878f78a153b6ade1f0dbb771923da9c39"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745486"
+
+[tools."github:guarnz/deadvalues"."platforms.macos-arm64"]
+checksum = "sha256:10ccbc5c49e3898dcca4ee2be90c008c2c29c9d7857bc8c2e0321a0d1538a6a6"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745603"
+
+[tools."github:guarnz/deadvalues"."platforms.macos-x64"]
+checksum = "sha256:a01d04805fa49af8293c67a71caf7880957dc817dae8e9f4b3190ad1abc1b6ab"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745485"
+
+[tools."github:guarnz/deadvalues"."platforms.windows-x64"]
+checksum = "sha256:85a9c11a13c89c1e0222711d2a0886ba816de3d2bb38b0e142efb1756c4c4a9f"
+url = "https://github.com/guarnz/deadvalues/releases/download/v0.1.8/deadvalues_windows_amd64.zip"
+url_api = "https://api.github.com/repos/guarnz/deadvalues/releases/assets/666745613"
+
 [[tools."github:postfinance/topf"]]
 version = "0.6.1"
 backend = "github:postfinance/topf"
@@ -259,4 +298,50 @@ provenance = "cosign"
 checksum = "sha256:c62eea25aab8d27ec9c392ff0b736fd503051974abfc8aae724711e04ab79f8a"
 url = "https://github.com/siderolabs/talos/releases/download/v1.14.4/talosctl-windows-amd64.exe"
 url_api = "https://api.github.com/repos/siderolabs/talos/releases/assets/647547741"
+provenance = "cosign"
+
+[[tools.yq]]
+version = "4.54.1"
+backend = "aqua:mikefarah/yq"
+
+[tools.yq."platforms.linux-arm64"]
+checksum = "sha256:189088da0c6429ec5178dfaab1a114805f6cab0b61b165ab236efedf1d57a71b"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_linux_arm64"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222603"
+provenance = "cosign"
+
+[tools.yq."platforms.linux-arm64-musl"]
+checksum = "sha256:189088da0c6429ec5178dfaab1a114805f6cab0b61b165ab236efedf1d57a71b"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_linux_arm64"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222603"
+provenance = "cosign"
+
+[tools.yq."platforms.linux-x64"]
+checksum = "sha256:8e34fc298390875de416e6a4afcb8cabeceb25d9aa8506c1a2f9353cf702ea5f"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_linux_amd64"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222595"
+provenance = "cosign"
+
+[tools.yq."platforms.linux-x64-musl"]
+checksum = "sha256:8e34fc298390875de416e6a4afcb8cabeceb25d9aa8506c1a2f9353cf702ea5f"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_linux_amd64"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222595"
+provenance = "cosign"
+
+[tools.yq."platforms.macos-arm64"]
+checksum = "sha256:fee511a181bd8b3e6b7da98842b41973bfac8cd3bcd341ed29a584620b5b2844"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_darwin_arm64"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222609"
+provenance = "cosign"
+
+[tools.yq."platforms.macos-x64"]
+checksum = "sha256:3a812fce205a4d67014fb71b7fa297092210e580df3d8f52dddc2cf3a599c22b"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_darwin_amd64"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222619"
+provenance = "cosign"
+
+[tools.yq."platforms.windows-x64"]
+checksum = "sha256:b645f47ebb3a0d2fbab52998550bbd0a1706f23b5ca5f5b48e638c580bb70928"
+url = "https://github.com/mikefarah/yq/releases/download/v4.54.1/yq_windows_amd64.exe"
+url_api = "https://api.github.com/repos/mikefarah/yq/releases/assets/597222575"
 provenance = "cosign"

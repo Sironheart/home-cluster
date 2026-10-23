@@ -32,15 +32,24 @@ description = "Install CRDs and basic tools"
 depends = ['kubeconfig']
 run = "helmfile -q template -f bootstrap/helmfile.d/00-crds.yaml | yq ea -e 'select(.kind == \"CustomResourceDefinition\")' | kubectl apply --server-side -f - || true"
 description = "Install all CRDs"
-dir = "{{ config_root }}"
 
 [tasks.install-required-services]
 depends = ['kubeconfig', 'install-crds']
 run = "helmfile sync -f bootstrap/helmfile.d/01-basic-installation.yaml"
 description = "Install all required tools to have any running service"
-dir = "{{ config_root }}"
+
+[tasks.check-helm-values]
+run = """
+KUBE_VERSION="$(yq -er '.kubernetesVersion' k8s/talos/topf.yaml)"
+deadvalues scan k8s --fail-on dead --details --workers 2 --kube-version "$KUBE_VERSION"
+"""
+description = "Scan Flux HelmReleases for dead values"
 
 [tools]
+# CI
+"github:guarnz/deadvalues" = "0.1.8"
+yq = "4.54.1"
+
 # Flux
 flux2 = "2.9.6"
 

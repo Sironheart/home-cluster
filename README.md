@@ -13,7 +13,7 @@ I try to follow Infrastructure as Code (IaC) and GitOps guidelines, using tools 
 
 - [Kubernetes](https://kubernetes.io/)
 - [Flux](https://fluxcd.io/)
-- [Github Actions](https://github.com/features/actions)
+- [Forgejo Actions](https://forgejo.org/docs/latest/user/actions/overview/)
 
 ### General setup
 
