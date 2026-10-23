@@ -15,7 +15,7 @@ releases:
   - name: 1password-connect
     namespace: onepassword
     chart: oci://ghcr.io/1password/connect
-    version: 2.4.1
+    version: 2.4.3
     values:
       ["../../k8s/base/onepassword/1password-connect/app/helm/values.yaml"]
 
