@@ -96,7 +96,7 @@ spec:
           chrome:
             image:
               repository: docker.io/chromedp/headless-shell
-              tag: 158.0.8106.0
+              tag: 158.0.8117.2
             args:
               - --hide-scrollbars
               - --disable-gpu
