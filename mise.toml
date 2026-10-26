@@ -51,7 +51,7 @@ description = "Scan Flux HelmReleases for dead values"
 yq = "4.54.1"
 
 # Flux
-flux2 = "2.9.6"
+flux2 = "2.10.0"
 
 # Kubernetes
 helm = "4.3.1"
