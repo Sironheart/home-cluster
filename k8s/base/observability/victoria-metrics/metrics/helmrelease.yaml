@@ -51,7 +51,7 @@ spec:
           loggerFormat: json
         image:
           repository: victoriametrics/victoria-metrics
-          tag: v1.154.1
+          tag: v1.155.0
           pullPolicy: IfNotPresent
         retentionPeriod: 30d
         storage:
