@@ -47,7 +47,7 @@ description = "Scan Flux HelmReleases for dead values"
 
 [tools]
 # CI
-"github:guarnz/deadvalues" = "0.1.8"
+"github:guarnz/deadvalues" = "v0.1.9"
 yq = "4.54.1"
 
 # Flux
