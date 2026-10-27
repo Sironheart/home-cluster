@@ -1,0 +1,57 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app immich
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/database
+    - ../../../../components/dragonfly
+    - ../../../../components/kopiur
+    - ../../../../components/netpol
+    - ../../../../components/netpol-gateway
+    - ../../../../components/netpol-world
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: instance
+      namespace: database
+    - name: dragonfly
+      namespace: database
+    - name: rocm
+      namespace: system
+    - name: kopiur
+      namespace: kopiur-system
+    - name: kaniop-instance
+      namespace: sso
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: immich
+  interval: 1h
+  path: ./k8s/apps/immich/immich/app
+  postBuild:
+    substitute:
+      APP: *app
+      DATABASE_EXTENSIONS: |
+        [
+          { name: vector },
+          { name: vchord },
+          { name: cube },
+          { name: earthdistance }
+        ]
+      KOPIUR_CAPACITY: 100Gi
+      KOPIUR_ACCESSMODES: ReadWriteMany
+      KOPIUR_STORAGECLASS: ceph-filesystem
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false

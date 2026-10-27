@@ -1,0 +1,18 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-postgres
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: server
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: database
+            cnpg.io/poolerName: pooler-rw
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP

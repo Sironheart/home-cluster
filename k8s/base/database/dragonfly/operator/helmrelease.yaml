@@ -43,5 +43,4 @@ spec:
           cpu: 10m
           memory: 284Mi
         limits:
-          cpu: ~
           memory: 284Mi

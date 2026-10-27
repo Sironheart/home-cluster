@@ -1,0 +1,110 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app immich
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+  valuesFrom:
+    - kind: Secret
+      name: immich-app-kanidm-oauth2-credentials
+      valuesKey: CLIENT_ID
+      targetPath: immich.configuration.oauth.clientId
+      literal: true
+    - kind: Secret
+      name: immich-app-kanidm-oauth2-credentials
+      valuesKey: CLIENT_SECRET
+      targetPath: immich.configuration.oauth.clientSecret
+      literal: true
+  values:
+    controllers:
+      # Lookup keys are hard-coded by the chart; nameOverride sets container names.
+      main:
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
+              tag: v3.2.0
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: [ALL] }
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    immich:
+      configurationKind: Secret
+      configuration:
+        oauth:
+          enabled: true
+          issuerUrl: https://sso.siron.casa/oauth2/openid/immich-app
+          signingAlgorithm: ES256
+          tokenEndpointAuthMethod: client_secret_basic
+          buttonText: Login with Kanidm
+      persistence:
+        library:
+          existingClaim: *app
+    server:
+      controllers:
+        main:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          containers:
+            main:
+              nameOverride: immich
+              env:
+                DB_URL:
+                  valueFrom:
+                    secretKeyRef:
+                      name: immich-postgres
+                      key: url
+                REDIS_HOSTNAME: dragonfly-immich
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+                limits:
+                  memory: 4Gi
+      route:
+        immich:
+          forceRename: immich
+          hostnames: [immich.siron.casa]
+          parentRefs:
+            - name: internal
+              namespace: network
+              sectionName: https
+          rules:
+            - backendRefs:
+                - identifier: main
+                  port: 2283
+              timeouts:
+                request: 600s
+                backendRequest: 600s
+    machine-learning:
+      controllers:
+        main:
+          # Release the GPU before starting the replacement pod.
+          strategy: Recreate
+          pod:
+            securityContext:
+              supplementalGroups: [44]
+          containers:
+            main:
+              nameOverride: machine-learning
+              image:
+                # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
+                tag: v3.2.0-rocm
+              env:
+                # Radeon 780M (gfx1103) compatibility with the ROCm image's kernels.
+                HSA_OVERRIDE_GFX_VERSION: "11.0.0"
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+                limits:
+                  memory: 4Gi
+                  amd.com/gpu: 1
