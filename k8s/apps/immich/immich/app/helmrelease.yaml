@@ -39,6 +39,8 @@ spec:
     immich:
       configurationKind: Secret
       configuration:
+        passwordLogin:
+          enabled: false
         oauth:
           enabled: true
           issuerUrl: https://sso.siron.casa/oauth2/openid/immich-app
@@ -57,6 +59,7 @@ spec:
             main:
               nameOverride: immich
               env:
+                IMMICH_ALLOW_SETUP: "false"
                 DB_URL:
                   valueFrom:
                     secretKeyRef:
@@ -74,7 +77,7 @@ spec:
           forceRename: immich
           hostnames: [immich.siron.casa]
           parentRefs:
-            - name: internal
+            - name: external
               namespace: network
               sectionName: https
           rules:
