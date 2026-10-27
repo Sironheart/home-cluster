@@ -27,7 +27,7 @@ spec:
           main:
             image:
               # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
-              tag: v3.2.0
+              tag: v3.3.5
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: [ALL] }
@@ -100,7 +100,7 @@ spec:
               nameOverride: machine-learning
               image:
                 # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
-                tag: v3.2.0-rocm
+                tag: v3.3.5-rocm
               env:
                 # Radeon 780M (gfx1103) compatibility with the ROCm image's kernels.
                 HSA_OVERRIDE_GFX_VERSION: "11.0.0"
