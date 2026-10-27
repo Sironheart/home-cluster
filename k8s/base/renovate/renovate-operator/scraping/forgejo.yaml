@@ -7,7 +7,6 @@ spec:
   discoveryFilters:
     - sironheart/*
   discoverTopics: [renovate]
-  # renovate: datasource=docker depName=renovate/renovate
   image: renovate/renovate:44.164.2
   parallelism: 2
   schedule: H H/4 * * *

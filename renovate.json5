@@ -2,10 +2,16 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
     "local>home-operations/renovate-presets",
+    "local>home-operations/renovate-presets//apps/cnpg.json5",
     "local>home-operations/renovate-presets//apps/talosFactory.json5",
     ":semanticCommits",
     ":timezone(Europe/Berlin)",
   ],
+  flux: {
+    registryAliases: {
+      rocm: "https://rocm.github.io/gpu-operator",
+    },
+  },
   hostRules: [
     {
       matchHost: "git.erwanleboucher.dev",
@@ -17,6 +23,19 @@
     },
   ],
   packageRules: [
+    {
+      // Keep the name in the Helmfile for update verification; packageName still uses Docker Hub.
+      description: "Preserve the mirrored Envoy Helmfile dependency name",
+      matchManagers: ["helmfile"],
+      matchPackageNames: ["docker.io/envoyproxy/gateway-helm"],
+      overrideDepName: "mirror.gcr.io/envoyproxy/gateway-helm",
+    },
+    {
+      description: "Keep VectorChord images compatible with the PostgreSQL major",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/tensorchord/vchord-scratch"],
+      versioning: "regex:^(?:(?<compatibility>pg\\d+)-v)?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+    },
     {
       // config:best-practices (via RENOVATE_EXTENDS) enables docker:pinDigests /
       // action digest pins; those break renovate/pin-dependencies for OCI charts

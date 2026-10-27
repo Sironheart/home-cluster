@@ -8,7 +8,6 @@ metadata:
 spec:
   instances: 2
 
-  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie@sha256:f0cc49632b5cc1e51f65ba03658c89bd31d64ea2672b14843a808a8d281417e1
 
   certificates:
@@ -60,17 +59,14 @@ spec:
         ld_library_path:
           - system
         image:
-          # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgis-extension
           reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.4-18-trixie@sha256:4bdfebf86a7d4e9b186efd74b24ee60798007ffda0f10a5c919eb3ef120e1521
 
       - name: pgvector
         image:
-          # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/pgvector
           reference: ghcr.io/cloudnative-pg/pgvector:0.8.6-18-trixie@sha256:e8a14094c8d7ccf20d4eb793accae35ea067edda278d659c561d510cd1cea6b1
 
       - name: vchord
         image:
-          # renovate: datasource=docker depName=ghcr.io/tensorchord/vchord-scratch
           reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1@sha256:bdea43bed2a414e21bbf71767bf6f0739747ac480b267b51772dc214ac28dcb3
         dynamic_library_path:
           - /usr/lib/postgresql/18/lib
@@ -79,5 +75,4 @@ spec:
 
       - name: timescaledb
         image:
-          # renovate: datasource=docker depName=ghcr.io/shusaan/timescaledb-testing
           reference: ghcr.io/shusaan/timescaledb-testing:2.24.0-18-trixie@sha256:dae25c2dde06455214ac5553b51d3ef2d48fe84795c2cfa48c51c6e15877044e
