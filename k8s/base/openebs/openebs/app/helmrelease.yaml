@@ -52,4 +52,5 @@ spec:
       zfs:
         bin: /usr/local/sbin/zfs
       zfsNode:
+        allowedTopologyKeys: openebs.io/nodeid
         encrKeysDir: /var/local/openebs/keys
