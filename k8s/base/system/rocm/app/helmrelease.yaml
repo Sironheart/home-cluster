@@ -52,7 +52,7 @@ spec:
               cpu: 500m
               memory: 512M
           upgradePolicy:
-            upgradeStrategy: OnDelete
+            upgradeStrategy: RollingUpdate
     controllerManager:
       manager:
         resources:
