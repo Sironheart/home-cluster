@@ -6,7 +6,7 @@ metadata:
 spec:
   domain: sso.siron.casa
   ldapPortName: ldaps
-  image: kanidm/server:1.11.2
+  image: kanidm/server:1.12.0
   oauth2ClientNamespaceSelector:
     matchLabels: {}
   groupNamespaceSelector:
