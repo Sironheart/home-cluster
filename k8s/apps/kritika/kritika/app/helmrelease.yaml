@@ -1,0 +1,102 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kritika
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: kritika
+  values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
+    podSecurityContext:
+      fsGroup: 65532
+    config:
+      webUrl: https://kritika.siron.casa
+      auth:
+        admin:
+          password: { env: ADMIN_PASSWORD }
+      forgejo:
+        home:
+          host: forgejo.siron.casa
+          accounts: [sironheart]
+          # Add audience and runnerAudience after registering the integrations.
+          privateKey: { env: FORGEJO_PRIVATE_KEY }
+          webhookSecret: { env: FORGEJO_WEBHOOK_SECRET }
+      providers:
+        plan:
+          type: chatgpt
+      review:
+        model: plan/~sol-latest
+    envFrom:
+      - secretRef:
+          name: kritika-credentials
+    database:
+      owner:
+        existingSecret: kritika-postgres
+        key: url
+      app:
+        existingSecret: kritika-postgres-app
+    httpRoute:
+      enabled: true
+      hostnames:
+        - kritika.siron.casa
+      parentRefs:
+        - name: external
+          namespace: network
+          sectionName: https
+    networkPolicy:
+      postgres:
+        namespace: database
+        podSelector:
+          cnpg.io/cluster: postgres
+    monitoring:
+      serviceMonitor:
+        enabled: true
+      dashboards:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          matchLabels:
+            instance: grafana
+    volumes:
+      - name: postgres-owner
+        csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/issuer-name: postgres-client-ca
+            csi.cert-manager.io/issuer-kind: ClusterIssuer
+            csi.cert-manager.io/key-algorithm: ECDSA
+            csi.cert-manager.io/key-size: "384"
+            csi.cert-manager.io/key-encoding: PKCS8
+            csi.cert-manager.io/key-usages: client auth
+            csi.cert-manager.io/common-name: kritika
+      - name: postgres-app
+        csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/issuer-name: postgres-client-ca
+            csi.cert-manager.io/issuer-kind: ClusterIssuer
+            csi.cert-manager.io/key-algorithm: ECDSA
+            csi.cert-manager.io/key-size: "384"
+            csi.cert-manager.io/key-encoding: PKCS8
+            csi.cert-manager.io/key-usages: client auth
+            csi.cert-manager.io/common-name: kritika_app
+      - name: root-ca
+        configMap:
+          name: root-ca
+          defaultMode: 0440
+    volumeMounts:
+      - name: postgres-owner
+        mountPath: /var/run/secrets/postgresql
+        readOnly: true
+      - name: postgres-app
+        mountPath: /var/run/secrets/postgresql-app
+        readOnly: true
+      - name: root-ca
+        mountPath: /var/run/secrets/root-ca
+        readOnly: true

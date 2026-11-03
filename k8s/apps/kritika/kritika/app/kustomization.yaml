@@ -1,0 +1,25 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./databaserole.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./ocirepository.yaml
+  - ./secret.yaml
+replacements:
+  # Preserve the database namespace after Flux applies Kritika's targetNamespace.
+  - source:
+      group: kustomize.toolkit.fluxcd.io
+      kind: Kustomization
+      fieldPath: spec.targetNamespace
+    targets:
+      - select:
+          kind: DatabaseRole
+        fieldPaths:
+          - metadata.namespace
+      - select:
+          group: kustomize.toolkit.fluxcd.io
+          kind: Kustomization
+        fieldPaths:
+          - metadata.namespace
