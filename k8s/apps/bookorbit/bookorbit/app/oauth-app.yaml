@@ -9,7 +9,7 @@ spec:
     name: sso
     namespace: sso
   image:
-    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/bookorbit.svg
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/bookorbit.png
   origin: https://books.siron.casa
   redirectUrl:
     - https://books.siron.casa/oauth2-callback
