@@ -9,6 +9,8 @@ spec:
     name: sso
     namespace: sso
   origin: https://immich.siron.casa/
+  image:
+    url: https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/immich.svg
   redirectUrl:
     - https://immich.siron.casa/auth/login
     - https://immich.siron.casa/user-settings
