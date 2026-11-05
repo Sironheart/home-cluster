@@ -5,10 +5,16 @@ metadata:
   name: "${APP}"
 spec:
   copyMethod: Snapshot
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-miroir}
+  staging:
+    storageClassName: miroir-staging
+    # miroir serves RWX only on replicated volumes.
+    accessModes:
+      - ReadWriteOnce
   credentialProjection:
     enabled: true
   files:
-    ignoreRules: ${KOPIUR_IGNORE_RULES:=[lost+found]}
+    ignoreRules: ${KOPIUR_IGNORE_RULES:=[lost+found,.ganesha-recovery]}
   repository:
     kind: ClusterRepository
     name: ${KOPIUR_REPOSITORY:=nas}

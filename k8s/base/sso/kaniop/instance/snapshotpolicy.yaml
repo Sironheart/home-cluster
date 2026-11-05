@@ -5,7 +5,9 @@ metadata:
   name: sso
 spec:
   copyMethod: Snapshot
-  volumeSnapshotClassName: csi-ceph-blockpool
+  volumeSnapshotClassName: csi-miroir
+  staging:
+    storageClassName: miroir-staging
   credentialProjection:
     enabled: true
   files:

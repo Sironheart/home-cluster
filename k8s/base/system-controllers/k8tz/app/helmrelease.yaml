@@ -26,7 +26,7 @@ spec:
         - network
         - openebs
         - renovate
-        - rook-ceph
+        - miroir-system
         - system-upgrade
       certManager:
         enabled: true

@@ -19,8 +19,8 @@ spec:
   prune: true
   retryInterval: 5m
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: miroir-storage
+      namespace: miroir-system
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -33,6 +33,8 @@ kind: Kustomization
 metadata:
   name: &app kaniop-instance
 spec:
+  # rook-ceph -> miroir rebuild: Kaniop would start Kanidm on an empty volume.
+  suspend: true
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

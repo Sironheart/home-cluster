@@ -12,7 +12,16 @@ spec:
       kind: Node
       expr: status.conditions.exists(c, c.type == "Ready" && c.status == "True")
       timeout: 10m
-    - apiVersion: ceph.rook.io/v1
-      kind: CephCluster
-      expr: |-
-        status.ceph.health in ['HEALTH_OK']
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      name: miroir-storage
+      namespace: miroir-system
+      expr: status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+    - apiVersion: apps/v1
+      kind: DaemonSet
+      name: miroir-agent
+      namespace: miroir-system
+      expr: status.desiredNumberScheduled == 3 && status.numberReady == 3
+    - apiVersion: miroir.home-operations.com/v1alpha1
+      kind: MiroirVolume
+      expr: has(status.phase) && status.phase == 'Ready'

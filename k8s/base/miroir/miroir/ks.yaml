@@ -1,0 +1,65 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname miroir
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *appname
+      namespace: miroir-system
+  interval: 1h
+  path: ./k8s/base/miroir/miroir/app
+  components:
+    - ../../../../components/common
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 10m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname miroir-storage
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  dependsOn:
+    - name: miroir
+    - name: snapshot-controller
+      namespace: kube-system
+  healthChecks:
+    - apiVersion: miroir.home-operations.com/v1alpha1
+      kind: MiroirNode
+      name: talos01
+    - apiVersion: miroir.home-operations.com/v1alpha1
+      kind: MiroirNode
+      name: talos02
+    - apiVersion: miroir.home-operations.com/v1alpha1
+      kind: MiroirNode
+      name: talos03
+  healthCheckExprs:
+    - apiVersion: miroir.home-operations.com/v1alpha1
+      kind: MiroirNode
+      current: >-
+        has(status.drbdVersion) && status.drbdVersion != '' &&
+        has(status.pools) && status.pools.exists(p,
+          p.name == 'default' && has(p.capacityBytes) && p.capacityBytes > 0 &&
+          (!has(p.message) || p.message == ''))
+  interval: 5m
+  path: ./k8s/base/miroir/miroir/storage
+  components:
+    - ../../../../components/common
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 10m

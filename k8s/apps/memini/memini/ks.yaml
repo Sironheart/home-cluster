@@ -10,8 +10,6 @@ spec:
   components:
     - ../../../../components/database
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
     - name: cloudnative-pg
       namespace: database
   healthChecks:

@@ -97,14 +97,14 @@ spec:
       ngrams:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        storageClass: ceph-block
+        storageClass: miroir-replicated
         size: 32Gi
         globalMounts:
           - path: /ngrams
       fasttext:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
-        storageClass: ceph-block
+        storageClass: miroir-replicated
         size: 1Gi
         globalMounts:
           - path: /fasttext

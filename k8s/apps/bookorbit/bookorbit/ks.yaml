@@ -11,8 +11,8 @@ spec:
     - ../../../../components/kopiur
     - ../../../../components/database
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: miroir-storage
+      namespace: miroir-system
     - name: cloudnative-pg
       namespace: database
   healthChecks:
@@ -33,7 +33,6 @@ spec:
           { name: vector }
         ]
       KOPIUR_CAPACITY: 10Gi
-      KOPIUR_STORAGECLASS: ceph-block
   prune: true
   retryInterval: 2m
   sourceRef:

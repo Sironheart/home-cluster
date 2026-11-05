@@ -55,7 +55,7 @@ spec:
           pullPolicy: IfNotPresent
         retentionPeriod: 30d
         storage:
-          storageClassName: ceph-block
+          storageClassName: miroir-replicated
           resources:
             requests:
               storage: 30Gi
@@ -89,7 +89,7 @@ spec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: ceph-block
+              storageClassName: miroir-replicated
               resources:
                 requests:
                   storage: 1Gi
@@ -126,9 +126,6 @@ spec:
                 - recording="count:up0"
               receiver: blackhole
             - matchers:
-                - alertname="CephNodeDiskspaceWarning"
-              receiver: blackhole
-            - matchers:
                 - alertname="etcdDatabaseHighFragmentationRatio"
               receiver: blackhole
             - matchers:
@@ -136,10 +133,6 @@ spec:
               receiver: blackhole
             - matchers:
                 - alertname="InfoInhibitor"
-              receiver: blackhole
-            - matchers:
-                - alertname="ScrapePoolHasNoTargets"
-                - scrape_job=~"serviceScrape/rook-ceph/csi-metrics.*"
               receiver: blackhole
             - matchers:
                 - alertname="CPUThrottlingHigh"
@@ -212,7 +205,7 @@ spec:
             - action: labelmap
               regex: __meta_kubernetes_node_label_(.+)
             - action: labeldrop
-              regex: (feature_node|extensions_talos_dev|beta_kubernetes|plan_upgrade_cattle_io|openebs_io|katacontainers_io|topology_rook_io_).*
+              regex: (feature_node|extensions_talos_dev|beta_kubernetes|plan_upgrade_cattle_io|openebs_io|katacontainers_io).*
             - action: labeldrop
               regex: .*home_arpa.*
             - sourceLabels: [__metrics_path__]

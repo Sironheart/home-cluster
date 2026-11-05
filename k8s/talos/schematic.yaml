@@ -5,6 +5,7 @@ customization:
       - siderolabs/amdgpu
       # Needed for multi-arch runner
       - siderolabs/binfmt-misc
+      - siderolabs/drbd
       - siderolabs/zfs
   extraKernelArgs:
     - amd_iommu=on # PCI Passthrough

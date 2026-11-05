@@ -1,0 +1,12 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Snapshot
+metadata:
+  name: ${POLICY}-migration-final
+  namespace: ${NS}
+spec:
+  policyRef:
+    name: ${POLICY}
+  description: final backup before the rook-ceph -> miroir migration
+  deletionPolicy: Retain
+  pin: true

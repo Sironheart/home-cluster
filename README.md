@@ -25,7 +25,7 @@ The basics of this cluster rely on:
 - [Cilium](https://cilium.io/)
 - [Spegel](https://spegel.dev/)
 - [Cert-Manager](https://cert-manager.io/)
-- [Rook](https://rook.io/)
+- [miroir](https://miroir.home-operations.com/)
 - [External DNS](https://kubernetes-sigs.github.io/external-dns)
 - [External Secrets](https://external-secrets.io/latest/)
 - [1password Connect](https://developer.1password.com/docs/connect/)

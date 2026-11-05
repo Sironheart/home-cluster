@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${PVC}-verify
+  namespace: ${NS}
+spec:
+  restartPolicy: Never
+  containers:
+    - name: verify
+      image: busybox:1.36
+      command:
+        - sh
+        - -c
+        - |
+          cd /data
+          find . -mindepth 1 -path ./lost+found -prune -o -type f -exec sha256sum {} + | sort -k2
+          find . -mindepth 1 -path ./lost+found -prune -o -exec stat -c '%u:%g %a %n' {} + | sort -k3
+      volumeMounts:
+        - name: data
+          mountPath: /data
+          readOnly: true
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: ${PVC}
+        readOnly: true

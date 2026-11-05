@@ -1,0 +1,14 @@
+---
+# The zpool is created by scripts/bootstrap-zfs.sh; the agent only creates the dataset.
+apiVersion: miroir.home-operations.com/v1alpha1
+kind: MiroirNode
+metadata:
+  name: talos03
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
+spec:
+  pools:
+    - name: default
+      zfs:
+        dataset: miroir/volumes
+        compression: zstd

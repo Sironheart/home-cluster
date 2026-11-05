@@ -1,0 +1,20 @@
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: drbd
+parameters:
+  - usermode_helper=disabled
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: drbd_transport_tcp
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: zfs
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+config:
+  shutdownGracePeriod: 120s
+  shutdownGracePeriodCriticalPods: 60s

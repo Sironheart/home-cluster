@@ -60,7 +60,7 @@ configuration:
       - network
       - observability
       - openebs
-      - rook-ceph
+      - miroir-system
       - system
 ---
 # Expose controller-manager metrics for scraping

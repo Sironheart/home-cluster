@@ -20,12 +20,3 @@ provisioning:
   maxSize: 128GiB
 filesystem:
   type: xfs
----
-apiVersion: v1alpha1
-kind: RawVolumeConfig
-name: zfs-pool
-provisioning:
-  diskSelector:
-    match: system_disk
-  grow: true
-  minSize: 256GiB

@@ -15,8 +15,8 @@ spec:
     - ../../../../components/netpol-gateway
     - ../../../../components/netpol-world
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: miroir-storage
+      namespace: miroir-system
     - name: instance
       namespace: database
     - name: dragonfly
@@ -46,7 +46,6 @@ spec:
         ]
       KOPIUR_CAPACITY: 100Gi
       KOPIUR_ACCESSMODES: ReadWriteMany
-      KOPIUR_STORAGECLASS: ceph-filesystem
   prune: true
   retryInterval: 2m
   sourceRef:
