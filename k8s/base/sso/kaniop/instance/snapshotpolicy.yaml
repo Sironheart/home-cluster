@@ -1,0 +1,28 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: sso
+spec:
+  copyMethod: Snapshot
+  volumeSnapshotClassName: csi-ceph-blockpool
+  credentialProjection:
+    enabled: true
+  files:
+    ignoreRules:
+      - lost+found
+  mover:
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: Always
+  repository:
+    kind: ClusterRepository
+    name: nas
+  retention:
+    keepHourly: 24
+    keepDaily: 7
+  sources:
+    - pvc:
+        name: kanidm-data-sso-default-0
+      # Apply fsGroup only to the disposable snapshot clone, never the live PVC.
+      readOnly: false

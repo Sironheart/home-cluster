@@ -110,8 +110,7 @@ spec:
         service.explore:
           REQUIRE_SIGNIN_VIEW: false
         session:
-          PROVIDER: redis
-          PROVIDER_CONFIG: *redis_string
+          PROVIDER: db
           SESSION_LIFE_TIME: "2678400"
         webhook:
           ALLOWED_HOST_LIST: "*"

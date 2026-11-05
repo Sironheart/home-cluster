@@ -1,0 +1,13 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: sso
+spec:
+  policyRef:
+    name: sso
+  schedule:
+    concurrencyPolicy: Forbid
+    cron: "H * * * *"
+    jitter: 5m
+    runOnCreate: false

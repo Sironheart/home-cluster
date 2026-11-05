@@ -7,3 +7,5 @@ resources:
   - ./credentials-gitrepo.yaml
   - ./httproute.yaml
   - ./kanidm.yaml
+  - ./snapshotpolicy.yaml
+  - ./snapshotschedule.yaml
