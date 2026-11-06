@@ -158,6 +158,12 @@ spec:
                   **Severity:** {{ .Labels.severity }}
                   {{ end }}
 
+    defaultRules:
+      groups:
+        # No workload sets CPU limits, so these recordings are always empty.
+        k8s.rules.container_cpu_limits:
+          enabled: false
+
     defaultDatasources:
       grafanaOperator:
         enabled: true
