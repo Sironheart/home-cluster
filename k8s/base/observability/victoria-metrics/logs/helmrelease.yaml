@@ -20,6 +20,7 @@ spec:
           allowCrossNamespaceImport: true
           instanceSelector:
             matchLabels:
+              dashboards: null
               instance: grafana
     server:
       image:

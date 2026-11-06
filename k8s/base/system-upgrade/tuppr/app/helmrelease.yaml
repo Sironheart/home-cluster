@@ -13,6 +13,12 @@ spec:
     monitoring:
       serviceMonitor:
         enabled: true
+      dashboards:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          matchLabels:
+            instance: grafana
     resources:
       requests:
         cpu: 11m
