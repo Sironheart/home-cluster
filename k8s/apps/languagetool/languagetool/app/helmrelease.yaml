@@ -20,7 +20,7 @@ spec:
             image: &image
               repository: meyay/languagetool
               # renovate: datasource=docker depName=meyay/languagetool
-              tag: 6.8-9
+              tag: 6.8-14
             env:
               CONTAINER_MODE: download-only
               download_ngrams_for_langs: en,de

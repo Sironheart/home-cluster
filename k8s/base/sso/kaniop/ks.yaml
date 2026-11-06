@@ -33,8 +33,6 @@ kind: Kustomization
 metadata:
   name: &app kaniop-instance
 spec:
-  # rook-ceph -> miroir rebuild: Kaniop would start Kanidm on an empty volume.
-  suspend: true
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

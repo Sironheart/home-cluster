@@ -62,8 +62,6 @@ metadata:
   name: cluster-apps
   namespace: flux-system
 spec:
-  # rook-ceph -> miroir rebuild: stays off until every volume is restored.
-  suspend: true
   interval: 1h
   path: ./k8s/apps
   prune: true
