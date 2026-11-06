@@ -22,7 +22,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      KOPIUR_IGNORE_RULES: '[lost+found, "meilisearch/**"]'
+      KOPIUR_IGNORE_RULES: '[lost+found, .ganesha-recovery, "meilisearch/**"]'
       KOPIUR_CAPACITY: 10Gi
       KOPIUR_ACCESSMODES: ReadWriteMany
   prune: true
