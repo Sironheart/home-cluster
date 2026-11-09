@@ -75,6 +75,7 @@ spec:
               nameOverride: immich
               env:
                 IMMICH_ALLOW_SETUP: "false"
+                IMMICH_LOG_FORMAT: json
                 # The default also trusts LAN ranges, which lets LAN clients spoof X-Forwarded-For.
                 IMMICH_TRUSTED_PROXIES: 10.244.0.0/16,fd00:10:244::/48
                 DB_URL:
@@ -128,10 +129,12 @@ spec:
               env:
                 # Radeon 780M (gfx1103) compatibility with the ROCm image's kernels.
                 HSA_OVERRIDE_GFX_VERSION: "11.0.0"
+                # Immich ROCm docs: needed on some GPUs when the override alone fails.
+                HSA_USE_SVM: "0"
               resources:
                 requests:
                   cpu: 500m
-                  memory: 1Gi
+                  memory: 6Gi
                 limits:
-                  memory: 4Gi
+                  memory: 8Gi
                   amd.com/gpu: 1

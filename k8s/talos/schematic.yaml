@@ -15,3 +15,4 @@ customization:
     - sysctl.kernel.kexec_load_disabled=1
     - talos.dashboard.disabled=1
     - zfs.zfs_arc_max=8589934592 # Cap ZFS ARC at 8GiB
+    - amdgpu.cwsr_enable=0 # 780M MES hangs + GPU resets under ROCm compute (ROCm/ROCm#5590)
