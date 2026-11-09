@@ -25,27 +25,6 @@ spec:
         dataFrom:
           - extract:
               key: seerr
-      database:
-        forceRename: seerr-db
-        refreshInterval: 5m
-        target:
-          name: seerr-db-secret
-          deletionPolicy: Retain
-          template:
-            data:
-              DB_TYPE: postgres
-              DB_USE_SSL: "true"
-              DB_SSL_REJECT_UNAUTHORIZED: "true"
-              DB_HOST: "{{ .host }}"
-              DB_PORT: "{{ .port }}"
-              DB_USER: "{{ .user }}"
-              DB_NAME: "{{ .db_name }}"
-              DB_SSL_CA_FILE: "{{ .ssl_ca }}"
-              DB_SSL_KEY_FILE: "{{ .ssl_key }}"
-              DB_SSL_CERT_FILE: "{{ .ssl_cert }}"
-        dataFrom:
-          - extract:
-              key: seerr-postgres
     controllers:
       seerr:
         annotations:
@@ -58,11 +37,47 @@ spec:
             env:
               LOG_LEVEL: "info"
               PORT: &port 80
+              DB_TYPE: postgres
+              DB_USE_SSL: "true"
+              DB_SSL_REJECT_UNAUTHORIZED: "true"
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: port
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: user
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: db_name
+              DB_SSL_CA_FILE:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: ssl_ca
+              DB_SSL_KEY_FILE:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: ssl_key
+              DB_SSL_CERT_FILE:
+                valueFrom:
+                  secretKeyRef:
+                    name: seerr-postgres
+                    key: ssl_cert
             envFrom:
               - secretRef:
                   name: seerr-secret
-              - secretRef:
-                  name: seerr-db-secret
             probes:
               liveness: &probes
                 enabled: true

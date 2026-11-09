@@ -13,6 +13,9 @@ spec:
   origin: https://forgejo.siron.casa/
   redirectUrl:
     - https://forgejo.siron.casa/user/oauth2/kanidm/callback
+  secretKeyAliases:
+    clientId: [key]
+    clientSecret: [secret]
   scopeMap:
     - group: forgejo
       scopes:

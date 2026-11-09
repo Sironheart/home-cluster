@@ -119,7 +119,7 @@ spec:
         - name: kanidm
           adminGroup: forgejo_admins@siron.casa
           autoDiscoverUrl: https://sso.siron.casa/oauth2/openid/forgejo-app/.well-known/openid-configuration
-          existingSecret: forgejo-kanidm-oidc
+          existingSecret: forgejo-app-kanidm-oauth2-credentials
           groupClaimName: groups
           provider: openidConnect
           scopes: profile email groups
