@@ -39,6 +39,21 @@ spec:
     immich:
       configurationKind: Secret
       configuration:
+        # CNPG barman-cloud already covers this database with offsite PITR.
+        backup:
+          database:
+            enabled: false
+        ffmpeg:
+          targetVideoCodec: hevc
+          acceptedVideoCodecs: [h264, hevc]
+          targetResolution: "1080"
+          crf: 28
+          preset: fast
+        metadata:
+          faces:
+            import: true
+        newVersionCheck:
+          enabled: false
         passwordLogin:
           enabled: false
         oauth:
@@ -60,6 +75,8 @@ spec:
               nameOverride: immich
               env:
                 IMMICH_ALLOW_SETUP: "false"
+                # The default also trusts LAN ranges, which lets LAN clients spoof X-Forwarded-For.
+                IMMICH_TRUSTED_PROXIES: 10.244.0.0/16,fd00:10:244::/48
                 DB_URL:
                   valueFrom:
                     secretKeyRef:
@@ -93,8 +110,15 @@ spec:
           # Release the GPU before starting the replacement pod.
           strategy: Recreate
           pod:
+            # Replaces defaultPodOptions.securityContext instead of merging with it.
             securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
               supplementalGroups: [44]
+              seccompProfile: { type: RuntimeDefault }
           containers:
             main:
               nameOverride: machine-learning

@@ -21,6 +21,13 @@ spec:
         - openid
         - profile
         - email
+  claimMap:
+    # Immich only accepts a plain string ("admin" or "user"), not an array.
+    - name: immich_role
+      joinStrategy: csv
+      valuesMap:
+        - group: immich-admin
+          values: [admin]
   secretTemplate:
     labels:
       reconcile.fluxcd.io/watch: Enabled
@@ -29,6 +36,19 @@ apiVersion: kaniop.rs/v1beta1
 kind: KanidmGroup
 metadata:
   name: immich
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
+  members:
+    - immich-admin
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: immich-admin
 spec:
   kanidmRef:
     name: sso

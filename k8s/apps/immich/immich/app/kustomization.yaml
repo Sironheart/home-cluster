@@ -14,6 +14,18 @@ patches:
       - op: move
         from: /spec/values/persistence
         path: /spec/values/server/persistence
+  # OIDC discovery, Hugging Face model downloads; Dragonfly needs no internet.
+  - target:
+      kind: CiliumNetworkPolicy
+      name: allow-world
+    patch: |-
+      - op: replace
+        path: /spec/endpointSelector
+        value:
+          matchExpressions:
+            - key: app.kubernetes.io/name
+              operator: In
+              values: [server, machine-learning]
   - target:
       kind: PersistentVolumeClaim
     patch: |-
