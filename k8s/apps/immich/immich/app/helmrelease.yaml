@@ -136,5 +136,5 @@ spec:
                   cpu: 500m
                   memory: 6Gi
                 limits:
-                  memory: 8Gi
+                  memory: 12Gi
                   amd.com/gpu: 1
