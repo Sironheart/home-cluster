@@ -1,0 +1,34 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmOAuth2Client
+metadata:
+  name: keeper-app
+spec:
+  displayname: Keeper
+  kanidmRef:
+    name: sso
+    namespace: sso
+  image:
+    url: https://www.keeper.sh/keeper.svg
+  origin: https://keeper.siron.casa
+  redirectUrl:
+    - https://keeper.siron.casa/api/auth/oauth2/callback/oidc
+  scopeMap:
+    - group: keeper
+      scopes:
+        - openid
+        - profile
+        - email
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: keeper
+spec:
+  kanidmRef:
+    name: sso
+    namespace: sso
+  accountPolicy:
+    authSessionExpiry: 2678400
+  members:
+    - sironheart
