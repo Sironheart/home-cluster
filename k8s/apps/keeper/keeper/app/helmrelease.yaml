@@ -38,7 +38,7 @@ spec:
           web:
             image:
               repository: ghcr.io/ridafkih/keeper-web
-              tag: 2.29.6
+              tag: 2.31.0
             env:
               PORT: &webPort 3000
               VITE_API_URL: http://keeper-api.keeper.svc.cluster.local:3001
@@ -70,7 +70,7 @@ spec:
           api:
             image:
               repository: ghcr.io/ridafkih/keeper-api
-              tag: 2.29.6
+              tag: 2.31.0
             env:
               API_PORT: &apiPort 3001
               BETTER_AUTH_URL: https://keeper.siron.casa
@@ -132,7 +132,7 @@ spec:
           cron:
             image:
               repository: ghcr.io/ridafkih/keeper-cron
-              tag: 2.29.6
+              tag: 2.31.0
             env:
               DATABASE_URL: *databaseUrl
               REDIS_URL: *redisUrl
@@ -152,7 +152,7 @@ spec:
           worker:
             image:
               repository: ghcr.io/ridafkih/keeper-worker
-              tag: 2.29.6
+              tag: 2.31.0
             env:
               DATABASE_URL: *databaseUrl
               REDIS_URL: *redisUrl
