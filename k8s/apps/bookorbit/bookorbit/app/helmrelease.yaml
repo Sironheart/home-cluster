@@ -26,6 +26,7 @@ spec:
               SETUP_BOOTSTRAP_TOKEN: "{{ .setup_bootstrap_token }}"
               EMAIL_ENCRYPTION_KEY: "{{ .email_encryption_key }}"
               MIGRATION_ENCRYPTION_KEY: "{{ .migration_encryption_key }}"
+              BOOK_REQUEST_ENCRYPTION_KEY: "{{ .book_request_encryption_key }}"
         dataFrom:
           - extract:
               key: bookorbit
@@ -110,6 +111,13 @@ spec:
         path: /volume2/books
         globalMounts:
           - path: /books
+      downloads:
+        type: nfs
+        server: 192.168.1.2
+        path: /volume2/shows
+        globalMounts:
+          - path: /media/downloads/sabnzbd
+            subPath: downloads/sabnzbd
       tmp:
         type: emptyDir
         globalMounts:
