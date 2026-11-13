@@ -102,8 +102,6 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    extraArgs:
-      - --exclude-target-net=fd00:10::/112
     triggerLoopOnEvent: true
     policy: sync
     sources:
