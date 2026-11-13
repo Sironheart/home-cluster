@@ -9,6 +9,19 @@ data:
 
     AUTHENTICATION_SOURCES = ['oauth2']
     MASTER_PASSWORD_REQUIRED = False
+    # setup.py runs before the entrypoint writes config_distro.py; the default
+    # /var/log/pgadmin is not writable with a read-only root filesystem.
+    LOG_FILE = '/dev/null'
+
+    # pgAdmin prompts for a password unless the server uses a service; the
+    # pgadmin role authenticates by client certificate only.
+    SERVER_MODE_ALLOWED_SERVICES = ['home']
+
+    # Server mode only reads SSL client files from storage directories.
+    SHARED_STORAGE = [
+        {'name': 'postgres-certs', 'path': '/var/run/secrets/postgresql', 'restricted_access': True},
+        {'name': 'root-ca', 'path': '/var/run/secrets/root-ca', 'restricted_access': True},
+    ]
 
     OAUTH2_CONFIG = [
         {
@@ -34,10 +47,14 @@ data:
           "Host": "pooler-rw.database.svc.cluster.local",
           "Port": 5432,
           "Username": "pgadmin",
-          "SSLMode": "verify-full",
           "MaintenanceDB": "postgres",
           "Service": "home",
-          "Shared": true
+          "ConnectionParameters": {
+            "sslmode": "verify-full",
+            "sslcert": "postgres-certs:/tls.crt",
+            "sslkey": "postgres-certs:/tls.key",
+            "sslrootcert": "root-ca:/ca.crt"
+          }
         }
       }
     }

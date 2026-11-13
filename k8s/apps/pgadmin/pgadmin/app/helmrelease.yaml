@@ -40,17 +40,26 @@ spec:
               repository: dpage/pgadmin4
               # renovate: datasource=docker depName=dpage/pgadmin4
               tag: "9.19"
+            # The entrypoint only imports servers for the internal default user, but
+            # SSL client files of a shared server are never passed to other users.
+            # Import the server as owned by the OAuth user instead.
+            command: ["/bin/bash", "-ec"]
+            args:
+              - |
+                user=sironheart@sso.siron.casa
+                export PGADMIN_SETUP_EMAIL="$PGADMIN_DEFAULT_EMAIL" PGADMIN_SETUP_PASSWORD="$PGADMIN_DEFAULT_PASSWORD"
+                /venv/bin/python3 /pgadmin4/setup.py setup-db
+                /venv/bin/python3 /pgadmin4/setup.py add-external-user "$user" --auth-source oauth2
+                /venv/bin/python3 /pgadmin4/setup.py load-servers /pgadmin4/servers.json --user "$user" --auth-source oauth2
+                exec /entrypoint.sh
             env:
               PGADMIN_DEFAULT_EMAIL: admin@siron.casa
               PGADMIN_LISTEN_PORT: &port 5050
               PGADMIN_DISABLE_POSTFIX: "true"
-              PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
               PGADMIN_CUSTOM_CONFIG_DISTRO_FILE: /tmp/config_distro.py
-              PGSSLCERT: /var/run/secrets/postgresql/tls.crt
-              PGSSLKEY: /var/run/secrets/postgresql/tls.key
-              PGSSLROOTCERT: /var/run/secrets/root-ca/ca.crt
-              PGSSLMODE: verify-full
               PGSERVICEFILE: /pgadmin4/pg_service.conf
+              # Upstream warnings from bundled sshtunnel and pgAdmin's alembic migrations.
+              PYTHONWARNINGS: ignore::SyntaxWarning,ignore::UserWarning:alembic.operations.batch
               OAUTH2_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:
