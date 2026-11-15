@@ -185,6 +185,10 @@ spec:
               - name: allow-api
                 path_regex: ^/api/.*
                 action: ALLOW
+              # Static subresources cannot complete an HTML challenge.
+              - name: allow-static-assets
+                path_regex: ^/assets/
+                action: ALLOW
               - import: (data)/meta/default-config.yaml
 
     service:
