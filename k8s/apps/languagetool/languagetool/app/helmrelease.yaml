@@ -19,7 +19,6 @@ spec:
           models:
             image: &image
               repository: meyay/languagetool
-              # renovate: datasource=docker depName=meyay/languagetool
               tag: 6.8-15
             env:
               CONTAINER_MODE: download-only

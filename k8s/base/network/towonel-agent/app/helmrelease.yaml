@@ -22,7 +22,7 @@ spec:
           origin: external.network.svc.cluster.local:443
       tcpServices:
         - name: forgejo-ssh
-          origin: external.network.svc.cluster.local:22
+          origin: external.network.svc.cluster.local:22222
           listen_port: 22222
       inviteTokenSecret:
         name: towonel-agent-secret

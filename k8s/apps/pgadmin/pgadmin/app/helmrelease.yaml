@@ -38,7 +38,6 @@ spec:
           pgadmin:
             image:
               repository: dpage/pgadmin4
-              # renovate: datasource=docker depName=dpage/pgadmin4
               tag: "9.19"
             # The entrypoint only imports servers for the internal default user, but
             # SSL client files of a shared server are never passed to other users.

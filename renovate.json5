@@ -14,6 +14,10 @@
       rocm: "https://rocm.github.io/gpu-operator",
     },
   },
+  // Flux already extracts images from HelmReleases.
+  "helm-values": {
+    includePaths: ["**/values.{yaml,yml}{,.j2}"],
+  },
   hostRules: [
     {
       matchHost: "git.erwanleboucher.dev",

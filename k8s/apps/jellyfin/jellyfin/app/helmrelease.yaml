@@ -20,7 +20,6 @@ spec:
           jellyfin:
             image:
               repository: ghcr.io/jellyfin/jellyfin
-              # renovate: datasource=docker depName=ghcr.io/jellyfin/jellyfin
               tag: "12.4"
             probes:
               liveness: &probes
