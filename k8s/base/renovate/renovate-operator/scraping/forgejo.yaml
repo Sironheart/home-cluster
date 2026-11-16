@@ -17,8 +17,10 @@ spec:
       value: '["bazelModDeps", "goGenerate", "gradleWrapper", "mise"]'
     - name: RENOVATE_EXTENDS
       value: '["local>sironheart/renovate-preset"]'
-    - name: RENOVATE_ONBOARDING_CONFIG_FILE_NAME
-      value: renovate.json5
+    - name: RENOVATE_REQUIRE_CONFIG
+      value: "optional"
+    - name: RENOVATE_ONBOARDING
+      value: "false"
     - name: RENOVATE_REBASE_WHEN
       value: behind-base-branch
     - name: RENOVATE_AUTOMERGE_STRATEGY
