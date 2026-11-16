@@ -59,7 +59,7 @@ spec:
         ld_library_path:
           - system
         image:
-          reference: ghcr.io/cloudnative-pg/postgis-extension:3.7.0-18-trixie@sha256:f7bf475e0a01928c6b8dc84a251f827eb18f0980d9ecb924def3f90cc5ef3bdd
+          reference: ghcr.io/cloudnative-pg/postgis-extension:3.7.0-18-trixie@sha256:36ba894fc359b9ddedc41842a6debbc5a64cee30526d7efd80b09ef3207a43f2
 
       - name: pgvector
         image:
