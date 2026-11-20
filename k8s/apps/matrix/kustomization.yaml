@@ -6,6 +6,6 @@ components:
   - ../../components/common
 resources:
   - ./continuwuity/ks.yaml
-  - ./element/ks.yaml
+  - ./sable/ks.yaml
 replacements:
   - path: ../../components/replacements/ks.yaml

@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app element
+  name: &app sable
 spec:
   commonMetadata:
     labels:
@@ -13,7 +13,7 @@ spec:
       name: *app
       namespace: matrix
   interval: 1h
-  path: ./k8s/apps/matrix/element/app
+  path: ./k8s/apps/matrix/sable/app
   prune: true
   retryInterval: 2m
   sourceRef:
