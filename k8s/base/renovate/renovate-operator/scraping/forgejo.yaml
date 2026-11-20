@@ -7,7 +7,7 @@ spec:
   discoveryFilters:
     - sironheart/*
   discoverTopics: [renovate]
-  image: renovate/renovate:44.256.1
+  image: renovate/renovate:44.257.5
   parallelism: 2
   schedule: H H/4 * * *
   secretRef: forgejo-renovate
