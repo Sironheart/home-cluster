@@ -1,14 +1,10 @@
 ---
-fullnameOverride: coredns
 replicaCount: 2
 k8sAppLabelOverride: kube-dns
 
 resources:
   limits:
     cpu: ~
-
-serviceAccount:
-  create: true
 
 service:
   name: kube-dns

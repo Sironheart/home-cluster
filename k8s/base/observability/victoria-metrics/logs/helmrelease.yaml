@@ -23,10 +23,6 @@ spec:
               dashboards: null
               instance: grafana
     server:
-      image:
-        repository: victoriametrics/victoria-logs
-        tag: v1.54.0
-        pullPolicy: IfNotPresent
       resources:
         requests:
           cpu: 500m
@@ -34,7 +30,6 @@ spec:
         limits:
           memory: 4Gi
       persistentVolume:
-        enabled: true
         storageClassName: miroir-replicated
         size: 50Gi
       retentionPeriod: 90d
@@ -60,9 +55,6 @@ spec:
   dependsOn:
     - name: victoria-metrics-operator
   values:
-    image:
-      repository: victoriametrics/vlagent
-      tag: v1.54.0
     remoteWrite:
       - url: "http://victoria-logs-server.observability.svc.cluster.local:9428/insert/native"
     podMonitor:

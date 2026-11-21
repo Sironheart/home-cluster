@@ -10,16 +10,13 @@ spec:
   interval: 30m
   values:
     namespace: system-controllers
-    replicaCount: 1
     timezone: Europe/Berlin
-    cronJobTimeZone: false
     webhook:
       ignoredNamespaces:
         - atuin
         - cert-manager
         - external-secrets
         - forgejo
-        - garage
         - jellyfin
         - karakeep
         - kube-system

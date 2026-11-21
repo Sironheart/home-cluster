@@ -15,7 +15,6 @@ spec:
       name: onepassword
     externalSecrets:
       config:
-        forceRename: continuwuity
         target:
           name: continuwuity
           deletionPolicy: Retain
@@ -151,14 +150,10 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+
     persistence:
       data:
-        type: persistentVolumeClaim
         existingClaim: *app
-        advancedMounts:
-          continuwuity:
-            app:
-              - path: /data
       config:
         type: secret
         name: continuwuity
@@ -179,23 +174,16 @@ spec:
                 readOnly: true
       tmp:
         type: emptyDir
-        advancedMounts:
-          continuwuity:
-            app:
-              - path: /tmp
+
     service:
       app:
-        controller: continuwuity
         ports:
           http:
-            port: &port 8080
+            port: 8080
+
     route:
       app:
         hostnames: ["matrix.siron.casa"]
         parentRefs:
           - name: external
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port

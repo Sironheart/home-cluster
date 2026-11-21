@@ -68,17 +68,12 @@ spec:
               - path: /data
     service:
       app:
-        controller: sable
         ports:
           http:
-            port: &port 8080
+            port: 8080
     route:
       app:
         hostnames: ["sable.siron.casa"]
         parentRefs:
           - name: external
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port

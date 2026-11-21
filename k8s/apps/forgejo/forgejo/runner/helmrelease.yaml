@@ -15,7 +15,6 @@ spec:
       name: onepassword
     externalSecrets:
       credentials:
-        forceRename: forgejo-runner
         refreshInterval: 5m
         target:
           name: forgejo-runner-secret
@@ -143,8 +142,6 @@ spec:
             restartPolicy: Never
     controllers:
       forgejo-runner:
-        type: deployment
-        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
@@ -255,8 +252,6 @@ spec:
       config:
         type: configMap
         identifier: config
-        globalMounts:
-          - path: /config
       runner-secret:
         type: secret
         name: forgejo-runner-secret

@@ -17,7 +17,6 @@ spec:
       limits:
         cpu: ~
         memory: 100Mi
-    deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       metricsProviders:
         - source: KubernetesMetrics

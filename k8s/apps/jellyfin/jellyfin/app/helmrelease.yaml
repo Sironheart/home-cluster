@@ -13,7 +13,6 @@ spec:
   values:
     controllers:
       jellyfin:
-        strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -38,7 +37,6 @@ spec:
                 enabled: true
                 spec:
                   failureThreshold: 90
-                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -50,6 +48,7 @@ spec:
               limits:
                 memory: 2Gi
                 amd.com/gpu: 1
+
     defaultPodOptions:
       terminationGracePeriodSeconds: 120
       securityContext:
@@ -60,27 +59,23 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44]
         seccompProfile: { type: RuntimeDefault }
+
     service:
       jellyfin:
-        controller: jellyfin
         ports:
           http:
             port: *port
+
     route:
       jellyfin:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: external
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: jellyfin
-                port: *port
+
     persistence:
       config:
         existingClaim: jellyfin
-        globalMounts:
-          - path: /config
       config-cache:
         existingClaim: jellyfin-cache
         globalMounts:
@@ -89,8 +84,6 @@ spec:
         type: nfs
         server: 192.168.1.2
         path: /volume2/shows
-        globalMounts:
-          - path: /media
       tmpfs:
         type: emptyDir
         advancedMounts:

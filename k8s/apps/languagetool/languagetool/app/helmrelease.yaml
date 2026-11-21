@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app languagetool
+  name: languagetool
 spec:
   interval: 1h
   chartRef:
@@ -14,7 +14,7 @@ spec:
       languagetool:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
+
         initContainers:
           models:
             image: &image
@@ -27,6 +27,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+
         containers:
           languagetool:
             image: *image
@@ -68,6 +69,7 @@ spec:
                 memory: 3Gi
               limits:
                 memory: 5Gi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -76,41 +78,31 @@ spec:
         fsGroup: 783
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+
     service:
       languagetool:
-        controller: languagetool
         ports:
           http:
             port: *port
+
     route:
       languagetool:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: internal
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: languagetool
-                port: *port
+
     persistence:
       ngrams:
-        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         storageClass: miroir-replicated
         size: 32Gi
-        globalMounts:
-          - path: /ngrams
       fasttext:
-        type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         storageClass: miroir-replicated
         size: 1Gi
-        globalMounts:
-          - path: /fasttext
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
       logback:
         type: configMap
         name: languagetool-logback

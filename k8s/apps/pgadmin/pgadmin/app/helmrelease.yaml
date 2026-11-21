@@ -15,7 +15,6 @@ spec:
       name: onepassword
     externalSecrets:
       credentials:
-        forceRename: pgadmin
         refreshInterval: "0"
         target:
           name: pgadmin-secret
@@ -33,7 +32,6 @@ spec:
       pgadmin:
         annotations:
           reloader.stakater.com/auto: "true"
-        strategy: Recreate
         containers:
           pgadmin:
             image:
@@ -105,7 +103,6 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       pgadmin:
-        controller: pgadmin
         ports:
           http:
             port: *port
@@ -115,10 +112,6 @@ spec:
         parentRefs:
           - name: internal
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: pgadmin
-                port: *port
     persistence:
       data:
         type: emptyDir

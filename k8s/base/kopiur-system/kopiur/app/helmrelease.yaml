@@ -22,7 +22,6 @@ spec:
         enabled: true
       kopiaUi:
         enabled: true
-    installScope: cluster
     logging:
       format: json
     monitoring:
@@ -40,10 +39,7 @@ spec:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
       runAsGroup: 1000
-      runAsNonRoot: true
       runAsUser: 1000
-      seccompProfile:
-        type: RuntimeDefault
     webhook:
       serviceMonitor:
         enabled: true

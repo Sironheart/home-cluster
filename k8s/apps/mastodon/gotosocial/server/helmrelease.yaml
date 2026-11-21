@@ -12,7 +12,6 @@ spec:
   values:
     controllers:
       gts:
-        type: deployment
         pod:
           securityContext:
             fsGroup: 1000
@@ -82,7 +81,6 @@ spec:
 
     persistence:
       storage:
-        type: persistentVolumeClaim
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - subPath: data
@@ -93,9 +91,9 @@ spec:
         globalMounts:
           - path: /tmp
             subPath: tmp
+
     service:
       main:
-        controller: gts
         ports:
           http:
             port: 8080

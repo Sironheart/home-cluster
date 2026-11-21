@@ -3,13 +3,9 @@ rollOutCiliumPods: true
 policyAuditMode: true
 logOptions:
   format: json
-# enableIPv4BIGTCP: true
 
-ipv4:
-  enabled: true
 ipv6:
   enabled: true
-enableIPv6Masquerade: true
 
 l2announcements:
   enabled: true
@@ -29,7 +25,6 @@ operator:
   dashboards:
     enabled: true
   prometheus:
-    enabled: true
     serviceMonitor:
       enabled: true
 
@@ -54,7 +49,6 @@ dashboards:
   enabled: true
 
 hubble:
-  enabled: false
   tls:
     auto:
       method: certmanager
@@ -62,10 +56,6 @@ hubble:
         group: cert-manager.io
         kind: Issuer
         name: hubble-ca
-  ui:
-    enabled: false
-  relay:
-    enabled: false
 
 # -- from talos docs --
 ipam:

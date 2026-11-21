@@ -27,16 +27,12 @@ spec:
         resources:
           limits:
             memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 256Mi
 
     config:
       envoyGateway:
         extensionApis:
           enableBackend: true
         provider:
-          type: Kubernetes
           kubernetes:
             deploy:
               type: GatewayNamespace

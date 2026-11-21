@@ -92,18 +92,10 @@ spec:
               secretKeyRef:
                 name: unifi-dns-secret
                 key: token
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http-webhook
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /readyz
-            port: http-webhook
           initialDelaySeconds: 10
-          timeoutSeconds: 5
     triggerLoopOnEvent: true
     policy: sync
     sources:

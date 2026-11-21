@@ -5,13 +5,7 @@ instance:
     version: 2.10.1
   cluster:
     networkPolicy: false
-  components:
-    - source-controller
-    - kustomize-controller
-    - helm-controller
-    - notification-controller
   sync:
-    kind: GitRepository
     # url: https://github.com/sironheart/home-cluster
     url: http://forgejo-http.forgejo.svc.cluster.local:3000/sironheart/home-cluster.git
     ref: refs/heads/main

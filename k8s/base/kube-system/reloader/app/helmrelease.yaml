@@ -33,4 +33,3 @@ spec:
       logFormat: json
       podMonitor:
         enabled: true
-        namespace: "{{ .Release.Namespace }}"

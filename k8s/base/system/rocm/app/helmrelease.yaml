@@ -34,8 +34,6 @@ spec:
         upgrade: true
     deviceConfig:
       spec:
-        driver:
-          enable: false
         devicePlugin:
           upgradePolicy:
             upgradeStrategy: OnDelete
@@ -51,8 +49,6 @@ spec:
             requests:
               cpu: 500m
               memory: 512M
-          upgradePolicy:
-            upgradeStrategy: RollingUpdate
     controllerManager:
       manager:
         resources:

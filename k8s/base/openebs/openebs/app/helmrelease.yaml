@@ -26,23 +26,15 @@ spec:
       helperPod:
         image:
           registry: quay.io/
-      hostpathClass:
-        enabled: true
-        name: openebs-hostpath
-        basePath: &hostPath /var/mnt/local-hostpath
-        isDefaultClass: false
       localpv:
-        basePath: *hostPath
+        basePath: /var/mnt/local-hostpath
         image:
           registry: quay.io/
-      rbac:
-        create: true
     loki:
       enabled: false
     openebs-crds:
       csi:
         volumeSnapshots:
           enabled: false
-          keep: false
     preUpgradeHook:
       enabled: false

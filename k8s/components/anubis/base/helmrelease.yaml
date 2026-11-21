@@ -15,7 +15,6 @@ spec:
       name: onepassword
     externalSecrets:
       key:
-        forceRename: ${APP}-anubis
         refreshInterval: 1h
         target:
           name: ${APP}-anubis-key
@@ -197,10 +196,8 @@ spec:
           http:
             port: 80
             targetPort: 8080
-            protocol: HTTP
           metrics:
             port: 9090
-            protocol: HTTP
 
     serviceMonitor:
       app:

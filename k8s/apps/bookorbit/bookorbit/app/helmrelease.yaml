@@ -15,7 +15,6 @@ spec:
       name: onepassword
     externalSecrets:
       credentials:
-        forceRename: bookorbit
         refreshInterval: 5m
         target:
           name: bookorbit-secret
@@ -30,6 +29,7 @@ spec:
         dataFrom:
           - extract:
               key: bookorbit
+
     controllers:
       bookorbit:
         annotations:
@@ -75,6 +75,7 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -83,33 +84,27 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+
     service:
       bookorbit:
-        controller: bookorbit
         ports:
           http:
             port: *port
+
     route:
       bookorbit:
         hostnames: ["books.siron.casa"]
         parentRefs:
           - name: external
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: bookorbit
-                port: *port
+
     persistence:
       data:
         existingClaim: *app
-        globalMounts:
-          - path: /data
       books:
         type: nfs
         server: 192.168.1.2
         path: /volume2/books
-        globalMounts:
-          - path: /books
       downloads:
         type: nfs
         server: 192.168.1.2
@@ -119,5 +114,3 @@ spec:
             subPath: downloads/sabnzbd
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp

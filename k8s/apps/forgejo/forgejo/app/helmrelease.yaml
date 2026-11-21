@@ -97,7 +97,6 @@ spec:
           APP_DATA_PATH: /data/gitea
           ROOT_URL: https://forgejo.siron.casa
           SSH_DOMAIN: "forgejo.siron.casa:22222"
-          SSH_PORT: &sshPort 22
           SSH_SERVER_HOST_KEYS: ssh/ssh_host_ed25519_key
         service:
           ALLOW_ONLY_EXTERNAL_REGISTRATION: true
@@ -179,9 +178,6 @@ spec:
           name: root-ca
 
     image:
-      rootless: true
-      registry: code.forgejo.org
-      repository: forgejo/forgejo
       tag: 17.0.2-rootless
     persistence:
       create: false
@@ -189,10 +185,7 @@ spec:
 
     service:
       ssh:
-        port: *sshPort
-
-    httpRoute:
-      enabled: false
+        port: 22
 
     tcpRoute:
       enabled: true

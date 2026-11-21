@@ -26,11 +26,13 @@ spec:
         resources:
           requests:
             cpu: 50m
+            memory: 500Mi
+          limits:
+            memory: 1Gi
         extraArgs:
           loggerFormat: json
 
     vmalert:
-      enabled: true
       spec:
         resources:
           requests:
@@ -51,7 +53,6 @@ spec:
           loggerFormat: json
         image:
           repository: victoriametrics/victoria-metrics
-          tag: v1.156.0
           pullPolicy: IfNotPresent
         retentionPeriod: 30d
         storage:
@@ -78,9 +79,6 @@ spec:
       forceDeployDatasource: true
 
     alertmanager:
-      enabled: true
-      useManagedConfig: false
-
       spec:
         resources:
           requests:
@@ -113,7 +111,7 @@ spec:
       config:
         route:
           receiver: discord
-          group_by: ['alertname', 'severity', 'instance']
+          group_by: ["alertname", "severity", "instance"]
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 12h
@@ -175,7 +173,6 @@ spec:
               instance: grafana
 
     defaultDashboards:
-      enabled: true
       grafanaOperator:
         enabled: true
         spec:
@@ -189,18 +186,12 @@ spec:
           enabled: false
 
     prometheus-node-exporter:
-      enabled: true
       fullnameOverride: node-exporter
 
     kube-state-metrics:
-      enabled: true
       fullnameOverride: kube-state-metrics
 
     kubelet:
-      enabled: true
-      vmScrapes:
-        kubelet:
-          enabled: true
       vmScrape:
         spec:
           port: "10250"

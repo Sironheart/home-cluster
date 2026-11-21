@@ -21,7 +21,6 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
-            runAsNonRoot: true
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile: { type: RuntimeDefault }
@@ -43,8 +42,6 @@ spec:
                   secretKeyRef:
                     name: memini-openai-secret
                     key: MEMINI_EMBED_API_KEY
-              MEMINI_EMBED_MODEL: text-embedding-3-small
-              MEMINI_EMBED_DIMS: "1536"
               # Serialize OpenAI requests to stay below project rate limits.
               MEMINI_EMBED_MAX_CONCURRENCY: "1"
               # Give rate-limit retries more time before a write is marked for
@@ -63,8 +60,6 @@ spec:
         enabled: false
       tmp:
         type: emptyDir
-        globalMounts:
-          - path: /tmp
 
     serviceMonitor:
       main:

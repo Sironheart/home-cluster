@@ -15,7 +15,6 @@ spec:
       name: onepassword
     externalSecrets:
       credentials:
-        forceRename: sabnzbd
         target:
           name: sabnzbd-secret
           deletionPolicy: Retain
@@ -26,6 +25,7 @@ spec:
         dataFrom:
           - extract:
               key: sabnzbd
+
     controllers:
       sabnzbd:
         annotations:
@@ -71,6 +71,7 @@ spec:
                 memory: 80Mi
               limits:
                 memory: 2048Mi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -79,12 +80,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+
     service:
       sabnzbd:
-        controller: sabnzbd
         ports:
           http:
             port: *port
+
     route:
       sabnzbd:
         hostnames:
@@ -92,10 +94,7 @@ spec:
         parentRefs:
           - name: internal
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: sabnzbd
-                port: *port
+
     persistence:
       config:
         existingClaim: sabnzbd

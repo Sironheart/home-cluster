@@ -26,9 +26,6 @@ spec:
       resources:
         limits:
           cpu: ~
-    crds:
-      install: true
-      keep: true
     serviceMonitor:
       enabled: true
     grafanaDashboard:

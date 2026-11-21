@@ -13,9 +13,9 @@ spec:
     defaultExternalSecretStoreRef:
       kind: ClusterSecretStore
       name: onepassword
+
     externalSecrets:
       credentials:
-        forceRename: sonarr
         target:
           name: sonarr-secret
           deletionPolicy: Retain
@@ -25,6 +25,7 @@ spec:
         dataFrom:
           - extract:
               key: sonarr
+
     controllers:
       sonarr:
         annotations:
@@ -69,6 +70,7 @@ spec:
                 memory: 230Mi
               limits:
                 memory: 1024Mi
+
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -77,22 +79,20 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+
     service:
       sonarr:
-        controller: sonarr
         ports:
           http:
             port: *port
+
     route:
       sonarr:
         hostnames: ["{{ .Release.Name }}.siron.casa"]
         parentRefs:
           - name: internal
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: sonarr
-                port: *port
+
     persistence:
       config:
         existingClaim: sonarr
@@ -104,7 +104,5 @@ spec:
         type: nfs
         server: 192.168.1.2
         path: /volume2/shows
-        globalMounts:
-          - path: /media
       tmp:
         type: emptyDir

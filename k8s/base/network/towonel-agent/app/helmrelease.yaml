@@ -11,12 +11,9 @@ spec:
   values:
     controllers:
       main:
-        replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
     agent:
-      logLevel: info
-      healthPort: 9090
       services:
         - hostname: "*.siron.casa"
           origin: external.network.svc.cluster.local:443
@@ -26,7 +23,6 @@ spec:
           listen_port: 22222
       inviteTokenSecret:
         name: towonel-agent-secret
-        key: TOWONEL_INVITE_TOKEN
     serviceMonitor:
       main:
         enabled: true
@@ -42,6 +38,5 @@ spec:
         enabled: true
         grafanaOperator:
           enabled: true
-          allowCrossNamespaceImport: true
           matchLabels:
             instance: grafana

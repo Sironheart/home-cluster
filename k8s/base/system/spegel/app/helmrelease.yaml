@@ -23,7 +23,6 @@ spec:
     name: spegel
   values:
     spegel:
-      containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
     serviceMonitor:
       enabled: true

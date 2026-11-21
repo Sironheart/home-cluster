@@ -22,7 +22,5 @@ spec:
     kind: OCIRepository
     name: cloudnative-pg
   values:
-    crds:
-      create: true
     monitoring:
       podMonitorEnabled: true

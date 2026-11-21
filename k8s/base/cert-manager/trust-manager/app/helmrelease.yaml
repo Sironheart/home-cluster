@@ -29,11 +29,6 @@ spec:
         - postgres-client-ca
     app:
       logFormat: json
-      webhook:
-        tls:
-          approverPolicy:
-            # enabled: true
-            certManagerNamespace: cert-manager
       metrics:
         service:
           servicemonitor:
