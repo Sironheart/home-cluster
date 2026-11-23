@@ -7,20 +7,21 @@ logOptions:
 ipv6:
   enabled: true
 
-l2announcements:
-  enabled: true
+routingMode: native
+autoDirectNodeRoutes: true
+ipv4NativeRoutingCIDR: 10.244.0.0/16
+ipv6NativeRoutingCIDR: fd00:10:244::/48
 
-localRedirectPolicies:
+bpf:
+  masquerade: true
+
+l2announcements:
   enabled: true
 
 endpointRoutes:
   enabled: true
 
-nodeIPAM:
-  enabled: true
-
 operator:
-  replicas: 1
   rollOutPods: true
   dashboards:
     enabled: true
@@ -29,7 +30,6 @@ operator:
       enabled: true
 
 cni:
-  exclusive: false
   resources:
     limits:
       cpu: ~
@@ -49,6 +49,16 @@ dashboards:
   enabled: true
 
 hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+  metrics:
+    # audit-mode verdicts only surface here (action="audit"), not in agent logs
+    enabled:
+      - policy:sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity
+    serviceMonitor:
+      enabled: true
   tls:
     auto:
       method: certmanager

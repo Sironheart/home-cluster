@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
+  - ./httproute.yaml
   - ./issuer.yaml
   - ./network.yaml
 configMapGenerator:

@@ -19,8 +19,6 @@ spec:
     permitted:
       dnsDomains: &domains
         - .cilium.io
-        - .hubble-relay.cilium.io
-        - .default.hubble-grpc.cilium.io
       uriDomains: *domains
   duration: 87660h # 10 years
   privateKey:
