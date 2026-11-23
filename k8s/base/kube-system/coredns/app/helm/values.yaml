@@ -8,7 +8,11 @@ resources:
 
 service:
   name: kube-dns
-  clusterIP: 10.96.0.10
+  # must match the kubelet clusterDNS list Talos derives from both service subnets
+  clusterIPs:
+    - 10.96.0.10
+    - fd00:10:96::a
+  ipFamilyPolicy: RequireDualStack
 
 servers:
   - zones:
