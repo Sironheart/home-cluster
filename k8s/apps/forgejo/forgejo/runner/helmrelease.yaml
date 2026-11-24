@@ -69,14 +69,11 @@ spec:
                 imagePullPolicy: IfNotPresent
                 name: main
                 resources:
-                  limits:
-                    cpu: "2"
-                    memory: 4Gi
                   requests:
                     cpu: 100m
                     memory: 1Gi
                   limits:
-                    cpu: 2
+                    cpu: 4
                     memory: 4Gi
             restartPolicy: Never
           podspec-dind.yaml: |-
@@ -94,7 +91,7 @@ spec:
                     cpu: 100m
                     memory: 1Gi
                   limits:
-                    cpu: 500m
+                    cpu: 4
                     memory: 8Gi
                 volumeMounts:
                   - name: docker-storage
@@ -128,7 +125,7 @@ spec:
                     cpu: 100m
                     memory: 1Gi
                   limits:
-                    cpu: 500m
+                    cpu: 4
                     memory: 4Gi
                 volumeMounts:
                   - name: docker-certs
